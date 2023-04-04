@@ -225,14 +225,14 @@ export class EventHandler extends React.PureComponent<EventsHandlerProps> {
       this.setState({ rightClickMenu: true });
       this.setState({ xFloatingMenu: e.clientX });
       this.setState({ yFloatingMenu: e.clientY });
-
-
-      const { start, end } = this.props.children[0].props.selection || { start: 0, end: 0 };
-      const { seq } = this.props;
-      const dna = seq.substring(start || 0, end);
-      console.log(dna)
+      
+      
+      // const { seq } = this.props;
+      // const dna = seq.substring(start || 0, end);
+      // console.log(dna)
       return;
     }
+    if(!(e.target instanceof HTMLButtonElement))this.setState({ rightClickMenu: false });
     if (e.type === 'mouseup') {
       this.resetClicked();
       if (this.clickedOnce === e.target && this.clickedTwice === e.target) {
@@ -255,6 +255,10 @@ export class EventHandler extends React.PureComponent<EventsHandlerProps> {
       handleMouseEvent(e);
     }
   };
+  
+  closeMenu = () => {
+    this.setState({ rightClickMenu: false });
+  }
 
   render = () => (
     <div className="la-vz-viewer-event-router" id="la-vz-event-router" role="presentation" tabIndex={-1}
@@ -264,7 +268,7 @@ export class EventHandler extends React.PureComponent<EventsHandlerProps> {
     onMouseMove={this.props.handleMouseEvent}
     onMouseUp={this.handleMouseEvent}
     >
-      {this.state.rightClickMenu && <FloatingMenu top={this.state.yFloatingMenu} left={this.state.xFloatingMenu} />}
+      {this.state.rightClickMenu && <FloatingMenu close={this.closeMenu} seq = {this.props.seq} start={this.props.children[0].props.selection.start} end={this.props.children[0].props.selection.end} top={this.state.yFloatingMenu} left={this.state.xFloatingMenu} />}
       {this.props.children}
     </div>
   );

@@ -53,22 +53,18 @@ export default class App extends React.Component<any, AppState> {
     searchResults: {},
     selection: {},
     seq: "mstesmirdvelaeealpkktggpqgsrrclflslfsflivagattlfcllhfgvigpqr",
-    showComplement: true,
+    showComplement: false,
     showIndex: true,
     showSelectionMeta: false,
     showSidebar: false,
     translations: [
-      // { end: 630, start: 6, direction: -1 },
-      // { end: 1147, start: 736 },
-      // { end: 1885, start: 1165 },
     ],
     viewer: "",
     zoom: 50,
   };
 
   componentDidMount = async () => {
-    // const seq = await seqparse(file);
-    // this.setState({ annotations: seq.annotations, name: seq.name, seq: seq.seq });
+    
   };
 
   toggleSidebar = () => {
