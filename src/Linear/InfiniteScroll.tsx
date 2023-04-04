@@ -39,10 +39,9 @@ export class InfiniteScroll extends React.PureComponent<InfiniteScrollProps, Inf
 
       centralIndex: 0,
       // start off with first 5 blocks shown
-      visibleBlocks: new Array(Math.min(5, props.seqBlocks.length)).fill(null).map((_, i) => i),
+      visibleBlocks: new Array(Math.min((5), props.seqBlocks.length)).fill(null).map((_, i) => i),
     };
   }
-
   componentDidMount = () => {
     this.handleScrollOrResize(); // ref should now be set
     window.addEventListener('resize', this.handleScrollOrResize);
@@ -278,8 +277,8 @@ export class InfiniteScroll extends React.PureComponent<InfiniteScrollProps, Inf
   render() {
     const {
       blockHeights,
-      seqBlocks,
-      size: { width },
+      seqBlocks,seqBlocksCompare,seqBlocksSymbols,
+      size: { width },alignment,
       totalHeight: height,
     } = this.props;
     const { visibleBlocks } = this.state;
@@ -299,9 +298,9 @@ export class InfiniteScroll extends React.PureComponent<InfiniteScrollProps, Inf
         onMouseOver={this.handleMouseOver}
         onScroll={this.handleScrollOrResize}>
         <div ref={this.insideDOM} className="la-vz-seqblock-container" style={{ height }}>
-
           <div className="la-vz-seqblock-padding-top" style={{ height: spaceAbove, width: width || 0 }} />
-          {visibleBlocks.map((i) => seqBlocks[i])}
+          {!alignment && visibleBlocks.map((i) => seqBlocks[i])}
+          {alignment && visibleBlocks.map((i) => [seqBlocks[i],seqBlocksSymbols[i],seqBlocksCompare[i]])}
         </div>
       </div>
     );

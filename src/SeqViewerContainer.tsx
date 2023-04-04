@@ -9,6 +9,7 @@ import CentralIndexContext from "./centralIndexContext";
 import { Annotation, CutSite, Highlight, NameRange, Range, SeqType } from "./elements";
 import { isEqual } from "./isEqual";
 import SelectionContext, { Selection, defaultSelection } from "./selectionContext";
+import Alignment from "./Alignment/Alignment";
 
 /**
  * This is the width in pixels of a character that's 12px
@@ -42,7 +43,7 @@ interface SeqViewerContainerProps {
   /** testSize is a forced height/width that overwrites anything from sizeMe. For testing */
   testSize?: { height: number; width: number };
   translations: Range[];
-  viewer: "linear" | "circular" | "both" | "both_flip";
+  viewer: "linear" | "circular" | "both" | "both_flip" | "alignment";
   width: number;
   zoom: { circular: number; linear: number };
 }
@@ -174,6 +175,51 @@ class SeqViewerContainer extends React.Component<SeqViewerContainerProps, SeqVie
       zoom: { linear: zoom },
     };
   };
+  alignmentProps = () => {
+    const { seq, seqType } = this.props;
+    const size = this.props.testSize || { height: this.props.height, width: this.props.width };
+    const zoom = this.props.zoom.linear;
+
+    const seqFontSize = Math.min(Math.round(zoom * 0.1 + 9.5), 18); // max 18px
+
+    // otherwise the sequence needs to be cut into smaller subsequences
+    // a sliding scale in width related to the degree of zoom currently active
+    let bpsPerBlock = Math.round((size.width / seqFontSize) * 1.4) || 1; // width / 1 * seqFontSize
+    
+    if (seqType === "aa") {
+      bpsPerBlock = Math.round(bpsPerBlock / 3); // more space for each amino acid
+    }
+
+    if (zoom <= 5) {
+      bpsPerBlock *= 3;
+    } else if (zoom <= 10) {
+      // really ramp up the range, since at this zoom it'll just be a line
+      bpsPerBlock *= 2;
+    } else if (zoom > 70) {
+      // keep font height the same but scale number of bps in one row
+      bpsPerBlock = Math.round(bpsPerBlock * (70 / zoom));
+    }
+    bpsPerBlock = Math.max(1, bpsPerBlock);
+
+    if (size.width && bpsPerBlock < seq.length) {
+      size.width -= 28; // -28 px for the padding (10px) + scroll bar (18px)
+    }
+
+    const charWidth = size.width / bpsPerBlock; // width of each basepair
+
+    const lineHeight = 1.4 * seqFontSize; // aspect ratio is 1.4 for roboto mono
+    const elementHeight = 16; // the height, in pixels, of annotations, ORFs, etc
+    return {
+      ...this.props,
+      bpsPerBlock,
+      charWidth,
+      elementHeight,
+      lineHeight,
+      seqFontSize,
+      size,
+      zoom: { linear: zoom },
+    };
+  };
 
   /**
    * given the length of the sequence and the dimensions of the viewbox, how should
@@ -228,6 +274,7 @@ class SeqViewerContainer extends React.Component<SeqViewerContainerProps, SeqVie
 
     const linearProps = this.linearProps();
     const circularProps = this.circularProps();
+    const alignmentProps = this.alignmentProps();
 
     return (
       <div ref={this.props.targetRef} className="la-vz-viewer-container" data-testid="la-vz-viewer-container">
@@ -252,6 +299,14 @@ class SeqViewerContainer extends React.Component<SeqViewerContainerProps, SeqVie
                   setSelection={this.setSelection}
                 >
                   {/* TODO: this sucks, some breaking refactor in future should get rid of it SeqViewer */}
+                  {viewer === "alignment" && (
+                    <Alignment
+                      {...alignmentProps}
+                      handleMouseEvent={handleMouseEvent}
+                      inputRef={inputRef}
+                      onUnmount={onUnmount}
+                    />
+                  )}
                   {viewer === "linear" && (
                     <Linear
                       {...linearProps}

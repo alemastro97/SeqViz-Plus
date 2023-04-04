@@ -172,6 +172,9 @@ export const reverse = (seq: string): string => seq.split("").reverse().join("")
 
 // from http://arep.med.harvard.edu/labgc/adnan/projects/Utilities/revcomp.html
 let dnaComp = {
+  "|" : "|",
+  "." : ".",
+  "-" : "-",
   a: "t",
   b: "v",
   c: "g",
@@ -209,7 +212,8 @@ const typeToCompMap = {
   }),
   dna: dnaComp,
   rna: { ...dnaComp, A: "U", a: "u" },
-  undefined: dnaComp,
+  unknown: dnaComp,
+  undefined: dnaComp
 };
 
 /**
@@ -220,7 +224,6 @@ export const complement = (origSeq: string, seqType: SeqType): { compSeq: string
     return { compSeq: "", seq: "" };
   }
   const compMap = typeToCompMap[seqType];
-
   // filter out unrecognized base pairs and build up the complement
   let seq = "";
   let compSeq = "";

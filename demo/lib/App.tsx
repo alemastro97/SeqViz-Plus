@@ -23,6 +23,7 @@ const viewerTypeOptions = [
   { key: "both", text: "Both", value: "both" },
   { key: "circular", text: "Circular", value: "circular" },
   { key: "linear", text: "Linear", value: "linear" },
+  { key: "alignment", text: "Alignment", value: "alignment" },
 ];
 
 interface AppState {
@@ -52,7 +53,8 @@ export default class App extends React.Component<any, AppState> {
     search: { query: "ttnnnaat" },
     searchResults: {},
     selection: {},
-    seq: "mstesmirdvelaeealpkktggpqgsrrclflslfsflivagattlfcllhfgvigpqr",
+    seq: "TAATATATATATAGCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+    seqToCompare: "TAATATATATATAGCTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
     showComplement: false,
     showIndex: true,
     showSelectionMeta: false,
@@ -150,6 +152,7 @@ export default class App extends React.Component<any, AppState> {
                     name={this.state.name}
                     search={this.state.search}
                     seq={this.state.seq}
+                    seqToCompare={this.state.seqToCompare}
                     showComplement={this.state.showComplement}
                     showIndex={this.state.showIndex}
                     translations={this.state.translations}

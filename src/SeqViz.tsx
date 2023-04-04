@@ -134,7 +134,7 @@ export interface SeqVizProps {
   translations?: { direction?: number; end: number; start: number }[];
 
   /** the orientation of the viewer(s). "both", the default, has a circular viewer on left and a linear viewer on right. */
-  viewer?: "linear" | "circular" | "both" | "both_flip";
+  viewer?: "linear" | "circular" | "both" | "both_flip" | "alignment";
 
   /** how large to make the sequence and elements [0,100]. A larger zoom increases the size of text and elements for that viewer. */
   zoom?: {
@@ -294,7 +294,7 @@ export default class SeqViz extends React.Component<SeqVizProps, SeqVizState> {
     seq: string;
     seqType: SeqType;
   } => {
-    const { annotations, compSeq, file, name = "", seq } = props || this.props;
+    const { annotations, compSeq, file, name = "", seq, seqToCompare } = props || this.props;
 
     if (file) {
       // Parse a sequence file
@@ -322,6 +322,7 @@ export default class SeqViz extends React.Component<SeqVizProps, SeqVizState> {
         compSeq: compSeq || complement(seq, seqType).compSeq,
         name,
         seq,
+        seqToCompare,
         seqType,
       };
     }

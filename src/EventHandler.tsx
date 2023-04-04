@@ -14,6 +14,11 @@ export interface EventsHandlerProps {
   seq: string;
   setSelection: (selection: Selection) => void;
 }
+export interface EventsHandlerState {
+  rightClickMenu: Boolean;
+  xFloatingMenu: number;
+  yFloatingMenu: number;
+}
 
 /**
  * EventHandler handles the routing of all events, including keypresses, mouse clicks, etc.
@@ -220,19 +225,19 @@ export class EventHandler extends React.PureComponent<EventsHandlerProps> {
    */
   handleMouseEvent = (e: React.MouseEvent) => {
     const { handleMouseEvent } = this.props;
+    
+    // If the right click is performed
     if (e.button === 2 && e.type==="contextmenu" ) {
       e.preventDefault();
       this.setState({ rightClickMenu: true });
+      // Box position (under the mouse)
       this.setState({ xFloatingMenu: e.clientX });
       this.setState({ yFloatingMenu: e.clientY });
-      
-      
-      // const { seq } = this.props;
-      // const dna = seq.substring(start || 0, end);
-      // console.log(dna)
       return;
     }
-    if(!(e.target instanceof HTMLButtonElement))this.setState({ rightClickMenu: false });
+    // Close the context menu if a left click is performed on the screen and the target is not a button 
+    if(e.button !== 2 && this.state.rightClickMenu && !(e.target instanceof HTMLButtonElement)) this.setState({ rightClickMenu: false });
+    
     if (e.type === 'mouseup') {
       this.resetClicked();
       if (this.clickedOnce === e.target && this.clickedTwice === e.target) {
@@ -255,11 +260,9 @@ export class EventHandler extends React.PureComponent<EventsHandlerProps> {
       handleMouseEvent(e);
     }
   };
-  
   closeMenu = () => {
     this.setState({ rightClickMenu: false });
   }
-
   render = () => (
     <div className="la-vz-viewer-event-router" id="la-vz-event-router" role="presentation" tabIndex={-1}
     onContextMenu={this.handleMouseEvent}
@@ -268,7 +271,7 @@ export class EventHandler extends React.PureComponent<EventsHandlerProps> {
     onMouseMove={this.props.handleMouseEvent}
     onMouseUp={this.handleMouseEvent}
     >
-      {this.state.rightClickMenu && <FloatingMenu close={this.closeMenu} seq = {this.props.seq} start={this.props.children[0].props.selection.start} end={this.props.children[0].props.selection.end} top={this.state.yFloatingMenu} left={this.state.xFloatingMenu} />}
+      {this.state.rightClickMenu && <FloatingMenu close={this.closeMenu} seq = {this.props.seq} start={this.props.children.find(c => c !==false).props.selection.start} end={this.props.children.find(c => c !==false).props.selection.end} top={this.state.yFloatingMenu} left={this.state.xFloatingMenu} />}
       {this.props.children}
     </div>
   );

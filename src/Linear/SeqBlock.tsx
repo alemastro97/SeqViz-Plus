@@ -32,6 +32,7 @@ interface SeqBlockProps {
   charWidth: number;
   compSeq: string;
   cutSiteRows: CutSite[];
+  onAlignment: Boolean;
   elementHeight: number;
   firstBase: number;
   fullSeq: string;
@@ -223,6 +224,7 @@ export class SeqBlock extends React.PureComponent<SeqBlockProps> {
       firstBase,
       fullSeq,
       handleMouseEvent,
+      onAlignment,
       highlights,
       id,
       inputRef,
@@ -239,7 +241,7 @@ export class SeqBlock extends React.PureComponent<SeqBlockProps> {
       zoom,
       zoomed,
     } = this.props;
-
+console.log('Seqblock', seq)
     if (!size.width || !size.height) return null;
 
     const textProps = {
@@ -407,11 +409,22 @@ export class SeqBlock extends React.PureComponent<SeqBlockProps> {
             className="la-vz-comp-seq"
             data-testid="la-vz-comp-seq"
             id={id}
-            transform={`translate(0, ${compYDiff + lineHeight / 2})`}
+            transform={`translate(0, ${compYDiff + lineHeight / (onAlignment ? 3 : 2)})`}
           >
             {compSeq.split("").map(this.seqTextSpan)}
           </text>
         ) : null}
+        {/* {onAlignment && compSeq && zoomed && showComplement && seqType !== "aa" ? (
+          <text
+            {...textProps}
+            className="la-vz-comp-seq"
+            data-testid="la-vz-comp-seq"
+            id={id}
+            transform={`translate(0, ${compYDiff + lineHeight * 2/ 3})`}
+          >
+            {compSeq.split("").map(this.seqTextSpan)}
+          </text>
+        ) : null} */}
         {zoomed && (
           <CutSites
             cutSites={cutSiteRows}
