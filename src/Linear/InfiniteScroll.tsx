@@ -1,8 +1,8 @@
-import * as React from "react";
-
-import CentralIndexContext from "../centralIndexContext";
-import { Size } from "../elements";
-import { isEqual } from "../isEqual";
+import CentralIndexContext from '../centralIndexContext';
+import { Size } from '../elements';
+import { isEqual } from '../isEqual';
+import * as React from 'react';
+import FloatingMenu from './FloatingMenu';
 
 interface InfiniteScrollProps {
   blockHeights: number[];
@@ -36,6 +36,7 @@ export class InfiniteScroll extends React.PureComponent<InfiniteScrollProps, Inf
     super(props);
 
     this.state = {
+
       centralIndex: 0,
       // start off with first 5 blocks shown
       visibleBlocks: new Array(Math.min(5, props.seqBlocks.length)).fill(null).map((_, i) => i),
@@ -44,7 +45,7 @@ export class InfiniteScroll extends React.PureComponent<InfiniteScrollProps, Inf
 
   componentDidMount = () => {
     this.handleScrollOrResize(); // ref should now be set
-    window.addEventListener("resize", this.handleScrollOrResize);
+    window.addEventListener('resize', this.handleScrollOrResize);
   };
 
   componentDidUpdate = (prevProps: InfiniteScrollProps, prevState: InfiniteScrollState, snapshot: any) => {
@@ -66,7 +67,7 @@ export class InfiniteScroll extends React.PureComponent<InfiniteScrollProps, Inf
   };
 
   componentWillUnmount = () => {
-    window.removeEventListener("resize", this.handleScrollOrResize);
+    window.removeEventListener('resize', this.handleScrollOrResize);
   };
 
   /**
@@ -111,9 +112,7 @@ export class InfiniteScroll extends React.PureComponent<InfiniteScrollProps, Inf
     const centralIndex = this.context.linear;
 
     // find the first block that contains the new central index
-    const centerBlockIndex = seqBlocks.findIndex(
-      block => block.props.firstBase <= centralIndex && block.props.firstBase + bpsPerBlock >= centralIndex
-    );
+    const centerBlockIndex = seqBlocks.findIndex((block) => block.props.firstBase <= centralIndex && block.props.firstBase + bpsPerBlock >= centralIndex);
 
     // build up the list of blocks that are visible just beneath this first block
     let newVisibleBlocks: number[] = [];
@@ -155,7 +154,7 @@ export class InfiniteScroll extends React.PureComponent<InfiniteScrollProps, Inf
    * the component has mounted to the DOM or updated, and the window should be scrolled downwards
    * so that the central index is visible
    */
-  restoreSnapshot = snapshot => {
+  restoreSnapshot = (snapshot) => {
     if (!this.scroller.current) {
       return;
     }
@@ -210,7 +209,7 @@ export class InfiniteScroll extends React.PureComponent<InfiniteScrollProps, Inf
     }
   };
 
-  incrementScroller = incAmount => {
+  incrementScroller = (incAmount) => {
     this.stopIncrementingScroller();
     this.timeoutID = setTimeout(() => {
       if (!this.scroller.current) {
@@ -274,6 +273,8 @@ export class InfiniteScroll extends React.PureComponent<InfiniteScrollProps, Inf
     }
   };
 
+
+
   render() {
     const {
       blockHeights,
@@ -296,11 +297,11 @@ export class InfiniteScroll extends React.PureComponent<InfiniteScrollProps, Inf
           // do nothing
         }}
         onMouseOver={this.handleMouseOver}
-        onScroll={this.handleScrollOrResize}
-      >
+        onScroll={this.handleScrollOrResize}>
         <div ref={this.insideDOM} className="la-vz-seqblock-container" style={{ height }}>
+
           <div className="la-vz-seqblock-padding-top" style={{ height: spaceAbove, width: width || 0 }} />
-          {visibleBlocks.map(i => seqBlocks[i])}
+          {visibleBlocks.map((i) => seqBlocks[i])}
         </div>
       </div>
     );

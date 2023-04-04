@@ -52,23 +52,23 @@ export default class App extends React.Component<any, AppState> {
     search: { query: "ttnnnaat" },
     searchResults: {},
     selection: {},
-    seq: "",
+    seq: "mstesmirdvelaeealpkktggpqgsrrclflslfsflivagattlfcllhfgvigpqr",
     showComplement: true,
     showIndex: true,
     showSelectionMeta: false,
     showSidebar: false,
     translations: [
-      { end: 630, start: 6, direction: -1 },
-      { end: 1147, start: 736 },
-      { end: 1885, start: 1165 },
+      // { end: 630, start: 6, direction: -1 },
+      // { end: 1147, start: 736 },
+      // { end: 1885, start: 1165 },
     ],
     viewer: "",
     zoom: 50,
   };
 
   componentDidMount = async () => {
-    const seq = await seqparse(file);
-    this.setState({ annotations: seq.annotations, name: seq.name, seq: seq.seq });
+    // const seq = await seqparse(file);
+    // this.setState({ annotations: seq.annotations, name: seq.name, seq: seq.seq });
   };
 
   toggleSidebar = () => {
@@ -157,7 +157,7 @@ export default class App extends React.Component<any, AppState> {
                     showComplement={this.state.showComplement}
                     showIndex={this.state.showIndex}
                     translations={this.state.translations}
-                    viewer={this.state.viewer as "linear" | "circular"}
+                    viewer="linear"//{this.state.viewer as "linear" | "circular"}
                     zoom={{ linear: this.state.zoom }}
                     selection={this.state.selection}
                     onSelection={selection => this.setState({ selection })}

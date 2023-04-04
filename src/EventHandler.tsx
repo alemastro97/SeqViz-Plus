@@ -1,8 +1,9 @@
-import * as React from "react";
-
+import FloatingMenu from "./Linear/FloatingMenu";
 import CentralIndexContext from "./centralIndexContext";
 import debounce from "./debounce";
 import { Selection } from "./selectionContext";
+import * as React from "react";
+
 
 export interface EventsHandlerProps {
   bpsPerBlock: number;
@@ -24,7 +25,7 @@ export class EventHandler extends React.PureComponent<EventsHandlerProps> {
 
   clickedOnce: EventTarget | null = null;
   clickedTwice: EventTarget | null = null;
-
+  state = { rightClickMenu: false, xFloatingMenu: 0, yFloatingMenu: 0 };
   /**
    * action handler for a keyboard keypresses.
    */
@@ -45,15 +46,15 @@ export class EventHandler extends React.PureComponent<EventsHandlerProps> {
     const { copyEvent } = this.props;
 
     if (copyEvent && copyEvent(e)) {
-      return "Copy";
+      return 'Copy';
     }
 
     const { key, shiftKey } = e;
     switch (key) {
-      case "ArrowLeft":
-      case "ArrowRight":
-      case "ArrowUp":
-      case "ArrowDown":
+      case 'ArrowLeft':
+      case 'ArrowRight':
+      case 'ArrowUp':
+      case 'ArrowDown':
         return shiftKey ? `Shift${key}` : key;
       default:
         return null;
@@ -66,54 +67,54 @@ export class EventHandler extends React.PureComponent<EventsHandlerProps> {
    * 	Copy: cmd + C, copy
    * 	Up, Right, Down, Left: some directional movement of the cursor
    */
-  handleSeqInteraction = async type => {
+  handleSeqInteraction = async (type) => {
     const { seq } = this.props;
     const seqLength = seq.length;
     const bpsPerBlock = this.props.bpsPerBlock || 1;
 
     switch (type) {
-      case "SelectAll": {
+      case 'SelectAll': {
         this.selectAllHotkey();
         break;
       }
-      case "Copy": {
+      case 'Copy': {
         this.handleCopy();
         break;
       }
-      case "ArrowUp":
-      case "ArrowRight":
-      case "ArrowDown":
-      case "ArrowLeft":
-      case "ShiftArrowUp":
-      case "ShiftArrowRight":
-      case "ShiftArrowDown":
-      case "ShiftArrowLeft": {
+      case 'ArrowUp':
+      case 'ArrowRight':
+      case 'ArrowDown':
+      case 'ArrowLeft':
+      case 'ShiftArrowUp':
+      case 'ShiftArrowRight':
+      case 'ShiftArrowDown':
+      case 'ShiftArrowLeft': {
         const { selection, setSelection } = this.props;
         const { end, start } = selection;
 
-        if (typeof start === "undefined" || typeof end === "undefined") {
+        if (typeof start === 'undefined' || typeof end === 'undefined') {
           return;
         }
 
         let { clockwise } = selection;
         let newPos = end;
-        if (type === "ArrowUp" || type === "ShiftArrowUp") {
+        if (type === 'ArrowUp' || type === 'ShiftArrowUp') {
           // if there are multiple blocks or just one. If one, just inc by one
           if (seqLength / bpsPerBlock > 1) {
             newPos -= bpsPerBlock;
           } else {
             newPos -= 1;
           }
-        } else if (type === "ArrowRight" || type === "ShiftArrowRight") {
+        } else if (type === 'ArrowRight' || type === 'ShiftArrowRight') {
           newPos += 1;
-        } else if (type === "ArrowDown" || type === "ShiftArrowDown") {
+        } else if (type === 'ArrowDown' || type === 'ShiftArrowDown') {
           // if there are multiple blocks or just one. If one, just inc by one
           if (seqLength / bpsPerBlock > 1) {
             newPos += bpsPerBlock;
           } else {
             newPos += 1;
           }
-        } else if (type === "ArrowLeft" || type === "ShiftArrowLeft") {
+        } else if (type === 'ArrowLeft' || type === 'ShiftArrowLeft') {
           newPos -= 1;
         }
 
@@ -124,23 +125,20 @@ export class EventHandler extends React.PureComponent<EventsHandlerProps> {
           newPos -= seqLength;
         }
         const selLength = Math.abs(start - end);
-        clockwise =
-          selLength === 0
-            ? type === "ArrowRight" || type === "ShiftArrowRight" || type === "ArrowDown" || type === "ShiftArrowDown"
-            : clockwise;
-        if (newPos !== start && !type.startsWith("Shift")) {
+        clockwise = selLength === 0 ? type === 'ArrowRight' || type === 'ShiftArrowRight' || type === 'ArrowDown' || type === 'ShiftArrowDown' : clockwise;
+        if (newPos !== start && !type.startsWith('Shift')) {
           setSelection({
             clockwise: true,
             end: newPos,
             start: newPos,
-            type: "SEQ",
+            type: 'SEQ',
           });
-        } else if (type.startsWith("Shift")) {
+        } else if (type.startsWith('Shift')) {
           setSelection({
             clockwise: clockwise,
             end: newPos,
             start: start,
-            type: "SEQ",
+            type: 'SEQ',
           });
         }
         break;
@@ -163,8 +161,8 @@ export class EventHandler extends React.PureComponent<EventsHandlerProps> {
     if (!document) return;
 
     const formerFocus = document.activeElement;
-    const tempNode = document.createElement("textarea");
-    if (ref === "ALL") {
+    const tempNode = document.createElement('textarea');
+    if (ref === 'ALL') {
       tempNode.innerText = seq;
     } else {
       tempNode.innerText = seq.substring(start || 0, end);
@@ -173,7 +171,7 @@ export class EventHandler extends React.PureComponent<EventsHandlerProps> {
       document.body.appendChild(tempNode);
     }
     tempNode.select();
-    document.execCommand("copy");
+    document.execCommand('copy');
     tempNode.remove();
     if (formerFocus) {
       // @ts-expect-error ts-migrate(2339) FIXME: Property 'focus' does not exist on type 'Element'.
@@ -195,7 +193,7 @@ export class EventHandler extends React.PureComponent<EventsHandlerProps> {
       ...selection,
       clockwise: true,
       end: start,
-      ref: "ALL",
+      ref: 'ALL',
       start: start, // ref to all means select the whole thing
     };
 
@@ -222,8 +220,20 @@ export class EventHandler extends React.PureComponent<EventsHandlerProps> {
    */
   handleMouseEvent = (e: React.MouseEvent) => {
     const { handleMouseEvent } = this.props;
+    if (e.button === 2 && e.type==="contextmenu" ) {
+      e.preventDefault();
+      this.setState({ rightClickMenu: true });
+      this.setState({ xFloatingMenu: e.clientX });
+      this.setState({ yFloatingMenu: e.clientY });
 
-    if (e.type === "mouseup") {
+
+      const { start, end } = this.props.children[0].props.selection || { start: 0, end: 0 };
+      const { seq } = this.props;
+      const dna = seq.substring(start || 0, end);
+      console.log(dna)
+      return;
+    }
+    if (e.type === 'mouseup') {
       this.resetClicked();
       if (this.clickedOnce === e.target && this.clickedTwice === e.target) {
         this.handleTripleClick();
@@ -238,7 +248,7 @@ export class EventHandler extends React.PureComponent<EventsHandlerProps> {
       }
     }
     const { button, ctrlKey, type } = e;
-    const ctxMenuClick = type === "mousedown" && button === 0 && ctrlKey;
+    const ctxMenuClick = type === 'mousedown' && button === 0 && ctrlKey;
 
     if (e.button === 0 && !ctxMenuClick) {
       // it's a mouse drag event or an element was clicked
@@ -247,16 +257,14 @@ export class EventHandler extends React.PureComponent<EventsHandlerProps> {
   };
 
   render = () => (
-    <div
-      className="la-vz-viewer-event-router"
-      id="la-vz-event-router"
-      role="presentation"
-      tabIndex={-1}
-      onKeyDown={this.handleKeyPress}
-      onMouseDown={this.handleMouseEvent}
-      onMouseMove={this.props.handleMouseEvent}
-      onMouseUp={this.handleMouseEvent}
+    <div className="la-vz-viewer-event-router" id="la-vz-event-router" role="presentation" tabIndex={-1}
+    onContextMenu={this.handleMouseEvent}
+    onKeyDown={this.handleKeyPress}
+    onMouseDown={this.handleMouseEvent}
+    onMouseMove={this.props.handleMouseEvent}
+    onMouseUp={this.handleMouseEvent}
     >
+      {this.state.rightClickMenu && <FloatingMenu top={this.state.yFloatingMenu} left={this.state.xFloatingMenu} />}
       {this.props.children}
     </div>
   );

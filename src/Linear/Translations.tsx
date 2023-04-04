@@ -1,10 +1,9 @@
-import * as React from "react";
-
-import { InputRefFunc } from "../SelectionHandler";
-import { borderColorByIndex, colorByIndex } from "../colors";
-import { SeqType, Translation } from "../elements";
-import { randomID } from "../sequence";
-import { FindXAndWidthType } from "./SeqBlock";
+import { InputRefFunc } from '../SelectionHandler';
+import { borderColorByIndex, colorByIndex } from '../colors';
+import { SeqType, Translation } from '../elements';
+import { randomID } from '../sequence';
+import { FindXAndWidthType } from './SeqBlock';
+import * as React from 'react';
 
 interface TranslationRowsProps {
   bpsPerBlock: number;
@@ -22,21 +21,13 @@ interface TranslationRowsProps {
 }
 
 /** Rows of translations */
-export const TranslationRows = ({
-  bpsPerBlock,
-  charWidth,
-  elementHeight,
-  findXAndWidth,
-  firstBase,
-  fullSeq,
-  inputRef,
-  lastBase,
-  onUnmount,
-  seqType,
-  translations,
-  yDiff,
-}: TranslationRowsProps) => (
-  <g className="la-vz-linear-translation" data-testid="la-vz-linear-translation">
+export const TranslationRows = ({ bpsPerBlock, charWidth, elementHeight, findXAndWidth, firstBase, fullSeq, inputRef, lastBase, onUnmount, seqType, translations, yDiff }: TranslationRowsProps) => (
+  <g
+    className="la-vz-linear-translation"
+    data-testid="la-vz-linear-translation"
+    onContextMenu={(e) => {
+      e.preventDefault();
+    }}>
     {translations.map((t, i) => (
       <TranslationRow
         key={`${t.id}-${firstBase}`}
@@ -84,7 +75,7 @@ class TranslationRow extends React.PureComponent<TranslationRowProps> {
   // on unmount, clear all AA references.
   componentWillUnmount = () => {
     const { onUnmount } = this.props;
-    this.AAs.forEach(a => onUnmount(a));
+    this.AAs.forEach((a) => onUnmount(a));
   };
 
   /**
@@ -106,42 +97,29 @@ class TranslationRow extends React.PureComponent<TranslationRowProps> {
   };
 
   render() {
-    const {
-      bpsPerBlock,
-      charWidth,
-      findXAndWidth,
-      firstBase,
-      fullSeq,
-      height: h,
-      inputRef,
-      lastBase,
-      seqType,
-      translation,
-      y,
-    } = this.props;
+    const { bpsPerBlock, charWidth, findXAndWidth, firstBase, fullSeq, height: h, inputRef, lastBase, seqType, translation, y } = this.props;
 
     const { AAseq, direction, end, id, start } = translation;
 
     // if rendering an amino-acid sequence directly, each amino acid block is 1:1 with a "base pair".
     // otherwise, each amino-acid covers three bases.
-    const bpPerBlockCount = seqType === "aa" ? 1 : 3;
+    const bpPerBlockCount = seqType === 'aa' ? 1 : 3;
 
     // substring and split only the amino acids that are relevant to this
     // particular sequence block
-    const AAs = AAseq.split("");
+    const AAs = AAseq.split('');
     return (
       <g
         ref={inputRef(id, {
           end,
-          name: "translation",
-          parent: { ...translation, type: "TRANSLATION" },
+          name: 'translation',
+          parent: { ...translation, type: 'TRANSLATION' },
           start,
-          type: "AMINOACID",
-          viewer: "LINEAR",
+          type: 'AMINOACID',
+          viewer: 'LINEAR',
         })}
         id={id}
-        transform={`translate(0, ${y})`}
-      >
+        transform={`translate(0, ${y})`}>
         {AAs.map((a, i) => {
           // generate and store an id reference (that's used for selection)
           const aaId = randomID();
@@ -175,13 +153,13 @@ class TranslationRow extends React.PureComponent<TranslationRowProps> {
           let bpCount = bpPerBlockCount; // start off assuming the full thing is shown
           if (AAStart < firstBase) {
             bpCount = Math.min(bpPerBlockCount, AAEnd - firstBase);
-            if (bpCount < 2 && seqType !== "aa") {
+            if (bpCount < 2 && seqType !== 'aa') {
               // w/ one bp, the amino acid is probably too small for an abbreviation
               showAminoAcidLabel = false;
             }
           } else if (AAEnd > lastBase) {
             bpCount = Math.min(bpPerBlockCount, lastBase - AAStart);
-            if (bpCount < 2 && seqType !== "aa") {
+            if (bpCount < 2 && seqType !== 'aa') {
               showAminoAcidLabel = false;
             }
           }
@@ -197,14 +175,26 @@ class TranslationRow extends React.PureComponent<TranslationRowProps> {
               key={aaId}
               ref={inputRef(aaId, {
                 end: AAEnd,
-                parent: { ...translation, type: "TRANSLATION" },
+                parent: { ...translation, type: 'TRANSLATION' },
                 start: AAStart,
-                type: "AMINOACID",
-                viewer: "LINEAR",
+                type: 'AMINOACID',
+                viewer: 'LINEAR',
               })}
               id={aaId}
               transform={`translate(${x}, 0)`}
-            >
+              onMouseDown={(e) => {
+                if (e.button === 2) {
+                  e.stopPropagation();
+                  return;
+                }
+              }}
+              onMouseUp={(e) => {
+                if (e.button === 2) {
+                  e.stopPropagation();
+                  return;
+                }
+              }}
+              >
               <path
                 d={path}
                 fill={colorByIndex(a.charCodeAt(0))}
@@ -212,23 +202,14 @@ class TranslationRow extends React.PureComponent<TranslationRowProps> {
                 shapeRendering="geometricPrecision"
                 stroke={borderColorByIndex(a.charCodeAt(0))}
                 style={{
-                  cursor: "pointer",
+                  cursor: 'pointer',
                   opacity: 0.7,
                   strokeWidth: 0.8,
                 }}
               />
 
               {showAminoAcidLabel && (
-                <text
-                  className="la-vz-translation-amino-acid-label"
-                  cursor="pointer"
-                  data-testid="la-vz-translation"
-                  dominantBaseline="middle"
-                  id={aaId}
-                  textAnchor="middle"
-                  x={bpCount * 0.5 * charWidth}
-                  y={`${h / 2 + 1}`}
-                >
+                <text className="la-vz-translation-amino-acid-label" cursor="pointer" data-testid="la-vz-translation" dominantBaseline="middle" id={aaId} textAnchor="middle" x={bpCount * 0.5 * charWidth} y={`${h / 2 + 1}`}>
                   {a}
                 </text>
               )}

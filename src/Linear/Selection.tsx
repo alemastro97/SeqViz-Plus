@@ -95,6 +95,7 @@ class Edges extends React.PureComponent<EdgesProps> {
 
     return (
       <g>
+        
         {startEdge !== null && (
           <rect
             className="la-vz-selection-edge"
