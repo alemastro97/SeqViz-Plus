@@ -8,7 +8,3 @@
 
 `SeqViz+` is an extension for <a href="https://www.npmjs.com/package/seqviz">SeqViz</a>.
 At the moment refeer to their ReadMe to use this package.
-# SeqViz-Plus
-# SeqViz-Plus
-# SeqViz-Plus
-# SeqViz-Plus

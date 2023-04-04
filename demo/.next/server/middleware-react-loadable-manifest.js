@@ -1,0 +1,1 @@
+self.__REACT_LOADABLE_MANIFEST={"index.tsx -> ../lib/App":{"id":"index.tsx -> ../lib/App","files":["static/chunks/lib_App_tsx.js"]}}
