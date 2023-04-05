@@ -5,6 +5,7 @@ import Circular from "./Circular/Circular";
 import { EventHandler } from "./EventHandler";
 import Linear from "./Linear/Linear";
 import SelectionHandler from "./SelectionHandler";
+import MultipleSequenceSelectionHandler from "./MultipleSequenceSelectionHandler";
 import CentralIndexContext from "./centralIndexContext";
 import { Annotation, CutSite, Highlight, NameRange, Range, SeqType } from "./elements";
 import { isEqual } from "./isEqual";
@@ -269,7 +270,7 @@ class SeqViewerContainer extends React.Component<SeqViewerContainerProps, SeqVie
   };
 
   render() {
-    const { selection: selectionProp, seq, viewer } = this.props;
+    const { selection: selectionProp, seq, viewer, seqToCompare } = this.props;
     const { centralIndex, selection } = this.state;
 
     const linearProps = this.linearProps();
@@ -280,7 +281,7 @@ class SeqViewerContainer extends React.Component<SeqViewerContainerProps, SeqVie
       <div ref={this.props.targetRef} className="la-vz-viewer-container" data-testid="la-vz-viewer-container">
         <CentralIndexContext.Provider value={centralIndex}>
           <SelectionContext.Provider value={this.getSelection(selection, selectionProp)}>
-            <SelectionHandler
+            {viewer !== 'alignment' && <SelectionHandler
               bpsPerBlock={linearProps.bpsPerBlock}
               center={circularProps.center}
               centralIndex={centralIndex.circular}
@@ -299,14 +300,6 @@ class SeqViewerContainer extends React.Component<SeqViewerContainerProps, SeqVie
                   setSelection={this.setSelection}
                 >
                   {/* TODO: this sucks, some breaking refactor in future should get rid of it SeqViewer */}
-                  {viewer === "alignment" && (
-                    <Alignment
-                      {...alignmentProps}
-                      handleMouseEvent={handleMouseEvent}
-                      inputRef={inputRef}
-                      onUnmount={onUnmount}
-                    />
-                  )}
                   {viewer === "linear" && (
                     <Linear
                       {...linearProps}
@@ -357,7 +350,39 @@ class SeqViewerContainer extends React.Component<SeqViewerContainerProps, SeqVie
                   )}
                 </EventHandler>
               )}
-            </SelectionHandler>
+            </SelectionHandler>}
+            
+            {viewer === 'alignment' &&
+            <MultipleSequenceSelectionHandler
+              bpsPerBlock={linearProps.bpsPerBlock}
+              center={circularProps.center}
+              centralIndex={centralIndex.circular}
+              seq={[seq, seqToCompare]}
+              setCentralIndex={this.setCentralIndex}
+              setSelection={this.setSelection}
+              yDiff={circularProps.yDiff}
+            >
+              {(inputRef, handleMouseEvent, onUnmount) => (
+                <EventHandler
+                  bpsPerBlock={linearProps.bpsPerBlock}
+                  copyEvent={this.props.copyEvent}
+                  handleMouseEvent={handleMouseEvent}
+                  selection={selection}
+                  seq={seq}
+                  setSelection={this.setSelection}
+                >
+                  
+                    <Alignment
+                      {...alignmentProps}
+                      handleMouseEvent={handleMouseEvent}
+                      inputRef={inputRef}
+                      onUnmount={onUnmount}
+                    />
+                  
+
+                </EventHandler>
+              )}
+            </MultipleSequenceSelectionHandler>}
           </SelectionContext.Provider>
         </CentralIndexContext.Provider>
       </div>

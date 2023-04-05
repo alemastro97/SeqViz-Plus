@@ -8,7 +8,10 @@ interface InfiniteScrollProps {
   blockHeights: number[];
   bpsPerBlock: number;
   seqBlocks: JSX.Element[];
+  seqBlocksCompare: JSX.Element[];
+  seqBlocksSymbols: JSX.Element[];
   size: Size;
+  alignment: boolean;
   totalHeight: number;
 }
 

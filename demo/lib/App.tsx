@@ -35,6 +35,7 @@ interface AppState {
   searchResults: any;
   selection: any;
   seq: string;
+  seqToCompare: string;
   showComplement: boolean;
   showIndex: boolean;
   showSelectionMeta: boolean;
@@ -53,8 +54,8 @@ export default class App extends React.Component<any, AppState> {
     search: { query: "ttnnnaat" },
     searchResults: {},
     selection: {},
-    seq: "TAATATATATATAGCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-    seqToCompare: "TAATATATATATAGCTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
+    seq: "---TAGTATAGATATAGCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA---",
+    seqToCompare: "TCTTATATATATAGCTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT---TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
     showComplement: false,
     showIndex: true,
     showSelectionMeta: false,
@@ -156,7 +157,7 @@ export default class App extends React.Component<any, AppState> {
                     showComplement={this.state.showComplement}
                     showIndex={this.state.showIndex}
                     translations={this.state.translations}
-                    viewer="linear"//{this.state.viewer as "linear" | "circular"}
+                    viewer="alignment"//{this.state.viewer as "linear" | "circular"}
                     zoom={{ linear: this.state.zoom }}
                     selection={this.state.selection}
                     onSelection={selection => this.setState({ selection })}

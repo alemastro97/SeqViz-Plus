@@ -33,6 +33,7 @@ export default function FloatingMenu({ close, seq, start, end, top, left }) {
     tempNode.remove();
   };
   return (
+    // TODO: change guess method to include - symbol
     <div className="la-fm-container" style={{ top: top - 50, left }}>
       {guessType(seq) === 'aa' && <button onClick={Dna}>Copy protein sequence</button>}
       {guessType(seq) === 'dna' && <button onClick={Dna}>Copy DNA sequence</button>}

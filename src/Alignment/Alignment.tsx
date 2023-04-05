@@ -1,12 +1,12 @@
-import * as React from "react";
-
+import { InfiniteScroll } from "../Linear/InfiniteScroll";
+import { SeqBlock } from "../Linear/SeqBlock";
 import { InputRefFunc } from "../SelectionHandler";
 import { Annotation, CutSite, Highlight, NameRange, Range, SeqType, Size } from "../elements";
 import { createMultiRows, createSingleRows, stackElements } from "../elementsToRows";
 import { isEqual } from "../isEqual";
 import { createTranslations } from "../sequence";
-import { InfiniteScroll } from "../Linear/InfiniteScroll";
-import { SeqBlock } from "../Linear/SeqBlock";
+import * as React from "react";
+
 
 export interface LinearProps {
   annotations: Annotation[];
@@ -23,6 +23,7 @@ export interface LinearProps {
   onUnmount: (id: string) => void;
   search: NameRange[];
   seq: string;
+  seqToCompare: string;
   seqFontSize: number;
   seqType: SeqType;
   showComplement: boolean;
@@ -91,7 +92,8 @@ export default class Alignment extends React.Component<LinearProps> {
     const seqToCompareLength = seqToCompare.length;
     let arrCompareSize = Math.round(Math.ceil(seqToCompareLength / bpsPerBlock));
     if (arrSize === Number.POSITIVE_INFINITY) arrSize = 1;
-    const seqSymbols = '||||||||||||||||||||||||||||||||||||||||||||||||||||||||.||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||'
+    let seqSymbols = '';
+    seqToCompare.split('').forEach((c, i) => seqSymbols += [c ,seq[i]].includes('-') ? ' ' : c === seq[i] ? '|' : '.' );
     const ids = new Array(arrSize); // array of SeqBlock ids
     const seqs = new Array(arrSize); // arrays for sequences...
     const seqsToCompare = new Array(arrCompareSize); // arrays for sequences...
@@ -176,110 +178,50 @@ export default class Alignment extends React.Component<LinearProps> {
     let yDiff = 0;
     for (let i = 0; i < arrSize; i += 1) {
       const firstBase = i * bpsPerBlock;
-      seqBlocks.push(
-        <SeqBlock
-          key={ids[i]}
-          annotationRows={annotationRows[i]}
-          blockHeight={blockHeights[i] *0.3}
-          bpColors={this.props.bpColors}
-          bpsPerBlock={bpsPerBlock}
-          charWidth={this.props.charWidth}
-          compSeq={seqToCompare}
-          cutSiteRows={cutSiteRows[i]}
-          elementHeight={elementHeight}
-          firstBase={firstBase}
-          fullSeq={seq}
-          handleMouseEvent={this.props.handleMouseEvent}
-          highlights={highlightRows[i]}
-          id={ids[i]}
-          inputRef={this.props.inputRef}
-          lineHeight={lineHeight}
-          searchRows={searchRows[i]}
-          seq={seqs[i]}
-          seqFontSize={this.props.seqFontSize}
-          seqType={seqType}
-          showComplement={false}
-          showIndex={false}
-          size={size}
-          translations={translationRows[i]}
-          y={yDiff}
-          zoom={zoom}
-          zoomed={zoomed}
-          onUnmount={onUnmount}
-        />
-      );
-
-      seqBlocksSymbols.push(
-        <SeqBlock
-          key={idsSy[i]}
-          annotationRows={annotationRows[i]}
-          blockHeight={blockHeights[i] * 0.3}
-          bpColors={this.props.bpColors}
-          bpsPerBlock={bpsPerBlock}
-          charWidth={this.props.charWidth}
-          compSeq={seqToCompare}
-          cutSiteRows={cutSiteRows[i]}
-          elementHeight={elementHeight}
-          firstBase={firstBase}
-          fullSeq={seq}
-          handleMouseEvent={this.props.handleMouseEvent}
-          highlights={highlightRows[i]}
-          id={idsSy[i]}
-          inputRef={this.props.inputRef}
-          lineHeight={lineHeight}
-          searchRows={searchRows[i]}
-          seq={seqsSymbols[i]}
-          seqFontSize={this.props.seqFontSize}
-          seqType={seqType}
-          showComplement={false}
-          showIndex={false}
-          size={size}
-          translations={translationRows[i]}
-          y={yDiff}
-          zoom={zoom}
-          zoomed={zoomed}
-          onUnmount={onUnmount}
-        />
-      );
-      seqBlocksCompare.push(
-        <SeqBlock
-          key={idsCp[i]}
-          annotationRows={annotationRows[i]}
-          blockHeight={blockHeights[i]}
-          bpColors={this.props.bpColors}
-          bpsPerBlock={bpsPerBlock}
-          charWidth={this.props.charWidth}
-          compSeq={seqToCompare}
-          cutSiteRows={cutSiteRows[i]}
-          elementHeight={elementHeight}
-          firstBase={firstBase}
-          fullSeq={seq}
-          handleMouseEvent={this.props.handleMouseEvent}
-          highlights={highlightRows[i]}
-          id={idsCp[i]}
-          inputRef={this.props.inputRef}
-          lineHeight={lineHeight}
-          searchRows={searchRows[i]}
-          seq={seqsToCompare[i]}
-          seqFontSize={this.props.seqFontSize}
-          seqType={seqType}
-          showComplement={false}
-          showIndex={true}
-          size={size}
-          translations={translationRows[i]}
-          y={yDiff}
-          zoom={zoom}
-          zoomed={zoomed}
-          onUnmount={onUnmount}
-        />
-      );
+      [
+        { array:seqBlocks,fullSequence:seq,sequence: seqs, id: ids, multiplyFactor: 0.3, showIndex: false },
+        { array:seqBlocksSymbols,fullSequence:seqSymbols,sequence: seqsSymbols, id: idsSy, multiplyFactor: 0.3, showIndex: false },
+        { array:seqBlocksCompare,fullSequence:seqToCompare,sequence: seqsToCompare, id: idsCp, multiplyFactor: 1, showIndex: true },
+      ].forEach(({ array, fullSequence, sequence, id, multiplyFactor, showIndex }) => {
+        array.push(
+          <SeqBlock
+            key={id[i]}
+            annotationRows={annotationRows[i]}
+            blockHeight={blockHeights[i] * multiplyFactor}
+            bpColors={this.props.bpColors}
+            bpsPerBlock={bpsPerBlock}
+            charWidth={this.props.charWidth}
+            compSeq={seqToCompare}
+            cutSiteRows={cutSiteRows[i]}
+            elementHeight={elementHeight}
+            firstBase={firstBase}
+            fullSeq={fullSequence}
+            handleMouseEvent={this.props.handleMouseEvent}
+            highlights={highlightRows[i]}
+            id={id[i]}
+            inputRef={this.props.inputRef}
+            lineHeight={lineHeight}
+            searchRows={searchRows[i]}
+            seq={sequence[i]}
+            seqFontSize={this.props.seqFontSize}
+            seqType={seqType}
+            showComplement={false}
+            showIndex={showIndex}
+            size={size}
+            translations={translationRows[i]}
+            y={yDiff}
+            zoom={zoom}
+            zoomed={zoomed}
+            onUnmount={onUnmount}
+          />
+        );
+      });
       yDiff += blockHeights[i];
     }
-    console.log(seqBlocks)
     return (
       seqBlocks.length && (
         <InfiniteScroll
-        alignment={true}
+          alignment={true}
           blockHeights={blockHeights}
           bpsPerBlock={bpsPerBlock}
           seqBlocks={seqBlocks}
