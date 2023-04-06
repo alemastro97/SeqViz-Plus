@@ -2,26 +2,32 @@ import * as React from "react";
 import { reverseComplement, translate } from "../sequence";
 import { guessType } from "../sequence";
 
-export default function FloatingMenu({ close, seq, start, end, top, left }) {
+export default function FloatingMenu({ close, seq, start, end, top, left, seqComp = '' }) {
   const Dna = (e) => {
     e.preventDefault();
-    copyOnClipboard(seq);
+    copyOnClipboard(seq, start, end);
+    close();
+  };
+  const DnaCompare = (e) => {
+    e.preventDefault();
+    copyOnClipboard(seqComp, start, end);
     close();
   };
   const ReverseDna = (e) => {
+  //TODO: ask for type of behaviour
     e.preventDefault();
     const val = reverseComplement(seq, 'dna');
-    copyOnClipboard(val);
+    copyOnClipboard(val,  seq.length - end, seq.length - start);
     close();
   };
   const Translation = (e) => {
     e.preventDefault();
-    const val  = translate(seq, 'dna');
-    copyOnClipboard(val);
+    const val  = translate(seq.substring(start || 0, end), 'dna');
+    copyOnClipboard(val, 0, val.length);
     close();
   };
 
-  const copyOnClipboard = (text: string) => {
+  const copyOnClipboard = (text: string, start:number, end:number) => {
     if (!document) return;
     const tempNode = document.createElement('textarea');
     tempNode.innerText = text.substring(start || 0, end);
@@ -32,9 +38,15 @@ export default function FloatingMenu({ close, seq, start, end, top, left }) {
     document.execCommand('copy');
     tempNode.remove();
   };
+
   return (
     // TODO: change guess method to include - symbol
     <div className="la-fm-container" style={{ top: top - 50, left }}>
+      {seqComp !== '' && 
+      <>
+      <button onClick={Dna}>Copy sequence one</button>
+      <button onClick={DnaCompare}>Copy sequence two</button>
+      </>}
       {guessType(seq) === 'aa' && <button onClick={Dna}>Copy protein sequence</button>}
       {guessType(seq) === 'dna' && <button onClick={Dna}>Copy DNA sequence</button>}
       {guessType(seq) === 'dna' && <button onClick={ReverseDna}>Copy reverse complement</button>}

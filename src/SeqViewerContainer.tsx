@@ -3,6 +3,7 @@ import { withResizeDetector } from "react-resize-detector";
 
 import Circular from "./Circular/Circular";
 import { EventHandler } from "./EventHandler";
+import { MultipleEventHandler } from "./MultipleEventHandler";
 import Linear from "./Linear/Linear";
 import SelectionHandler from "./SelectionHandler";
 import MultipleSequenceSelectionHandler from "./MultipleSequenceSelectionHandler";
@@ -363,12 +364,12 @@ class SeqViewerContainer extends React.Component<SeqViewerContainerProps, SeqVie
               yDiff={circularProps.yDiff}
             >
               {(inputRef, handleMouseEvent, onUnmount) => (
-                <EventHandler
+                <MultipleEventHandler
                   bpsPerBlock={linearProps.bpsPerBlock}
                   copyEvent={this.props.copyEvent}
                   handleMouseEvent={handleMouseEvent}
                   selection={selection}
-                  seq={seq}
+                  seq={[seq, seqToCompare]}
                   setSelection={this.setSelection}
                 >
                   
@@ -380,7 +381,7 @@ class SeqViewerContainer extends React.Component<SeqViewerContainerProps, SeqVie
                     />
                   
 
-                </EventHandler>
+                </MultipleEventHandler>
               )}
             </MultipleSequenceSelectionHandler>}
           </SelectionContext.Provider>

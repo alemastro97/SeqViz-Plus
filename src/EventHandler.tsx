@@ -271,7 +271,11 @@ export class EventHandler extends React.PureComponent<EventsHandlerProps> {
     onMouseMove={this.props.handleMouseEvent}
     onMouseUp={this.handleMouseEvent}
     >
-      {this.state.rightClickMenu && <FloatingMenu close={this.closeMenu} seq = {this.props.seq} start={this.props.children.find(c => c !==false).props.selection.start} end={this.props.children.find(c => c !==false).props.selection.end} top={this.state.yFloatingMenu} left={this.state.xFloatingMenu} />}
+      {this.state.rightClickMenu && <FloatingMenu close={this.closeMenu} seq = {this.props.seq}
+      start={this.props.children.find(c => c !==false).props.selection.start}
+      end={this.props.children.find(c => c !==false).props.selection.end}
+      top={this.state.yFloatingMenu}
+      left={this.state.xFloatingMenu} />}
       {this.props.children}
     </div>
   );

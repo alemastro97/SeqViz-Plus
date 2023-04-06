@@ -192,6 +192,7 @@
   flex-direction: column;
   padding: 10px 0;
   z-index: 999;
+  background: rgb(255, 254, 254); 
   -webkit-box-shadow: 5px 5px 15px 5px #e4e3e3; 
   box-shadow: 5px 5px 15px 5px #e4e3e3;
 }
@@ -207,6 +208,5 @@
 }
  .la-fm-container > button:hover{
   border: none;
-  background: rgb(235, 233, 233);
-  
+  background: rgb(235, 233, 233); 
 }

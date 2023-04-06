@@ -345,7 +345,6 @@ export default class SelectionHandler extends React.PureComponent<SelectionHandl
     const { bpsPerBlock } = this.props;
 
     const block = e.currentTarget.getBoundingClientRect();
-    console.log(block);
     const distFromLeft: number = e.clientX - block.left;
     const ratioFromLeft = distFromLeft / block.width;
     const bpsFromLeft = Math.round(ratioFromLeft * (bpsPerBlock as number));

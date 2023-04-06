@@ -54,9 +54,10 @@ export default class App extends React.Component<any, AppState> {
     search: { query: "ttnnnaat" },
     searchResults: {},
     selection: {},
-    seq: "---TAGTATAGATATAGCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA---",
+    seq: "TAGTATAGATATAGCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+    // seq: "---TAGTATAGATATAGCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA---",
     seqToCompare: "TCTTATATATATAGCTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT---TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
-    showComplement: false,
+    showComplement:true,
     showIndex: true,
     showSelectionMeta: false,
     showSidebar: false,
@@ -157,7 +158,7 @@ export default class App extends React.Component<any, AppState> {
                     showComplement={this.state.showComplement}
                     showIndex={this.state.showIndex}
                     translations={this.state.translations}
-                    viewer="alignment"//{this.state.viewer as "linear" | "circular"}
+                    viewer="circular"//{this.state.viewer as "linear" | "circular"}
                     zoom={{ linear: this.state.zoom }}
                     selection={this.state.selection}
                     onSelection={selection => this.setState({ selection })}
