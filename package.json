@@ -1,7 +1,7 @@
 {
   "name": "seqviz-plus",
   "description": "An extension for Seqviz",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "unpkg": "dist/seqviz.min.js",
