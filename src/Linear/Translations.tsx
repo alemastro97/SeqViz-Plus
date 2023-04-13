@@ -98,7 +98,6 @@ class TranslationRow extends React.PureComponent<TranslationRowProps> {
 
   render() {
     const { bpsPerBlock, charWidth, findXAndWidth, firstBase, fullSeq, height: h, inputRef, lastBase, seqType, translation, y } = this.props;
-
     const { AAseq, direction, end, id, start } = translation;
 
     // if rendering an amino-acid sequence directly, each amino acid block is 1:1 with a "base pair".
@@ -197,10 +196,10 @@ class TranslationRow extends React.PureComponent<TranslationRowProps> {
               >
               <path
                 d={path}
-                fill={colorByIndex(a.charCodeAt(0))}
+                fill={fullSeq.includes('|') ?  '#0000' : colorByIndex(a.charCodeAt(0))}
                 id={aaId}
                 shapeRendering="geometricPrecision"
-                stroke={borderColorByIndex(a.charCodeAt(0))}
+                stroke={fullSeq.includes('|') ?  '#0000' :borderColorByIndex(a.charCodeAt(0))}
                 style={{
                   cursor: 'pointer',
                   opacity: 0.7,

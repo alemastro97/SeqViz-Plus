@@ -83,7 +83,15 @@ export default class Alignment extends React.Component<LinearProps> {
     // un-official definition for being zoomed in. Being over 10 seems like a decent cut-off
     const zoomed = zoom.linear > 10;
     const showComplement=false;
-    // const       compSeq    =seqTo;
+
+    const blossom_block = [
+      ['c'],
+      ['s','t','a','g','p'],
+      ['d','e','q','n'],
+      ['k','r','h'],
+      ['m','i','l','v'],
+      ['f','y','w']
+    ];
     // the actual fragmenting of the sequence into subblocks. generates all info that will be needed
     // including sequence blocks, complement blocks, annotations, blockHeights
     const seqLength = seq.length;
@@ -93,7 +101,11 @@ export default class Alignment extends React.Component<LinearProps> {
     let arrCompareSize = Math.round(Math.ceil(seqToCompareLength / bpsPerBlock));
     if (arrSize === Number.POSITIVE_INFINITY) arrSize = 1;
     let seqSymbols = '';
-    seqToCompare.split('').forEach((c, i) => seqSymbols += [c ,seq[i]].includes('-') ? ' ' : c === seq[i] ? '|' : '.' );
+    if (seqType === 'aa') {
+      seqToCompare.split('').forEach((c, i) => seqSymbols += (blossom_block.find(block => block.includes(c.toLowerCase())) || []).includes(seq[i].toLowerCase()) ? (seq[i] === c )  ? '|': '.' : ' ');
+    } else {
+      seqToCompare.split('').forEach((c, i) => seqSymbols += [c ,seq[i]].includes('-') ? ' ' : c === seq[i] ? '|' : '.' );
+    }
     const ids = new Array(arrSize); // array of SeqBlock ids
     const seqs = new Array(arrSize); // arrays for sequences...
     const seqsToCompare = new Array(arrCompareSize); // arrays for sequences...
@@ -128,10 +140,18 @@ export default class Alignment extends React.Component<LinearProps> {
       search && search.length ? createSingleRows(search, bpsPerBlock, arrSize) : new Array(arrSize).fill([]);
 
     const highlightRows = createSingleRows(highlights, bpsPerBlock, arrSize);
+    console.log(JSON.stringify(translations))
 
     const translationRows = translations.length
       ? createSingleRows(createTranslations(translations, seq, seqType), bpsPerBlock, arrSize)
       : new Array(arrSize).fill([]);
+      console.log(translations)
+    const translationRowsForSymbols = translations.length
+    ? createSingleRows(createTranslations(translations, seqSymbols, seqType), bpsPerBlock, arrSize)
+    : new Array(arrSize).fill([]);// seqSymbols;
+    const translationRowsComparison = translations.length
+    ? createSingleRows(createTranslations(translations, seqToCompare, seqType), bpsPerBlock, arrSize)
+    : new Array(arrSize).fill([]);
 
     for (let i = 0; i < arrSize; i += 1) {
       const firstBase = i * bpsPerBlock;
@@ -179,10 +199,10 @@ export default class Alignment extends React.Component<LinearProps> {
     for (let i = 0; i < arrSize; i += 1) {
       const firstBase = i * bpsPerBlock;
       [
-        { array:seqBlocks,fullSequence:seq,sequence: seqs, id: ids, multiplyFactor: 0.3, showIndex: false },
-        { array:seqBlocksSymbols,fullSequence:seqSymbols,sequence: seqsSymbols, id: idsSy, multiplyFactor: 0.3, showIndex: false },
-        { array:seqBlocksCompare,fullSequence:seqToCompare,sequence: seqsToCompare, id: idsCp, multiplyFactor: 1, showIndex: true },
-      ].forEach(({ array, fullSequence, sequence, id, multiplyFactor, showIndex }) => {
+        { translationRow:translationRows,array:seqBlocks,fullSequence:seq,sequence: seqs, id: ids, multiplyFactor: 0.3, showIndex: false },
+        { translationRow:translationRowsForSymbols,array:seqBlocksSymbols,fullSequence:seqSymbols,sequence: seqsSymbols, id: idsSy, multiplyFactor: 0.3, showIndex: false },
+        { translationRow:translationRowsComparison,array:seqBlocksCompare,fullSequence:seqToCompare,sequence: seqsToCompare, id: idsCp, multiplyFactor: 1, showIndex: true },
+      ].forEach(({ translationRow, array, fullSequence, sequence, id, multiplyFactor, showIndex }) => {
         array.push(
           <SeqBlock
             key={id[i]}
@@ -208,7 +228,7 @@ export default class Alignment extends React.Component<LinearProps> {
             showComplement={false}
             showIndex={showIndex}
             size={size}
-            translations={translationRows[i]}
+            translations={translationRow[i]}
             y={yDiff}
             zoom={zoom}
             zoomed={zoomed}
@@ -218,6 +238,7 @@ export default class Alignment extends React.Component<LinearProps> {
       });
       yDiff += blockHeights[i];
     }
+    console.log(translationRows)
     return (
       seqBlocks.length && (
         <InfiniteScroll

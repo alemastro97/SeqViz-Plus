@@ -376,10 +376,9 @@ export default class SeqViz extends React.Component<SeqVizProps, SeqVizState> {
     }));
 
   render() {
-    const { highlightedRegions, highlights, showComplement, showIndex, style, zoom } = this.props;
+    const { highlightedRegions, highlights, showComplement, showIndex, style, zoom, viewer } = this.props;
     let { translations } = this.props;
     const { compSeq, seq, seqType } = this.state;
-
     // This is an unfortunate bit of seq checking. We could get a seq directly or from a file parsed to a part.
     if (!seq) return <div className="la-vz-seqviz" />;
 
@@ -414,7 +413,7 @@ export default class SeqViz extends React.Component<SeqVizProps, SeqVizState> {
       showIndex: !!showIndex,
       translations: (translations || []).map((t): { direction: 1 | -1; end: number; start: number } => ({
         direction: t.direction ? (t.direction < 0 ? -1 : 1) : 1,
-        end: t.start + Math.floor((t.end - t.start) / 3) * 3,
+        end: viewer !== 'alignment' ? t.start + Math.floor((t.end - t.start) / 3) * 3 : t.end,
         start: t.start % seq.length,
       })),
       viewer: this.props.viewer || "both",

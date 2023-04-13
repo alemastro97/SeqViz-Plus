@@ -1,5 +1,5 @@
 import * as React from "react";
-import { reverseComplement, translate } from "../sequence";
+import { complement, reverseComplement, translate } from "../sequence";
 import { guessType } from "../sequence";
 
 export default function FloatingMenu({ close, seq, start, end, top, left, seqComp = '' }) {
@@ -13,8 +13,13 @@ export default function FloatingMenu({ close, seq, start, end, top, left, seqCom
     copyOnClipboard(seqComp, start, end);
     close();
   };
+  const ComplementDna = (e) => {
+    e.preventDefault();
+    const val = complement(seq, 'dna');
+    copyOnClipboard(val.compSeq,  start, end);
+    close();
+  };
   const ReverseDna = (e) => {
-  //TODO: ask for type of behaviour
     e.preventDefault();
     const val = reverseComplement(seq, 'dna');
     copyOnClipboard(val,  seq.length - end, seq.length - start);
@@ -47,10 +52,11 @@ export default function FloatingMenu({ close, seq, start, end, top, left, seqCom
       <button onClick={Dna}>Copy sequence one</button>
       <button onClick={DnaCompare}>Copy sequence two</button>
       </>}
-      {guessType(seq) === 'aa' && <button onClick={Dna}>Copy protein sequence</button>}
-      {guessType(seq) === 'dna' && <button onClick={Dna}>Copy DNA sequence</button>}
-      {guessType(seq) === 'dna' && <button onClick={ReverseDna}>Copy reverse complement</button>}
-      {guessType(seq) === 'dna' && <button onClick={Translation}>Copy translation</button>}
+      {seqComp === '' && guessType(seq) === 'aa' && <button onClick={Dna}>Copy protein sequence</button>}
+      {seqComp === '' && guessType(seq) === 'dna' && <button onClick={Dna}>Copy DNA sequence</button>}
+      {seqComp === '' && guessType(seq) === 'dna' && <button onClick={ComplementDna}>Copy complement</button>}
+      {seqComp === '' && guessType(seq) === 'dna' && <button onClick={ReverseDna}>Copy reverse complement</button>}
+      {seqComp === '' && guessType(seq) === 'dna' && <button onClick={Translation}>Copy translation</button>}
     </div>
   );
 }

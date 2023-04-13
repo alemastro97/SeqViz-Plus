@@ -181,6 +181,7 @@ class SeqViewerContainer extends React.Component<SeqViewerContainerProps, SeqVie
     const { seq, seqType } = this.props;
     const size = this.props.testSize || { height: this.props.height, width: this.props.width };
     const zoom = this.props.zoom.linear;
+    console.log(JSON.stringify(this.props.translations))
 
     const seqFontSize = Math.min(Math.round(zoom * 0.1 + 9.5), 18); // max 18px
 
@@ -273,6 +274,7 @@ class SeqViewerContainer extends React.Component<SeqViewerContainerProps, SeqVie
   render() {
     const { selection: selectionProp, seq, viewer, seqToCompare } = this.props;
     const { centralIndex, selection } = this.state;
+    console.log(JSON.stringify(this.props.translations))
 
     const linearProps = this.linearProps();
     const circularProps = this.circularProps();
