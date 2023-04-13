@@ -210,3 +210,13 @@
   border: none;
   background: rgb(235, 233, 233); 
 }
+
+.warning-banner {
+  margin: 20px auto;
+  padding: 10px 20px;
+  width: fit-content;
+  background-color: rgba(255, 229, 82, 0.363);
+  border: 1px solid rgb(230, 215, 83);
+  border-radius: 5px;
+  font-family: monospace;
+}  

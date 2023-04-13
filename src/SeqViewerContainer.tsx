@@ -356,6 +356,10 @@ class SeqViewerContainer extends React.Component<SeqViewerContainerProps, SeqVie
             </SelectionHandler>}
             
             {viewer === 'alignment' &&
+            <>
+            {seq.length !== seqToCompare.length && <div className="warning-banner">
+              Attention: the two inserted sequences do not have the same length
+            </div>}
             <MultipleSequenceSelectionHandler
               bpsPerBlock={linearProps.bpsPerBlock}
               center={circularProps.center}
@@ -385,7 +389,9 @@ class SeqViewerContainer extends React.Component<SeqViewerContainerProps, SeqVie
 
                 </MultipleEventHandler>
               )}
-            </MultipleSequenceSelectionHandler>}
+            </MultipleSequenceSelectionHandler>
+            </>
+            }
           </SelectionContext.Provider>
         </CentralIndexContext.Provider>
       </div>
