@@ -228,6 +228,7 @@ export class MultipleEventHandler extends React.PureComponent<EventsHandlerProps
     
     // If the right click is performed
     if (e.button === 2 && e.type==="contextmenu" ) {
+      console.log(e.clientX, e.clientY);
       e.preventDefault();
       this.setState({ rightClickMenu: true });
       // Box position (under the mouse)
@@ -276,6 +277,7 @@ export class MultipleEventHandler extends React.PureComponent<EventsHandlerProps
       start={(typeof this.props.children === 'array')?this.props.children.find(c => c !==false).props.selection.start : this.props.children.props.selection.start}
       end={(typeof this.props.children === 'array')?this.props.children.find(c => c !==false).props.selection.end : this.props.children.props.selection.end}
       seqComp={this.props.seq[1]}
+      top={this.state.yFloatingMenu} 
       left={this.state.xFloatingMenu} />}
       {this.props.children}
     </div>
