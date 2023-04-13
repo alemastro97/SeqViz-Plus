@@ -1,5 +1,5 @@
 /*!
- * seqviz-plus - 1.0.7
+ * seqviz-plus - 1.0.8
  * provided and maintained by Lattice Automation (https://latticeautomation.com/)
  * LICENSE MIT
  */
@@ -302,7 +302,7 @@ var SeqViz = /** @class */ (function (_super) {
         console.error("Error caught in SeqViz: %v %v", error, errorInfo);
     };
     SeqViz.prototype.render = function () {
-        var _a = this.props, highlightedRegions = _a.highlightedRegions, highlights = _a.highlights, showComplement = _a.showComplement, showIndex = _a.showIndex, style = _a.style, zoom = _a.zoom;
+        var _a = this.props, highlightedRegions = _a.highlightedRegions, highlights = _a.highlights, showComplement = _a.showComplement, showIndex = _a.showIndex, style = _a.style, zoom = _a.zoom, viewer = _a.viewer;
         var translations = this.props.translations;
         var _b = this.state, compSeq = _b.compSeq, seq = _b.seq, seqType = _b.seqType;
         // This is an unfortunate bit of seq checking. We could get a seq directly or from a file parsed to a part.
@@ -328,7 +328,7 @@ var SeqViz = /** @class */ (function (_super) {
             showIndex: !!showIndex,
             translations: (translations || []).map(function (t) { return ({
                 direction: t.direction ? (t.direction < 0 ? -1 : 1) : 1,
-                end: t.start + Math.floor((t.end - t.start) / 3) * 3,
+                end: viewer !== 'alignment' ? t.start + Math.floor((t.end - t.start) / 3) * 3 : t.end,
                 start: t.start % seq.length,
             }); }),
             viewer: this.props.viewer || "both",
@@ -524,6 +524,7 @@ var SeqViewerContainer = /** @class */ (function (_super) {
             var _a = _this.props, seq = _a.seq, seqType = _a.seqType;
             var size = _this.props.testSize || { height: _this.props.height, width: _this.props.width };
             var zoom = _this.props.zoom.linear;
+            console.log(JSON.stringify(_this.props.translations));
             var seqFontSize = Math.min(Math.round(zoom * 0.1 + 9.5), 18); // max 18px
             // otherwise the sequence needs to be cut into smaller subsequences
             // a sliding scale in width related to the degree of zoom currently active
@@ -594,6 +595,7 @@ var SeqViewerContainer = /** @class */ (function (_super) {
         var _this = this;
         var _a = this.props, selectionProp = _a.selection, seq = _a.seq, viewer = _a.viewer, seqToCompare = _a.seqToCompare;
         var _b = this.state, centralIndex = _b.centralIndex, selection = _b.selection;
+        console.log(JSON.stringify(this.props.translations));
         var linearProps = this.linearProps();
         var circularProps = this.circularProps();
         var alignmentProps = this.alignmentProps();
@@ -2631,8 +2633,13 @@ function FloatingMenu(_a) {
         copyOnClipboard(seqComp, start, end);
         close();
     };
+    var ComplementDna = function (e) {
+        e.preventDefault();
+        var val = (0, sequence_1.complement)(seq, 'dna');
+        copyOnClipboard(val.compSeq, start, end);
+        close();
+    };
     var ReverseDna = function (e) {
-        //TODO: ask for type of behaviour
         e.preventDefault();
         var val = (0, sequence_1.reverseComplement)(seq, 'dna');
         copyOnClipboard(val, seq.length - end, seq.length - start);
@@ -2663,10 +2670,11 @@ function FloatingMenu(_a) {
             React.createElement(React.Fragment, null,
                 React.createElement("button", { onClick: Dna }, "Copy sequence one"),
                 React.createElement("button", { onClick: DnaCompare }, "Copy sequence two")),
-        (0, sequence_2.guessType)(seq) === 'aa' && React.createElement("button", { onClick: Dna }, "Copy protein sequence"),
-        (0, sequence_2.guessType)(seq) === 'dna' && React.createElement("button", { onClick: Dna }, "Copy DNA sequence"),
-        (0, sequence_2.guessType)(seq) === 'dna' && React.createElement("button", { onClick: ReverseDna }, "Copy reverse complement"),
-        (0, sequence_2.guessType)(seq) === 'dna' && React.createElement("button", { onClick: Translation }, "Copy translation")));
+        seqComp === '' && (0, sequence_2.guessType)(seq) === 'aa' && React.createElement("button", { onClick: Dna }, "Copy protein sequence"),
+        seqComp === '' && (0, sequence_2.guessType)(seq) === 'dna' && React.createElement("button", { onClick: Dna }, "Copy DNA sequence"),
+        seqComp === '' && (0, sequence_2.guessType)(seq) === 'dna' && React.createElement("button", { onClick: ComplementDna }, "Copy complement"),
+        seqComp === '' && (0, sequence_2.guessType)(seq) === 'dna' && React.createElement("button", { onClick: ReverseDna }, "Copy reverse complement"),
+        seqComp === '' && (0, sequence_2.guessType)(seq) === 'dna' && React.createElement("button", { onClick: Translation }, "Copy translation")));
 }
 exports["default"] = FloatingMenu;
 
@@ -2693,6 +2701,128 @@ exports.randomID = exports.createTranslations = exports.translate = exports.dire
  * Map of nucleotide bases
  */
 exports.nucleotides = { a: "a", c: "c", g: "g", t: "t", u: "u" };
+var blossum62 = {
+    '*': { '*': 1, 'A': -4, 'C': -4, 'B': -4, 'E': -4,
+        'D': -4, 'G': -4, 'F': -4, 'I': -4, 'H': -4,
+        'K': -4, 'M': -4, 'L': -4, 'N': -4, 'Q': -4,
+        'P': -4, 'S': -4, 'R': -4, 'T': -4, 'W': -4,
+        'V': -4, 'Y': -4, 'X': -4, 'Z': -4 },
+    'A': { '*': -4, 'A': 4, 'C': 0, 'B': -2, 'E': -1,
+        'D': -2, 'G': 0, 'F': -2, 'I': -1, 'H': -2,
+        'K': -1, 'M': -1, 'L': -1, 'N': -2, 'Q': -1,
+        'P': -1, 'S': 1, 'R': -1, 'T': 0, 'W': -3,
+        'V': 0, 'Y': -2, 'X': 0, 'Z': -1 },
+    'C': { '*': -4, 'A': 0, 'C': 9, 'B': -3, 'E': -4,
+        'D': -3, 'G': -3, 'F': -2, 'I': -1, 'H': -3,
+        'K': -3, 'M': -1, 'L': -1, 'N': -3, 'Q': -3,
+        'P': -3, 'S': -1, 'R': -3, 'T': -1, 'W': -2,
+        'V': -1, 'Y': -2, 'X': -2, 'Z': -3 },
+    'B': { '*': -4, 'A': -2, 'C': -3, 'B': 4, 'E': 1,
+        'D': 4, 'G': -1, 'F': -3, 'I': -3, 'H': 0,
+        'K': 0, 'M': -3, 'L': -4, 'N': 3, 'Q': 0,
+        'P': -2, 'S': 0, 'R': -1, 'T': -1, 'W': -4,
+        'V': -3, 'Y': -3, 'X': -1, 'Z': 1 },
+    'E': { '*': -4, 'A': -1, 'C': -4, 'B': 1, 'E': 5,
+        'D': 2, 'G': -2, 'F': -3, 'I': -3, 'H': 0,
+        'K': 1, 'M': -2, 'L': -3, 'N': 0, 'Q': 2,
+        'P': -1, 'S': 0, 'R': 0, 'T': -1, 'W': -3,
+        'V': -2, 'Y': -2, 'X': -1, 'Z': 4 },
+    'D': { '*': -4, 'A': -2, 'C': -3, 'B': 4, 'E': 2,
+        'D': 6, 'G': -1, 'F': -3, 'I': -3, 'H': -1,
+        'K': -1, 'M': -3, 'L': -4, 'N': 1, 'Q': 0,
+        'P': -1, 'S': 0, 'R': -2, 'T': -1, 'W': -4,
+        'V': -3, 'Y': -3, 'X': -1, 'Z': 1 },
+    'G': { '*': -4, 'A': 0, 'C': -3, 'B': -1, 'E': -2,
+        'D': -1, 'G': 6, 'F': -3, 'I': -4, 'H': -2,
+        'K': -2, 'M': -3, 'L': -4, 'N': 0, 'Q': -2,
+        'P': -2, 'S': 0, 'R': -2, 'T': -2, 'W': -2,
+        'V': -3, 'Y': -3, 'X': -1, 'Z': -2 },
+    'F': { '*': -4, 'A': -2, 'C': -2, 'B': -3, 'E': -3,
+        'D': -3, 'G': -3, 'F': 6, 'I': 0, 'H': -1,
+        'K': -3, 'M': 0, 'L': 0, 'N': -3, 'Q': -3,
+        'P': -4, 'S': -2, 'R': -3, 'T': -2, 'W': 1,
+        'V': -1, 'Y': 3, 'X': -1, 'Z': -3 },
+    'I': { '*': -4, 'A': -1, 'C': -1, 'B': -3, 'E': -3,
+        'D': -3, 'G': -4, 'F': 0, 'I': 4, 'H': -3,
+        'K': -3, 'M': 1, 'L': 2, 'N': -3, 'Q': -3,
+        'P': -3, 'S': -2, 'R': -3, 'T': -1, 'W': -3,
+        'V': 3, 'Y': -1, 'X': -1, 'Z': -3 },
+    'H': { '*': -4, 'A': -2, 'C': -3, 'B': 0, 'E': 0,
+        'D': -1, 'G': -2, 'F': -1, 'I': -3, 'H': 8,
+        'K': -1, 'M': -2, 'L': -3, 'N': 1, 'Q': 0,
+        'P': -2, 'S': -1, 'R': 0, 'T': -2, 'W': -2,
+        'V': -3, 'Y': 2, 'X': -1, 'Z': 0 },
+    'K': { '*': -4, 'A': -1, 'C': -3, 'B': 0, 'E': 1,
+        'D': -1, 'G': -2, 'F': -3, 'I': -3, 'H': -1,
+        'K': 5, 'M': -1, 'L': -2, 'N': 0, 'Q': 1,
+        'P': -1, 'S': 0, 'R': 2, 'T': -1, 'W': -3,
+        'V': -2, 'Y': -2, 'X': -1, 'Z': 1 },
+    'M': { '*': -4, 'A': -1, 'C': -1, 'B': -3, 'E': -2,
+        'D': -3, 'G': -3, 'F': 0, 'I': 1, 'H': -2,
+        'K': -1, 'M': 5, 'L': 2, 'N': -2, 'Q': 0,
+        'P': -2, 'S': -1, 'R': -1, 'T': -1, 'W': -1,
+        'V': 1, 'Y': -1, 'X': -1, 'Z': -1 },
+    'L': { '*': -4, 'A': -1, 'C': -1, 'B': -4, 'E': -3,
+        'D': -4, 'G': -4, 'F': 0, 'I': 2, 'H': -3,
+        'K': -2, 'M': 2, 'L': 4, 'N': -3, 'Q': -2,
+        'P': -3, 'S': -2, 'R': -2, 'T': -1, 'W': -2,
+        'V': 1, 'Y': -1, 'X': -1, 'Z': -3 },
+    'N': { '*': -4, 'A': -2, 'C': -3, 'B': 3, 'E': 0,
+        'D': 1, 'G': 0, 'F': -3, 'I': -3, 'H': 1,
+        'K': 0, 'M': -2, 'L': -3, 'N': 6, 'Q': 0,
+        'P': -2, 'S': 1, 'R': 0, 'T': 0, 'W': -4,
+        'V': -3, 'Y': -2, 'X': -1, 'Z': 0 },
+    'Q': { '*': -4, 'A': -1, 'C': -3, 'B': 0, 'E': 2,
+        'D': 0, 'G': -2, 'F': -3, 'I': -3, 'H': 0,
+        'K': 1, 'M': 0, 'L': -2, 'N': 0, 'Q': 5,
+        'P': -1, 'S': 0, 'R': 1, 'T': -1, 'W': -2,
+        'V': -2, 'Y': -1, 'X': -1, 'Z': 3 },
+    'P': { '*': -4, 'A': -1, 'C': -3, 'B': -2, 'E': -1,
+        'D': -1, 'G': -2, 'F': -4, 'I': -3, 'H': -2,
+        'K': -1, 'M': -2, 'L': -3, 'N': -2, 'Q': -1,
+        'P': 7, 'S': -1, 'R': -2, 'T': -1, 'W': -4,
+        'V': -2, 'Y': -3, 'X': -2, 'Z': -1 },
+    'S': { '*': -4, 'A': 1, 'C': -1, 'B': 0, 'E': 0,
+        'D': 0, 'G': 0, 'F': -2, 'I': -2, 'H': -1,
+        'K': 0, 'M': -1, 'L': -2, 'N': 1, 'Q': 0,
+        'P': -1, 'S': 4, 'R': -1, 'T': 1, 'W': -3,
+        'V': -2, 'Y': -2, 'X': 0, 'Z': 0 },
+    'R': { '*': -4, 'A': -1, 'C': -3, 'B': -1, 'E': 0,
+        'D': -2, 'G': -2, 'F': -3, 'I': -3, 'H': 0,
+        'K': 2, 'M': -1, 'L': -2, 'N': 0, 'Q': 1,
+        'P': -2, 'S': -1, 'R': 5, 'T': -1, 'W': -3,
+        'V': -3, 'Y': -2, 'X': -1, 'Z': 0 },
+    'T': { '*': -4, 'A': 0, 'C': -1, 'B': -1, 'E': -1,
+        'D': -1, 'G': -2, 'F': -2, 'I': -1, 'H': -2,
+        'K': -1, 'M': -1, 'L': -1, 'N': 0, 'Q': -1,
+        'P': -1, 'S': 1, 'R': -1, 'T': 5, 'W': -2,
+        'V': 0, 'Y': -2, 'X': 0, 'Z': -1 },
+    'W': { '*': -4, 'A': -3, 'C': -2, 'B': -4, 'E': -3,
+        'D': -4, 'G': -2, 'F': 1, 'I': -3, 'H': -2,
+        'K': -3, 'M': -1, 'L': -2, 'N': -4, 'Q': -2,
+        'P': -4, 'S': -3, 'R': -3, 'T': -2, 'W': 11,
+        'V': -3, 'Y': 2, 'X': -2, 'Z': -3 },
+    'V': { '*': -4, 'A': 0, 'C': -1, 'B': -3, 'E': -2,
+        'D': -3, 'G': -3, 'F': -1, 'I': 3, 'H': -3,
+        'K': -2, 'M': 1, 'L': 1, 'N': -3, 'Q': -2,
+        'P': -2, 'S': -2, 'R': -3, 'T': 0, 'W': -3,
+        'V': 4, 'Y': -1, 'X': -1, 'Z': -2 },
+    'Y': { '*': -4, 'A': -2, 'C': -2, 'B': -3, 'E': -2,
+        'D': -3, 'G': -3, 'F': 3, 'I': -1, 'H': 2,
+        'K': -2, 'M': -1, 'L': -1, 'N': -2, 'Q': -1,
+        'P': -3, 'S': -2, 'R': -2, 'T': -2, 'W': 2,
+        'V': -1, 'Y': 7, 'X': -1, 'Z': -2 },
+    'X': { '*': -4, 'A': 0, 'C': -2, 'B': -1, 'E': -1,
+        'D': -1, 'G': -1, 'F': -1, 'I': -1, 'H': -1,
+        'K': -1, 'M': -1, 'L': -1, 'N': -1, 'Q': -1,
+        'P': -2, 'S': 0, 'R': -1, 'T': 0, 'W': -2,
+        'V': -1, 'Y': -1, 'X': -1, 'Z': -1 },
+    'Z': { '*': -4, 'A': -1, 'C': -3, 'B': 1, 'E': 4,
+        'D': 1, 'G': -2, 'F': -3, 'I': -3, 'H': 0,
+        'K': 1, 'M': -1, 'L': -3, 'N': 0, 'Q': 3,
+        'P': -1, 'S': 0, 'R': 0, 'T': -1, 'W': -3,
+        'V': -2, 'Y': -2, 'X': -1, 'Z': 4 }
+};
 /**
  * Map of DNA basepairs to all the bases encoded by that character in the DNA alphabet.
  *
@@ -2834,16 +2964,16 @@ var getAlphabet = function (seqType) {
     }[seqType];
 };
 exports.getAlphabet = getAlphabet;
-var aminoAcidRegex = new RegExp("^[".concat(aminoAcids, "BJXZ]+$"), "i");
+var aminoAcidRegex = new RegExp("^[".concat(aminoAcids, "BJXZ,-]+$"), "i");
 /**
  * Infer the type of a sequence. This is *without* any ambiguous symbols, so maybe wrong by being overly strict.
  */
 var guessType = function (seq) {
     seq = seq.substring(0, 1000);
-    if (/^[atgcn.]+$/i.test(seq)) {
+    if (/^[atgcn,-.]+$/i.test(seq)) {
         return "dna";
     }
-    else if (/^[augcn.]+$/i.test(seq)) {
+    else if (/^[augcn,-.]+$/i.test(seq)) {
         return "rna";
     }
     else if (aminoAcidRegex.test(seq)) {
@@ -3329,6 +3459,7 @@ var MultipleEventHandler = /** @class */ (function (_super) {
             var handleMouseEvent = _this.props.handleMouseEvent;
             // If the right click is performed
             if (e.button === 2 && e.type === "contextmenu") {
+                console.log(e.clientX, e.clientY);
                 e.preventDefault();
                 _this.setState({ rightClickMenu: true });
                 // Box position (under the mouse)
@@ -3366,7 +3497,7 @@ var MultipleEventHandler = /** @class */ (function (_super) {
             _this.setState({ rightClickMenu: false });
         };
         _this.render = function () { return (React.createElement("div", { className: "la-vz-viewer-event-router", id: "la-vz-event-router", role: "presentation", tabIndex: -1, onContextMenu: _this.handleMouseEvent, onKeyDown: _this.handleKeyPress, onMouseDown: _this.handleMouseEvent, onMouseMove: _this.props.handleMouseEvent, onMouseUp: _this.handleMouseEvent },
-            _this.state.rightClickMenu && React.createElement(FloatingMenu_1.default, { close: _this.closeMenu, seq: (typeof _this.props.children === 'array') ? _this.props.seq : _this.props.seq[0], start: (typeof _this.props.children === 'array') ? _this.props.children.find(function (c) { return c !== false; }).props.selection.start : _this.props.children.props.selection.start, end: (typeof _this.props.children === 'array') ? _this.props.children.find(function (c) { return c !== false; }).props.selection.end : _this.props.children.props.selection.end, seqComp: _this.props.seq[1], left: _this.state.xFloatingMenu }),
+            _this.state.rightClickMenu && React.createElement(FloatingMenu_1.default, { close: _this.closeMenu, seq: (typeof _this.props.children === 'array') ? _this.props.seq : _this.props.seq[0], start: (typeof _this.props.children === 'array') ? _this.props.children.find(function (c) { return c !== false; }).props.selection.start : _this.props.children.props.selection.start, end: (typeof _this.props.children === 'array') ? _this.props.children.find(function (c) { return c !== false; }).props.selection.end : _this.props.children.props.selection.end, seqComp: _this.props.seq[1], top: _this.state.yFloatingMenu, left: _this.state.xFloatingMenu }),
             _this.props.children)); };
         return _this;
     }
@@ -3947,7 +4078,7 @@ var SeqBlock = /** @class */ (function (_super) {
         return _this;
     }
     SeqBlock.prototype.render = function () {
-        var _a = this.props, annotationRows = _a.annotationRows, blockHeight = _a.blockHeight, bpsPerBlock = _a.bpsPerBlock, charWidth = _a.charWidth, compSeq = _a.compSeq, cutSiteRows = _a.cutSiteRows, elementHeight = _a.elementHeight, firstBase = _a.firstBase, fullSeq = _a.fullSeq, handleMouseEvent = _a.handleMouseEvent, highlights = _a.highlights, id = _a.id, inputRef = _a.inputRef, lineHeight = _a.lineHeight, onUnmount = _a.onUnmount, searchRows = _a.searchRows, seq = _a.seq, seqFontSize = _a.seqFontSize, seqType = _a.seqType, showComplement = _a.showComplement, showIndex = _a.showIndex, size = _a.size, translations = _a.translations, zoom = _a.zoom, zoomed = _a.zoomed;
+        var _a = this.props, annotationRows = _a.annotationRows, blockHeight = _a.blockHeight, bpsPerBlock = _a.bpsPerBlock, charWidth = _a.charWidth, compSeq = _a.compSeq, cutSiteRows = _a.cutSiteRows, elementHeight = _a.elementHeight, firstBase = _a.firstBase, fullSeq = _a.fullSeq, handleMouseEvent = _a.handleMouseEvent, highlights = _a.highlights, id = _a.id, inputRef = _a.inputRef, lineHeight = _a.lineHeight, onUnmount = _a.onUnmount, searchRows = _a.searchRows, seq = _a.seq, seqFontSize = _a.seqFontSize, seqType = _a.seqType, showComplement = _a.showComplement, showIndex = _a.showIndex, size = _a.size, colorize = _a.colorize, translations = _a.translations, zoom = _a.zoom, zoomed = _a.zoomed;
         if (!size.width || !size.height)
             return null;
         var textProps = {
@@ -4489,19 +4620,19 @@ var Index = /** @class */ (function (_super) {
             var tickInc = 0;
             switch (true) {
                 case zoom.linear > 85:
-                    tickInc = 5;
+                    tickInc = 3;
                     break;
                 case zoom.linear > 40:
-                    tickInc = 10;
+                    tickInc = 3;
                     break;
                 case zoom.linear > 10:
-                    tickInc = 20;
+                    tickInc = 3;
                     break;
                 case zoom.linear >= 0:
-                    tickInc = 50;
+                    tickInc = 3;
                     break;
                 default:
-                    tickInc = 10;
+                    tickInc = 3;
             }
             // if rendering amino acids, double the tick frequency
             if (seqType === "aa") {
@@ -4923,7 +5054,7 @@ var TranslationRow = /** @class */ (function (_super) {
                         return;
                     }
                 } },
-                React.createElement("path", { d: path, fill: (0, colors_1.colorByIndex)(a.charCodeAt(0)), id: aaId, shapeRendering: "geometricPrecision", stroke: (0, colors_1.borderColorByIndex)(a.charCodeAt(0)), style: {
+                React.createElement("path", { d: path, fill: fullSeq.includes('|') ? '#0000' : (0, colors_1.colorByIndex)(a.charCodeAt(0)), id: aaId, shapeRendering: "geometricPrecision", stroke: fullSeq.includes('|') ? '#0000' : (0, colors_1.borderColorByIndex)(a.charCodeAt(0)), style: {
                         cursor: 'pointer',
                         opacity: 0.7,
                         strokeWidth: 0.8,
@@ -5748,7 +5879,14 @@ var Alignment = /** @class */ (function (_super) {
         // un-official definition for being zoomed in. Being over 10 seems like a decent cut-off
         var zoomed = zoom.linear > 10;
         var showComplement = false;
-        // const       compSeq    =seqTo;
+        var blossom_block = [
+            ['c'],
+            ['s', 't', 'a', 'g', 'p'],
+            ['d', 'e', 'q', 'n'],
+            ['k', 'r', 'h'],
+            ['m', 'i', 'l', 'v'],
+            ['f', 'y', 'w']
+        ];
         // the actual fragmenting of the sequence into subblocks. generates all info that will be needed
         // including sequence blocks, complement blocks, annotations, blockHeights
         var seqLength = seq.length;
@@ -5760,7 +5898,12 @@ var Alignment = /** @class */ (function (_super) {
         if (arrSize === Number.POSITIVE_INFINITY)
             arrSize = 1;
         var seqSymbols = '';
-        seqToCompare.split('').forEach(function (c, i) { return seqSymbols += [c, seq[i]].includes('-') ? ' ' : c === seq[i] ? '|' : '.'; });
+        if (seqType === 'aa') {
+            seqToCompare.split('').forEach(function (c, i) { return seqSymbols += (blossom_block.find(function (block) { return block.includes(c.toLowerCase()); }) || []).includes(seq[i].toLowerCase()) ? (seq[i] === c) ? '|' : '.' : ' '; });
+        }
+        else {
+            seqToCompare.split('').forEach(function (c, i) { return seqSymbols += [c, seq[i]].includes('-') ? ' ' : c === seq[i] ? '|' : '.'; });
+        }
         var ids = new Array(arrSize); // array of SeqBlock ids
         var seqs = new Array(arrSize); // arrays for sequences...
         var seqsToCompare = new Array(arrCompareSize); // arrays for sequences...
@@ -5787,8 +5930,16 @@ var Alignment = /** @class */ (function (_super) {
         var annotationRows = (0, elementsToRows_1.createMultiRows)((0, elementsToRows_1.stackElements)(vetAnnotations(annotations), seq.length), bpsPerBlock, arrSize);
         var searchRows = search && search.length ? (0, elementsToRows_1.createSingleRows)(search, bpsPerBlock, arrSize) : new Array(arrSize).fill([]);
         var highlightRows = (0, elementsToRows_1.createSingleRows)(highlights, bpsPerBlock, arrSize);
+        console.log(JSON.stringify(translations));
         var translationRows = translations.length
             ? (0, elementsToRows_1.createSingleRows)((0, sequence_1.createTranslations)(translations, seq, seqType), bpsPerBlock, arrSize)
+            : new Array(arrSize).fill([]);
+        console.log(translations);
+        var translationRowsForSymbols = translations.length
+            ? (0, elementsToRows_1.createSingleRows)((0, sequence_1.createTranslations)(translations, seqSymbols, seqType), bpsPerBlock, arrSize)
+            : new Array(arrSize).fill([]); // seqSymbols;
+        var translationRowsComparison = translations.length
+            ? (0, elementsToRows_1.createSingleRows)((0, sequence_1.createTranslations)(translations, seqToCompare, seqType), bpsPerBlock, arrSize)
             : new Array(arrSize).fill([]);
         for (var i = 0; i < arrSize; i += 1) {
             var firstBase = i * bpsPerBlock;
@@ -5831,18 +5982,19 @@ var Alignment = /** @class */ (function (_super) {
         var _loop_1 = function (i) {
             var firstBase = i * bpsPerBlock;
             [
-                { array: seqBlocks, fullSequence: seq, sequence: seqs, id: ids, multiplyFactor: 0.3, showIndex: false },
-                { array: seqBlocksSymbols, fullSequence: seqSymbols, sequence: seqsSymbols, id: idsSy, multiplyFactor: 0.3, showIndex: false },
-                { array: seqBlocksCompare, fullSequence: seqToCompare, sequence: seqsToCompare, id: idsCp, multiplyFactor: 1, showIndex: true },
+                { translationRow: translationRows, array: seqBlocks, fullSequence: seq, sequence: seqs, id: ids, multiplyFactor: 0.3, showIndex: false },
+                { translationRow: translationRowsForSymbols, array: seqBlocksSymbols, fullSequence: seqSymbols, sequence: seqsSymbols, id: idsSy, multiplyFactor: 0.3, showIndex: false },
+                { translationRow: translationRowsComparison, array: seqBlocksCompare, fullSequence: seqToCompare, sequence: seqsToCompare, id: idsCp, multiplyFactor: 1, showIndex: true },
             ].forEach(function (_a) {
-                var array = _a.array, fullSequence = _a.fullSequence, sequence = _a.sequence, id = _a.id, multiplyFactor = _a.multiplyFactor, showIndex = _a.showIndex;
-                array.push(React.createElement(SeqBlock_1.SeqBlock, { key: id[i], annotationRows: annotationRows[i], blockHeight: blockHeights[i] * multiplyFactor, bpColors: _this.props.bpColors, bpsPerBlock: bpsPerBlock, charWidth: _this.props.charWidth, compSeq: seqToCompare, cutSiteRows: cutSiteRows[i], elementHeight: elementHeight, firstBase: firstBase, fullSeq: fullSequence, handleMouseEvent: _this.props.handleMouseEvent, highlights: highlightRows[i], id: id[i], inputRef: _this.props.inputRef, lineHeight: lineHeight, searchRows: searchRows[i], seq: sequence[i], seqFontSize: _this.props.seqFontSize, seqType: seqType, showComplement: false, showIndex: showIndex, size: size, translations: translationRows[i], y: yDiff, zoom: zoom, zoomed: zoomed, onUnmount: onUnmount }));
+                var translationRow = _a.translationRow, array = _a.array, fullSequence = _a.fullSequence, sequence = _a.sequence, id = _a.id, multiplyFactor = _a.multiplyFactor, showIndex = _a.showIndex;
+                array.push(React.createElement(SeqBlock_1.SeqBlock, { key: id[i], annotationRows: annotationRows[i], blockHeight: blockHeights[i] * multiplyFactor, bpColors: _this.props.bpColors, bpsPerBlock: bpsPerBlock, charWidth: _this.props.charWidth, compSeq: seqToCompare, cutSiteRows: cutSiteRows[i], elementHeight: elementHeight, firstBase: firstBase, fullSeq: fullSequence, handleMouseEvent: _this.props.handleMouseEvent, highlights: highlightRows[i], id: id[i], inputRef: _this.props.inputRef, lineHeight: lineHeight, searchRows: searchRows[i], seq: sequence[i], seqFontSize: _this.props.seqFontSize, seqType: seqType, showComplement: false, showIndex: showIndex, size: size, translations: translationRow[i], y: yDiff, zoom: zoom, zoomed: zoomed, onUnmount: onUnmount }));
             });
             yDiff += blockHeights[i];
         };
         for (var i = 0; i < arrSize; i += 1) {
             _loop_1(i);
         }
+        console.log(translationRows);
         return (seqBlocks.length && (React.createElement(InfiniteScroll_1.InfiniteScroll, { alignment: true, blockHeights: blockHeights, bpsPerBlock: bpsPerBlock, seqBlocks: seqBlocks, seqBlocksCompare: seqBlocksCompare, seqBlocksSymbols: seqBlocksSymbols, size: { height: size.height, width: size.width }, totalHeight: blockHeights.reduce(function (acc, h) { return acc + h; }, 0) })));
     };
     return Alignment;
