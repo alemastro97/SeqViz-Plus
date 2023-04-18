@@ -12,6 +12,120 @@ export declare const nucleotides: {
 /** Given a seq type, return the associated symbol alphabet */
 export declare const getAlphabet: (seqType: SeqType) => {
     b: {
+        c: string;
+        g: string;
+        t: string;
+    };
+    d: {
+        a: string;
+        g: string;
+        t: string;
+    };
+    h: {
+        a: string;
+        c: string;
+        t: string;
+    };
+    k: {
+        g: string;
+        t: string;
+    };
+    m: {
+        a: string;
+        c: string;
+    };
+    n: {
+        a: string;
+        c: string;
+        g: string;
+        t: string;
+    };
+    r: {
+        a: string;
+        g: string;
+    };
+    s: {
+        c: string;
+        g: string;
+    };
+    v: {
+        a: string;
+        c: string;
+        g: string;
+    };
+    w: {
+        a: string;
+        t: string;
+    };
+    x: {
+        a: string;
+        c: string;
+        g: string;
+        t: string;
+    };
+    y: {
+        c: string;
+        t: string;
+    };
+} | {
+    b: {
+        c: string;
+        g: string;
+        u: string;
+    };
+    d: {
+        a: string;
+        g: string;
+        u: string;
+    };
+    h: {
+        a: string;
+        c: string;
+        u: string;
+    };
+    k: {
+        g: string;
+        u: string;
+    };
+    m: {
+        a: string;
+        c: string;
+    };
+    n: {
+        a: string;
+        c: string;
+        g: string;
+        u: string;
+    };
+    r: {
+        a: string;
+        g: string;
+    };
+    s: {
+        c: string;
+        g: string;
+    };
+    v: {
+        a: string;
+        c: string;
+        g: string;
+    };
+    w: {
+        a: string;
+        u: string;
+    };
+    x: {
+        a: string;
+        c: string;
+        g: string;
+        u: string;
+    };
+    y: {
+        c: string;
+        u: string;
+    };
+} | {
+    b: {
         d: string;
         n: string;
     };
@@ -23,120 +137,6 @@ export declare const getAlphabet: (seqType: SeqType) => {
     z: {
         e: string;
         q: string;
-    };
-} | {
-    b: {
-        c: string;
-        g: string;
-        t: string;
-    };
-    d: {
-        a: string;
-        g: string;
-        t: string;
-    };
-    h: {
-        a: string;
-        c: string;
-        t: string;
-    };
-    k: {
-        g: string;
-        t: string;
-    };
-    m: {
-        a: string;
-        c: string;
-    };
-    n: {
-        a: string;
-        c: string;
-        g: string;
-        t: string;
-    };
-    r: {
-        a: string;
-        g: string;
-    };
-    s: {
-        c: string;
-        g: string;
-    };
-    v: {
-        a: string;
-        c: string;
-        g: string;
-    };
-    w: {
-        a: string;
-        t: string;
-    };
-    x: {
-        a: string;
-        c: string;
-        g: string;
-        t: string;
-    };
-    y: {
-        c: string;
-        t: string;
-    };
-} | {
-    b: {
-        c: string;
-        g: string;
-        u: string;
-    };
-    d: {
-        a: string;
-        g: string;
-        u: string;
-    };
-    h: {
-        a: string;
-        c: string;
-        u: string;
-    };
-    k: {
-        g: string;
-        u: string;
-    };
-    m: {
-        a: string;
-        c: string;
-    };
-    n: {
-        a: string;
-        c: string;
-        g: string;
-        u: string;
-    };
-    r: {
-        a: string;
-        g: string;
-    };
-    s: {
-        c: string;
-        g: string;
-    };
-    v: {
-        a: string;
-        c: string;
-        g: string;
-    };
-    w: {
-        a: string;
-        u: string;
-    };
-    x: {
-        a: string;
-        c: string;
-        g: string;
-        u: string;
-    };
-    y: {
-        c: string;
-        u: string;
     };
 };
 /**

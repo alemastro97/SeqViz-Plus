@@ -1,8 +1,10 @@
 import FloatingMenu from "./Linear/FloatingMenu";
 import CentralIndexContext from "./centralIndexContext";
+import AlignmentStatistics from "./Alignment/AlignmentStatistics";
 import debounce from "./debounce";
 import { Selection } from "./selectionContext";
 import * as React from "react";
+import { guessType } from "./sequence";
 
 
 export interface EventsHandlerProps {
@@ -265,13 +267,14 @@ export class MultipleEventHandler extends React.PureComponent<EventsHandlerProps
     this.setState({ rightClickMenu: false });
   }
   render = () => (
-    <div className="la-vz-viewer-event-router" id="la-vz-event-router" role="presentation" tabIndex={-1}
+    <div className="flex la-vz-viewer-event-router" id="la-vz-event-router" role="presentation" tabIndex={-1}
     onContextMenu={this.handleMouseEvent}
     onKeyDown={this.handleKeyPress}
     onMouseDown={this.handleMouseEvent}
     onMouseMove={this.props.handleMouseEvent}
     onMouseUp={this.handleMouseEvent}
     >
+    <AlignmentStatistics seq={this.props.seq[0]} seqToCompare={this.props.seq[1]} seqType={guessType(this.props.seq[0])}/>
       {this.state.rightClickMenu && <FloatingMenu close={this.closeMenu}
       seq = {(typeof this.props.children === 'array') ? this.props.seq: this.props.seq[0]}
       start={(typeof this.props.children === 'array')?this.props.children.find(c => c !==false).props.selection.start : this.props.children.props.selection.start}

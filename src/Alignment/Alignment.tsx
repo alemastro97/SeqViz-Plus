@@ -241,6 +241,7 @@ export default class Alignment extends React.Component<LinearProps> {
     console.log(translationRows)
     return (
       seqBlocks.length && (
+        <>
         <InfiniteScroll
           alignment={true}
           blockHeights={blockHeights}
@@ -251,6 +252,7 @@ export default class Alignment extends React.Component<LinearProps> {
           size={{height: size.height, width:size.width}}
           totalHeight={blockHeights.reduce((acc, h) => acc + h, 0)}
         />
+        </>
       )
     );
   }

@@ -46,7 +46,9 @@
     "not dead"
   ],
   "dependencies": {
+    "next": "^13.3.0",
     "react-resize-detector": "^7.1.2",
+    "semantic-ui-css": "^2.5.0",
     "seqparse": "^0.2.0"
   },
   "devDependencies": {
@@ -74,8 +76,8 @@
     "path-browserify": "^1.0.1",
     "postcss-loader": "^7.0.1",
     "prettier": "^2.5.1",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "source-map-loader": "^1.1.3",
     "stream-browserify": "^3.0.0",
     "style-loader": "^3.3.1",
