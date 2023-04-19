@@ -3,7 +3,7 @@ import { Selection } from "./selectionContext";
 import * as React from "react";
 export interface EventsHandlerProps {
     bpsPerBlock: number;
-    children: React.ReactNode;
+    children: any;
     copyEvent: (e: React.KeyboardEvent<HTMLElement>) => boolean;
     handleMouseEvent: (e: any) => void;
     selection: Selection;

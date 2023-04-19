@@ -1,3 +1,4 @@
+import * as React from "react";
 
 export default function AlignmentStatistics({ seq, seqToCompare, seqType }) {
     const generateFunctionSymbol = () =>{

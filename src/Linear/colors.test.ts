@@ -1,4 +1,4 @@
-import { COLORS, chooseRandomColor, darkerColor } from "./colors";
+import { COLORS, chooseRandomColor, darkerColor } from "../colors";
 
 describe("Colors", () => {
   it("chooses a random color", () => {

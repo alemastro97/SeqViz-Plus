@@ -27,6 +27,7 @@ interface SeqViewerContainerProps {
         start: number;
     };
     seq: string;
+    seqToCompare: string;
     seqType: SeqType;
     showComplement: boolean;
     showIndex: boolean;

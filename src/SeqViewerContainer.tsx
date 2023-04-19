@@ -12,7 +12,6 @@ import { Annotation, CutSite, Highlight, NameRange, Range, SeqType } from "./ele
 import { isEqual } from "./isEqual";
 import SelectionContext, { Selection, defaultSelection } from "./selectionContext";
 import Alignment from "./Alignment/Alignment";
-import AlignmentStatistics from "./Alignment/AlignmentStatistics";
 
 /**
  * This is the width in pixels of a character that's 12px
@@ -39,6 +38,7 @@ interface SeqViewerContainerProps {
     start: number;
   };
   seq: string;
+  seqToCompare: string;
   seqType: SeqType;
   showComplement: boolean;
   showIndex: boolean;

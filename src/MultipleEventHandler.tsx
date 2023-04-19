@@ -9,7 +9,7 @@ import { guessType } from "./sequence";
 
 export interface EventsHandlerProps {
   bpsPerBlock: number;
-  children: React.ReactNode;
+  children: any;
   copyEvent: (e: React.KeyboardEvent<HTMLElement>) => boolean;
   handleMouseEvent: (e: any) => void;
   selection: Selection;
@@ -170,9 +170,9 @@ export class MultipleEventHandler extends React.PureComponent<EventsHandlerProps
     const formerFocus = document.activeElement;
     const tempNode = document.createElement('textarea');
     if (ref === 'ALL') {
-      tempNode.innerText = seq;
+      tempNode.innerText = seq[0];
     } else {
-      tempNode.innerText = seq.substring(start || 0, end);
+      tempNode.innerText = seq[0].substring(start || 0, end);
     }
     if (document.body) {
       document.body.appendChild(tempNode);
@@ -277,9 +277,9 @@ export class MultipleEventHandler extends React.PureComponent<EventsHandlerProps
     >
     <AlignmentStatistics seq={this.props.seq[0]} seqToCompare={this.props.seq[1]} seqType={guessType(this.props.seq[0])}/>
       {this.state.rightClickMenu && <FloatingMenu close={this.closeMenu}
-      seq = {(typeof this.props.children === 'array') ? this.props.seq: this.props.seq[0]}
-      start={(typeof this.props.children === 'array')?this.props.children.find(c => c !==false).props.selection.start : this.props.children.props.selection.start}
-      end={(typeof this.props.children === 'array')?this.props.children.find(c => c !==false).props.selection.end : this.props.children.props.selection.end}
+      seq = {this.props.seq[0]}
+      start={this.props.children.props.selection.start}
+      end={this.props.children.props.selection.end}
       seqComp={this.props.seq[1]}
       top={this.state.yFloatingMenu} 
       left={this.state.xFloatingMenu} />}

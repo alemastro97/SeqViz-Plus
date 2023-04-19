@@ -110,7 +110,7 @@ export interface SeqVizProps {
 
   /** a sequence to render. Can be DNA, RNA, or an amino acid sequence. Setting accession or file overrides this */
   seq?: string;
-  seqToCompare?: string;
+  seqToCompare: string;
 
   /** the type of the sequence. If this isn't passed, the type is guessed */
   seqType?: "dna" | "rna" | "aa";
@@ -181,6 +181,7 @@ export default class SeqViz extends React.Component<SeqVizProps, SeqVizState> {
     rotateOnScroll: true,
     search: { mismatch: 0, query: "" },
     seq: "",
+    seqToCompare: "",
     showComplement: true,
     showIndex: true,
     style: {},
@@ -295,7 +296,7 @@ export default class SeqViz extends React.Component<SeqVizProps, SeqVizState> {
     seq: string;
     seqType: SeqType;
   } => {
-    const { annotations, compSeq, file, name = "", seq, seqToCompare } = props || this.props;
+    const { annotations, compSeq, file, name = "", seq } = props || this.props;
 
     if (file) {
       // Parse a sequence file

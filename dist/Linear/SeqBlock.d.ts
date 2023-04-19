@@ -44,7 +44,6 @@ interface SeqBlockProps {
         linear: number;
     };
     zoomed: boolean;
-    colorize: boolean;
 }
 /**
  * SeqBlock

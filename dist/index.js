@@ -1,5 +1,5 @@
 /*!
- * seqviz-plus - 2.0.0
+ * seqviz-plus - 2.0.1
  * provided and maintained by Lattice Automation (https://latticeautomation.com/)
  * LICENSE MIT
  */
@@ -38,8 +38,8 @@ var ReactDOM = __webpack_require__(2);
 var server_1 = __webpack_require__(3);
 var SeqViz_1 = __webpack_require__(4);
 exports.SeqViz = SeqViz_1.default;
-__webpack_require__(43);
-var enzymes_1 = __webpack_require__(41);
+__webpack_require__(44);
+var enzymes_1 = __webpack_require__(42);
 exports.Enzymes = enzymes_1.default;
 exports["default"] = SeqViz_1.default;
 /**
@@ -156,9 +156,9 @@ var React = __webpack_require__(1);
 var seqparse_1 = __webpack_require__(5);
 var SeqViewerContainer_1 = __webpack_require__(6);
 var colors_1 = __webpack_require__(13);
-var digest_1 = __webpack_require__(40);
+var digest_1 = __webpack_require__(41);
 var isEqual_1 = __webpack_require__(11);
-var search_1 = __webpack_require__(42);
+var search_1 = __webpack_require__(43);
 var sequence_1 = __webpack_require__(24);
 /**
  * SeqViz is a viewer for rendering sequences in a linear and/or circular viewer.
@@ -211,7 +211,7 @@ var SeqViz = /** @class */ (function (_super) {
          * If an accession is provided, query a remote repository and parse the sequence and annotations.
          */
         _this.parseInput = function (props) {
-            var _a = props || _this.props, annotations = _a.annotations, compSeq = _a.compSeq, file = _a.file, _b = _a.name, name = _b === void 0 ? "" : _b, seq = _a.seq, seqToCompare = _a.seqToCompare;
+            var _a = props || _this.props, annotations = _a.annotations, compSeq = _a.compSeq, file = _a.file, _b = _a.name, name = _b === void 0 ? "" : _b, seq = _a.seq;
             if (file) {
                 // Parse a sequence file
                 var parseOptions = {};
@@ -356,6 +356,7 @@ var SeqViz = /** @class */ (function (_super) {
         rotateOnScroll: true,
         search: { mismatch: 0, query: "" },
         seq: "",
+        seqToCompare: "",
         showComplement: true,
         showIndex: true,
         style: {},
@@ -423,13 +424,13 @@ var react_resize_detector_1 = __webpack_require__(7);
 var Circular_1 = __webpack_require__(8);
 var EventHandler_1 = __webpack_require__(22);
 var MultipleEventHandler_1 = __webpack_require__(26);
-var Linear_1 = __webpack_require__(27);
-var SelectionHandler_1 = __webpack_require__(37);
-var MultipleSequenceSelectionHandler_1 = __webpack_require__(38);
+var Linear_1 = __webpack_require__(28);
+var SelectionHandler_1 = __webpack_require__(38);
+var MultipleSequenceSelectionHandler_1 = __webpack_require__(39);
 var centralIndexContext_1 = __webpack_require__(9);
 var isEqual_1 = __webpack_require__(11);
 var selectionContext_1 = __webpack_require__(21);
-var Alignment_1 = __webpack_require__(39);
+var Alignment_1 = __webpack_require__(40);
 /**
  * This is the width in pixels of a character that's 12px
  * This will need to change whenever the css of the plasmid viewer text changes
@@ -2603,9 +2604,12 @@ var EventHandler = /** @class */ (function (_super) {
         _this.closeMenu = function () {
             _this.setState({ rightClickMenu: false });
         };
-        _this.render = function () { return (React.createElement("div", { className: "la-vz-viewer-event-router", id: "la-vz-event-router", role: "presentation", tabIndex: -1, onContextMenu: _this.handleMouseEvent, onKeyDown: _this.handleKeyPress, onMouseDown: _this.handleMouseEvent, onMouseMove: _this.props.handleMouseEvent, onMouseUp: _this.handleMouseEvent },
-            _this.state.rightClickMenu && React.createElement(FloatingMenu_1.default, { close: _this.closeMenu, seq: _this.props.seq, start: _this.props.children.find(function (c) { return c !== false; }).props.selection.start, end: _this.props.children.find(function (c) { return c !== false; }).props.selection.end, top: _this.state.yFloatingMenu, left: _this.state.xFloatingMenu }),
-            _this.props.children)); };
+        _this.render = function () {
+            var _a, _b, _c, _d;
+            return (React.createElement("div", { className: "la-vz-viewer-event-router", id: "la-vz-event-router", role: "presentation", tabIndex: -1, onContextMenu: _this.handleMouseEvent, onKeyDown: _this.handleKeyPress, onMouseDown: _this.handleMouseEvent, onMouseMove: _this.props.handleMouseEvent, onMouseUp: _this.handleMouseEvent },
+                _this.state.rightClickMenu && React.createElement(FloatingMenu_1.default, { close: _this.closeMenu, seq: _this.props.seq, start: (_b = (_a = _this.props) === null || _a === void 0 ? void 0 : _a.children) === null || _b === void 0 ? void 0 : _b.find(function (c) { return c !== false; }).props.selection.start, end: (_d = (_c = _this.props) === null || _c === void 0 ? void 0 : _c.children) === null || _d === void 0 ? void 0 : _d.find(function (c) { return c !== false; }).props.selection.end, top: _this.state.yFloatingMenu, left: _this.state.xFloatingMenu }),
+                _this.props.children));
+        };
         return _this;
     }
     EventHandler.contextType = centralIndexContext_1.default;
@@ -2706,128 +2710,6 @@ exports.randomID = exports.createTranslations = exports.translate = exports.dire
  * Map of nucleotide bases
  */
 exports.nucleotides = { a: "a", c: "c", g: "g", t: "t", u: "u" };
-var blossum62 = {
-    '*': { '*': 1, 'A': -4, 'C': -4, 'B': -4, 'E': -4,
-        'D': -4, 'G': -4, 'F': -4, 'I': -4, 'H': -4,
-        'K': -4, 'M': -4, 'L': -4, 'N': -4, 'Q': -4,
-        'P': -4, 'S': -4, 'R': -4, 'T': -4, 'W': -4,
-        'V': -4, 'Y': -4, 'X': -4, 'Z': -4 },
-    'A': { '*': -4, 'A': 4, 'C': 0, 'B': -2, 'E': -1,
-        'D': -2, 'G': 0, 'F': -2, 'I': -1, 'H': -2,
-        'K': -1, 'M': -1, 'L': -1, 'N': -2, 'Q': -1,
-        'P': -1, 'S': 1, 'R': -1, 'T': 0, 'W': -3,
-        'V': 0, 'Y': -2, 'X': 0, 'Z': -1 },
-    'C': { '*': -4, 'A': 0, 'C': 9, 'B': -3, 'E': -4,
-        'D': -3, 'G': -3, 'F': -2, 'I': -1, 'H': -3,
-        'K': -3, 'M': -1, 'L': -1, 'N': -3, 'Q': -3,
-        'P': -3, 'S': -1, 'R': -3, 'T': -1, 'W': -2,
-        'V': -1, 'Y': -2, 'X': -2, 'Z': -3 },
-    'B': { '*': -4, 'A': -2, 'C': -3, 'B': 4, 'E': 1,
-        'D': 4, 'G': -1, 'F': -3, 'I': -3, 'H': 0,
-        'K': 0, 'M': -3, 'L': -4, 'N': 3, 'Q': 0,
-        'P': -2, 'S': 0, 'R': -1, 'T': -1, 'W': -4,
-        'V': -3, 'Y': -3, 'X': -1, 'Z': 1 },
-    'E': { '*': -4, 'A': -1, 'C': -4, 'B': 1, 'E': 5,
-        'D': 2, 'G': -2, 'F': -3, 'I': -3, 'H': 0,
-        'K': 1, 'M': -2, 'L': -3, 'N': 0, 'Q': 2,
-        'P': -1, 'S': 0, 'R': 0, 'T': -1, 'W': -3,
-        'V': -2, 'Y': -2, 'X': -1, 'Z': 4 },
-    'D': { '*': -4, 'A': -2, 'C': -3, 'B': 4, 'E': 2,
-        'D': 6, 'G': -1, 'F': -3, 'I': -3, 'H': -1,
-        'K': -1, 'M': -3, 'L': -4, 'N': 1, 'Q': 0,
-        'P': -1, 'S': 0, 'R': -2, 'T': -1, 'W': -4,
-        'V': -3, 'Y': -3, 'X': -1, 'Z': 1 },
-    'G': { '*': -4, 'A': 0, 'C': -3, 'B': -1, 'E': -2,
-        'D': -1, 'G': 6, 'F': -3, 'I': -4, 'H': -2,
-        'K': -2, 'M': -3, 'L': -4, 'N': 0, 'Q': -2,
-        'P': -2, 'S': 0, 'R': -2, 'T': -2, 'W': -2,
-        'V': -3, 'Y': -3, 'X': -1, 'Z': -2 },
-    'F': { '*': -4, 'A': -2, 'C': -2, 'B': -3, 'E': -3,
-        'D': -3, 'G': -3, 'F': 6, 'I': 0, 'H': -1,
-        'K': -3, 'M': 0, 'L': 0, 'N': -3, 'Q': -3,
-        'P': -4, 'S': -2, 'R': -3, 'T': -2, 'W': 1,
-        'V': -1, 'Y': 3, 'X': -1, 'Z': -3 },
-    'I': { '*': -4, 'A': -1, 'C': -1, 'B': -3, 'E': -3,
-        'D': -3, 'G': -4, 'F': 0, 'I': 4, 'H': -3,
-        'K': -3, 'M': 1, 'L': 2, 'N': -3, 'Q': -3,
-        'P': -3, 'S': -2, 'R': -3, 'T': -1, 'W': -3,
-        'V': 3, 'Y': -1, 'X': -1, 'Z': -3 },
-    'H': { '*': -4, 'A': -2, 'C': -3, 'B': 0, 'E': 0,
-        'D': -1, 'G': -2, 'F': -1, 'I': -3, 'H': 8,
-        'K': -1, 'M': -2, 'L': -3, 'N': 1, 'Q': 0,
-        'P': -2, 'S': -1, 'R': 0, 'T': -2, 'W': -2,
-        'V': -3, 'Y': 2, 'X': -1, 'Z': 0 },
-    'K': { '*': -4, 'A': -1, 'C': -3, 'B': 0, 'E': 1,
-        'D': -1, 'G': -2, 'F': -3, 'I': -3, 'H': -1,
-        'K': 5, 'M': -1, 'L': -2, 'N': 0, 'Q': 1,
-        'P': -1, 'S': 0, 'R': 2, 'T': -1, 'W': -3,
-        'V': -2, 'Y': -2, 'X': -1, 'Z': 1 },
-    'M': { '*': -4, 'A': -1, 'C': -1, 'B': -3, 'E': -2,
-        'D': -3, 'G': -3, 'F': 0, 'I': 1, 'H': -2,
-        'K': -1, 'M': 5, 'L': 2, 'N': -2, 'Q': 0,
-        'P': -2, 'S': -1, 'R': -1, 'T': -1, 'W': -1,
-        'V': 1, 'Y': -1, 'X': -1, 'Z': -1 },
-    'L': { '*': -4, 'A': -1, 'C': -1, 'B': -4, 'E': -3,
-        'D': -4, 'G': -4, 'F': 0, 'I': 2, 'H': -3,
-        'K': -2, 'M': 2, 'L': 4, 'N': -3, 'Q': -2,
-        'P': -3, 'S': -2, 'R': -2, 'T': -1, 'W': -2,
-        'V': 1, 'Y': -1, 'X': -1, 'Z': -3 },
-    'N': { '*': -4, 'A': -2, 'C': -3, 'B': 3, 'E': 0,
-        'D': 1, 'G': 0, 'F': -3, 'I': -3, 'H': 1,
-        'K': 0, 'M': -2, 'L': -3, 'N': 6, 'Q': 0,
-        'P': -2, 'S': 1, 'R': 0, 'T': 0, 'W': -4,
-        'V': -3, 'Y': -2, 'X': -1, 'Z': 0 },
-    'Q': { '*': -4, 'A': -1, 'C': -3, 'B': 0, 'E': 2,
-        'D': 0, 'G': -2, 'F': -3, 'I': -3, 'H': 0,
-        'K': 1, 'M': 0, 'L': -2, 'N': 0, 'Q': 5,
-        'P': -1, 'S': 0, 'R': 1, 'T': -1, 'W': -2,
-        'V': -2, 'Y': -1, 'X': -1, 'Z': 3 },
-    'P': { '*': -4, 'A': -1, 'C': -3, 'B': -2, 'E': -1,
-        'D': -1, 'G': -2, 'F': -4, 'I': -3, 'H': -2,
-        'K': -1, 'M': -2, 'L': -3, 'N': -2, 'Q': -1,
-        'P': 7, 'S': -1, 'R': -2, 'T': -1, 'W': -4,
-        'V': -2, 'Y': -3, 'X': -2, 'Z': -1 },
-    'S': { '*': -4, 'A': 1, 'C': -1, 'B': 0, 'E': 0,
-        'D': 0, 'G': 0, 'F': -2, 'I': -2, 'H': -1,
-        'K': 0, 'M': -1, 'L': -2, 'N': 1, 'Q': 0,
-        'P': -1, 'S': 4, 'R': -1, 'T': 1, 'W': -3,
-        'V': -2, 'Y': -2, 'X': 0, 'Z': 0 },
-    'R': { '*': -4, 'A': -1, 'C': -3, 'B': -1, 'E': 0,
-        'D': -2, 'G': -2, 'F': -3, 'I': -3, 'H': 0,
-        'K': 2, 'M': -1, 'L': -2, 'N': 0, 'Q': 1,
-        'P': -2, 'S': -1, 'R': 5, 'T': -1, 'W': -3,
-        'V': -3, 'Y': -2, 'X': -1, 'Z': 0 },
-    'T': { '*': -4, 'A': 0, 'C': -1, 'B': -1, 'E': -1,
-        'D': -1, 'G': -2, 'F': -2, 'I': -1, 'H': -2,
-        'K': -1, 'M': -1, 'L': -1, 'N': 0, 'Q': -1,
-        'P': -1, 'S': 1, 'R': -1, 'T': 5, 'W': -2,
-        'V': 0, 'Y': -2, 'X': 0, 'Z': -1 },
-    'W': { '*': -4, 'A': -3, 'C': -2, 'B': -4, 'E': -3,
-        'D': -4, 'G': -2, 'F': 1, 'I': -3, 'H': -2,
-        'K': -3, 'M': -1, 'L': -2, 'N': -4, 'Q': -2,
-        'P': -4, 'S': -3, 'R': -3, 'T': -2, 'W': 11,
-        'V': -3, 'Y': 2, 'X': -2, 'Z': -3 },
-    'V': { '*': -4, 'A': 0, 'C': -1, 'B': -3, 'E': -2,
-        'D': -3, 'G': -3, 'F': -1, 'I': 3, 'H': -3,
-        'K': -2, 'M': 1, 'L': 1, 'N': -3, 'Q': -2,
-        'P': -2, 'S': -2, 'R': -3, 'T': 0, 'W': -3,
-        'V': 4, 'Y': -1, 'X': -1, 'Z': -2 },
-    'Y': { '*': -4, 'A': -2, 'C': -2, 'B': -3, 'E': -2,
-        'D': -3, 'G': -3, 'F': 3, 'I': -1, 'H': 2,
-        'K': -2, 'M': -1, 'L': -1, 'N': -2, 'Q': -1,
-        'P': -3, 'S': -2, 'R': -2, 'T': -2, 'W': 2,
-        'V': -1, 'Y': 7, 'X': -1, 'Z': -2 },
-    'X': { '*': -4, 'A': 0, 'C': -2, 'B': -1, 'E': -1,
-        'D': -1, 'G': -1, 'F': -1, 'I': -1, 'H': -1,
-        'K': -1, 'M': -1, 'L': -1, 'N': -1, 'Q': -1,
-        'P': -2, 'S': 0, 'R': -1, 'T': 0, 'W': -2,
-        'V': -1, 'Y': -1, 'X': -1, 'Z': -1 },
-    'Z': { '*': -4, 'A': -1, 'C': -3, 'B': 1, 'E': 4,
-        'D': 1, 'G': -2, 'F': -3, 'I': -3, 'H': 0,
-        'K': 1, 'M': -1, 'L': -3, 'N': 0, 'Q': 3,
-        'P': -1, 'S': 0, 'R': 0, 'T': -1, 'W': -3,
-        'V': -2, 'Y': -2, 'X': -1, 'Z': 4 }
-};
 /**
  * Map of DNA basepairs to all the bases encoded by that character in the DNA alphabet.
  *
@@ -3273,8 +3155,10 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.MultipleEventHandler = void 0;
 var FloatingMenu_1 = __webpack_require__(23);
 var centralIndexContext_1 = __webpack_require__(9);
+var AlignmentStatistics_1 = __webpack_require__(27);
 var debounce_1 = __webpack_require__(25);
 var React = __webpack_require__(1);
+var sequence_1 = __webpack_require__(24);
 /**
  * EventHandler handles the routing of all events, including keypresses, mouse clicks, etc.
  */
@@ -3420,10 +3304,10 @@ var MultipleEventHandler = /** @class */ (function (_super) {
             var formerFocus = document.activeElement;
             var tempNode = document.createElement('textarea');
             if (ref === 'ALL') {
-                tempNode.innerText = seq;
+                tempNode.innerText = seq[0];
             }
             else {
-                tempNode.innerText = seq.substring(start || 0, end);
+                tempNode.innerText = seq[0].substring(start || 0, end);
             }
             if (document.body) {
                 document.body.appendChild(tempNode);
@@ -3501,8 +3385,9 @@ var MultipleEventHandler = /** @class */ (function (_super) {
         _this.closeMenu = function () {
             _this.setState({ rightClickMenu: false });
         };
-        _this.render = function () { return (React.createElement("div", { className: "la-vz-viewer-event-router", id: "la-vz-event-router", role: "presentation", tabIndex: -1, onContextMenu: _this.handleMouseEvent, onKeyDown: _this.handleKeyPress, onMouseDown: _this.handleMouseEvent, onMouseMove: _this.props.handleMouseEvent, onMouseUp: _this.handleMouseEvent },
-            _this.state.rightClickMenu && React.createElement(FloatingMenu_1.default, { close: _this.closeMenu, seq: (typeof _this.props.children === 'array') ? _this.props.seq : _this.props.seq[0], start: (typeof _this.props.children === 'array') ? _this.props.children.find(function (c) { return c !== false; }).props.selection.start : _this.props.children.props.selection.start, end: (typeof _this.props.children === 'array') ? _this.props.children.find(function (c) { return c !== false; }).props.selection.end : _this.props.children.props.selection.end, seqComp: _this.props.seq[1], top: _this.state.yFloatingMenu, left: _this.state.xFloatingMenu }),
+        _this.render = function () { return (React.createElement("div", { className: "la-vz-viewer-event-router", id: "la-vz-event-router", role: "presentation", tabIndex: -1, style: { display: "flex", flexDirection: "column" }, onContextMenu: _this.handleMouseEvent, onKeyDown: _this.handleKeyPress, onMouseDown: _this.handleMouseEvent, onMouseMove: _this.props.handleMouseEvent, onMouseUp: _this.handleMouseEvent },
+            React.createElement(AlignmentStatistics_1.default, { seq: _this.props.seq[0], seqToCompare: _this.props.seq[1], seqType: (0, sequence_1.guessType)(_this.props.seq[0]) }),
+            _this.state.rightClickMenu && React.createElement(FloatingMenu_1.default, { close: _this.closeMenu, seq: _this.props.seq[0], start: _this.props.children.props.selection.start, end: _this.props.children.props.selection.end, seqComp: _this.props.seq[1], top: _this.state.yFloatingMenu, left: _this.state.xFloatingMenu }),
             _this.props.children)); };
         return _this;
     }
@@ -3514,6 +3399,73 @@ exports.MultipleEventHandler = MultipleEventHandler;
 
 /***/ }),
 /* 27 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var React = __webpack_require__(1);
+function AlignmentStatistics(_a) {
+    var seq = _a.seq, seqToCompare = _a.seqToCompare, seqType = _a.seqType;
+    var generateFunctionSymbol = function () {
+        var blossom_block = [
+            ['c'],
+            ['s', 't', 'a', 'g', 'p'],
+            ['d', 'e', 'q', 'n'],
+            ['k', 'r', 'h'],
+            ['m', 'i', 'l', 'v'],
+            ['f', 'y', 'w']
+        ];
+        var seqSymbols = '';
+        if (seqType === 'aa') {
+            seqToCompare.split('').forEach(function (c, i) { return seqSymbols += (blossom_block.find(function (block) { return block.includes(c.toLowerCase()); }) || []).includes(seq[i].toLowerCase()) ? (seq[i] === c) ? '|' : '.' : (seq[i] === '-' || c === '-') ? '-' : '*'; });
+        }
+        else {
+            seqToCompare.split('').forEach(function (c, i) { return seqSymbols += [c, seq[i]].includes('-') ? ' ' : c === seq[i] ? '|' : '.'; });
+        }
+        console.log(seqSymbols);
+        return "".concat(seqSymbols);
+    };
+    return (React.createElement("div", { style: { border: '1px solid grey', margin: '10px', borderRadius: '1rem' } },
+        React.createElement("div", { style: { margin: '10px', fontFamily: 'sans-serif' } },
+            React.createElement("b", null, "Seq1 Length (Length of seq without \u201C-\u201C)"),
+            ":",
+            seq.split("").filter(function (el) { return el !== '-'; }).length),
+        React.createElement("div", { style: { margin: '10px', fontFamily: 'sans-serif' } },
+            React.createElement("b", null, "Seq2 Length (Length of seq without \u201C-\u201C)"),
+            ":",
+            seqToCompare.split("").filter(function (el) { return el !== '-'; }).length),
+        React.createElement("div", { style: { margin: '10px', fontFamily: 'sans-serif' } },
+            React.createElement("b", null, "Number of mismatches (All non-gap position that are not \u201C|\u201D or \u201C.\u201D)"),
+            ": ",
+            generateFunctionSymbol().split('').reduce(function (a, c) { if (c === '*')
+                return a += 1; return a; }, 0),
+            " "),
+        React.createElement("div", { style: { margin: '10px', fontFamily: 'sans-serif' } },
+            React.createElement("b", null, "Seq1 Fraction Identical(Number of non-gap (no \u201C-\u201C) identical (\u201C|\u201D) / Number of non-gap (no \u201C-\u201C))"),
+            ": ",
+            (generateFunctionSymbol().split('').reduce(function (a, c) { if (c === '|')
+                return a += 1; return a; }, 0) / seq.split("").filter(function (el) { return el !== '-'; }).length).toFixed(2)),
+        React.createElement("div", { style: { margin: '10px', fontFamily: 'sans-serif' } },
+            React.createElement("b", null, "Seq2 Fraction Identical(Same as above, but for Seq2)"),
+            ": ",
+            (generateFunctionSymbol().split('').reduce(function (a, c) { if (c === '|')
+                return a += 1; return a; }, 0) / seqToCompare.split("").filter(function (el) { return el !== '-'; }).length).toFixed(2)),
+        React.createElement("div", { style: { margin: '10px', fontFamily: 'sans-serif' } },
+            React.createElement("b", null, "Seq1 Coverage(Number of aligned positions (\u201C|\u201D or \u201C.\u201D) / Seq1 Length (without gaps))"),
+            ": ",
+            (generateFunctionSymbol().split('').reduce(function (a, c) { if (['|', '.'].includes(c))
+                return a += 1; return a; }, 0) / seq.split("").filter(function (el) { return el !== '-'; }).length).toFixed(2)),
+        React.createElement("div", { style: { margin: '10px', fontFamily: 'sans-serif' } },
+            React.createElement("b", null, "Seq2 Coverage"),
+            ": ",
+            (generateFunctionSymbol().split('').reduce(function (a, c) { if (['|', '.'].includes(c))
+                return a += 1; return a; }, 0) / seqToCompare.split("").filter(function (el) { return el !== '-'; }).length).toFixed(2))));
+}
+exports["default"] = AlignmentStatistics;
+
+
+/***/ }),
+/* 28 */
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -3537,8 +3489,8 @@ var React = __webpack_require__(1);
 var elementsToRows_1 = __webpack_require__(10);
 var isEqual_1 = __webpack_require__(11);
 var sequence_1 = __webpack_require__(24);
-var InfiniteScroll_1 = __webpack_require__(28);
-var SeqBlock_1 = __webpack_require__(29);
+var InfiniteScroll_1 = __webpack_require__(29);
+var SeqBlock_1 = __webpack_require__(30);
 /**
  * A linear sequence viewer.
  *
@@ -3641,7 +3593,7 @@ var Linear = /** @class */ (function (_super) {
             seqBlocks.push(React.createElement(SeqBlock_1.SeqBlock, { key: ids[i], annotationRows: annotationRows[i], blockHeight: blockHeights[i], bpColors: this.props.bpColors, bpsPerBlock: bpsPerBlock, charWidth: this.props.charWidth, compSeq: compSeqs[i], cutSiteRows: cutSiteRows[i], elementHeight: elementHeight, firstBase: firstBase, fullSeq: seq, handleMouseEvent: this.props.handleMouseEvent, highlights: highlightRows[i], id: ids[i], inputRef: this.props.inputRef, lineHeight: lineHeight, searchRows: searchRows[i], seq: seqs[i], seqFontSize: this.props.seqFontSize, seqType: seqType, showComplement: showComplement, showIndex: showIndex, size: size, translations: translationRows[i], y: yDiff, zoom: zoom, zoomed: zoomed, onUnmount: onUnmount }));
             yDiff += blockHeights[i];
         }
-        return (seqBlocks.length && (React.createElement(InfiniteScroll_1.InfiniteScroll, { blockHeights: blockHeights, bpsPerBlock: bpsPerBlock, seqBlocks: seqBlocks, size: size, totalHeight: blockHeights.reduce(function (acc, h) { return acc + h; }, 0) })));
+        return (seqBlocks.length && (React.createElement(InfiniteScroll_1.InfiniteScroll, { blockHeights: blockHeights, bpsPerBlock: bpsPerBlock, seqBlocks: seqBlocks, seqBlocksCompare: seqBlocks, seqBlocksSymbols: seqBlocks, alignment: false, size: size, totalHeight: blockHeights.reduce(function (acc, h) { return acc + h; }, 0) })));
     };
     return Linear;
 }(React.Component));
@@ -3649,7 +3601,7 @@ exports["default"] = Linear;
 
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -3905,7 +3857,7 @@ exports.InfiniteScroll = InfiniteScroll;
 
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -3938,13 +3890,13 @@ var __assign = (this && this.__assign) || function () {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.SeqBlock = void 0;
 var React = __webpack_require__(1);
-var Annotations_1 = __webpack_require__(30);
-var CutSites_1 = __webpack_require__(31);
-var Find_1 = __webpack_require__(32);
-var Highlights_1 = __webpack_require__(33);
-var Index_1 = __webpack_require__(34);
-var Selection_1 = __webpack_require__(35);
-var Translations_1 = __webpack_require__(36);
+var Annotations_1 = __webpack_require__(31);
+var CutSites_1 = __webpack_require__(32);
+var Find_1 = __webpack_require__(33);
+var Highlights_1 = __webpack_require__(34);
+var Index_1 = __webpack_require__(35);
+var Selection_1 = __webpack_require__(36);
+var Translations_1 = __webpack_require__(37);
 /**
  * SeqBlock
  *
@@ -4083,7 +4035,7 @@ var SeqBlock = /** @class */ (function (_super) {
         return _this;
     }
     SeqBlock.prototype.render = function () {
-        var _a = this.props, annotationRows = _a.annotationRows, blockHeight = _a.blockHeight, bpsPerBlock = _a.bpsPerBlock, charWidth = _a.charWidth, compSeq = _a.compSeq, cutSiteRows = _a.cutSiteRows, elementHeight = _a.elementHeight, firstBase = _a.firstBase, fullSeq = _a.fullSeq, handleMouseEvent = _a.handleMouseEvent, highlights = _a.highlights, id = _a.id, inputRef = _a.inputRef, lineHeight = _a.lineHeight, onUnmount = _a.onUnmount, searchRows = _a.searchRows, seq = _a.seq, seqFontSize = _a.seqFontSize, seqType = _a.seqType, showComplement = _a.showComplement, showIndex = _a.showIndex, size = _a.size, colorize = _a.colorize, translations = _a.translations, zoom = _a.zoom, zoomed = _a.zoomed;
+        var _a = this.props, annotationRows = _a.annotationRows, blockHeight = _a.blockHeight, bpsPerBlock = _a.bpsPerBlock, charWidth = _a.charWidth, compSeq = _a.compSeq, cutSiteRows = _a.cutSiteRows, elementHeight = _a.elementHeight, firstBase = _a.firstBase, fullSeq = _a.fullSeq, handleMouseEvent = _a.handleMouseEvent, highlights = _a.highlights, id = _a.id, inputRef = _a.inputRef, lineHeight = _a.lineHeight, onUnmount = _a.onUnmount, searchRows = _a.searchRows, seq = _a.seq, seqFontSize = _a.seqFontSize, seqType = _a.seqType, showComplement = _a.showComplement, showIndex = _a.showIndex, size = _a.size, translations = _a.translations, zoom = _a.zoom, zoomed = _a.zoomed;
         if (!size.width || !size.height)
             return null;
         var textProps = {
@@ -4148,7 +4100,7 @@ exports.SeqBlock = SeqBlock;
 
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -4263,7 +4215,7 @@ var SingleNamedElement = function (props) {
 
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -4494,7 +4446,7 @@ var onCutSiteHover = function (className, on) {
 
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -4532,7 +4484,7 @@ var FindBlock = function (_a) {
 
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -4583,7 +4535,7 @@ var SingleHighlight = function (props) {
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -4694,7 +4646,7 @@ exports["default"] = Index;
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -4911,7 +4863,7 @@ exports["default"] = { Block: Block, Edges: Edges };
 
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -5072,7 +5024,7 @@ var TranslationRow = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -5441,7 +5393,7 @@ exports["default"] = SelectionHandler;
 
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -5820,7 +5772,7 @@ exports["default"] = SelectionHandler;
 
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -5840,8 +5792,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-var InfiniteScroll_1 = __webpack_require__(28);
-var SeqBlock_1 = __webpack_require__(29);
+var InfiniteScroll_1 = __webpack_require__(29);
+var SeqBlock_1 = __webpack_require__(30);
 var elementsToRows_1 = __webpack_require__(10);
 var isEqual_1 = __webpack_require__(11);
 var sequence_1 = __webpack_require__(24);
@@ -6000,7 +5952,8 @@ var Alignment = /** @class */ (function (_super) {
             _loop_1(i);
         }
         console.log(translationRows);
-        return (seqBlocks.length && (React.createElement(InfiniteScroll_1.InfiniteScroll, { alignment: true, blockHeights: blockHeights, bpsPerBlock: bpsPerBlock, seqBlocks: seqBlocks, seqBlocksCompare: seqBlocksCompare, seqBlocksSymbols: seqBlocksSymbols, size: { height: size.height, width: size.width }, totalHeight: blockHeights.reduce(function (acc, h) { return acc + h; }, 0) })));
+        return (seqBlocks.length && (React.createElement(React.Fragment, null,
+            React.createElement(InfiniteScroll_1.InfiniteScroll, { alignment: true, blockHeights: blockHeights, bpsPerBlock: bpsPerBlock, seqBlocks: seqBlocks, seqBlocksCompare: seqBlocksCompare, seqBlocksSymbols: seqBlocksSymbols, size: { height: size.height, width: size.width }, totalHeight: blockHeights.reduce(function (acc, h) { return acc + h; }, 0) }))));
     };
     return Alignment;
 }(React.Component));
@@ -6008,7 +5961,7 @@ exports["default"] = Alignment;
 
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -6025,8 +5978,8 @@ var __assign = (this && this.__assign) || function () {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.findCutSites = void 0;
-var enzymes_1 = __webpack_require__(41);
-var search_1 = __webpack_require__(42);
+var enzymes_1 = __webpack_require__(42);
+var search_1 = __webpack_require__(43);
 var sequence_1 = __webpack_require__(24);
 /**
  * Digest a sequence with the enzymes and return an array of cut-site.
@@ -6120,7 +6073,7 @@ exports.findCutSites = findCutSites;
 
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ ((__unused_webpack_module, exports) => {
 
 
@@ -7600,7 +7553,7 @@ exports["default"] = enzymes;
 
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -7716,26 +7669,26 @@ exports.createRegex = createRegex;
 
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(44);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(45);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(45);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(46);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(46);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(47);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(47);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(48);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(48);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(49);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(49);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(50);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_SeqViz_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(50);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_SeqViz_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(51);
 
       
       
@@ -7766,7 +7719,7 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ ((module) => {
 
 
@@ -7875,7 +7828,7 @@ module.exports = function (list, options) {
 };
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ ((module) => {
 
 
@@ -7950,7 +7903,7 @@ function domAPI(options) {
 module.exports = domAPI;
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ ((module) => {
 
 
@@ -7994,7 +7947,7 @@ function insertBySelector(insert, style) {
 module.exports = insertBySelector;
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 
@@ -8011,7 +7964,7 @@ function setAttributesWithoutAttributes(styleElement) {
 module.exports = setAttributesWithoutAttributes;
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ ((module) => {
 
 
@@ -8027,7 +7980,7 @@ function insertStyleElement(options) {
 module.exports = insertStyleElement;
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ ((module) => {
 
 
@@ -8048,16 +8001,16 @@ function styleTagTransform(css, styleElement) {
 module.exports = styleTagTransform;
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(51);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(52);
 /* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(52);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(53);
 /* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
 // Imports
 
@@ -8071,7 +8024,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, "/* Shared/common settings */\n.la-vz-s
 
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ ((module) => {
 
 
@@ -8092,7 +8045,7 @@ module.exports = function (item) {
 };
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ ((module) => {
 
 

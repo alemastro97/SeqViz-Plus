@@ -53,7 +53,6 @@ interface SeqBlockProps {
   y: number;
   zoom: { linear: number };
   zoomed: boolean;
-  colorize: boolean;
 }
 
 /**
@@ -236,7 +235,6 @@ export class SeqBlock extends React.PureComponent<SeqBlockProps> {
       showComplement,
       showIndex,
       size,
-      colorize,
       translations,
       zoom,
       zoomed,

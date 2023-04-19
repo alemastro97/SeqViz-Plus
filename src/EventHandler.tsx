@@ -7,7 +7,7 @@ import * as React from "react";
 
 export interface EventsHandlerProps {
   bpsPerBlock: number;
-  children: React.ReactNode;
+  children: any;
   copyEvent: (e: React.KeyboardEvent<HTMLElement>) => boolean;
   handleMouseEvent: (e: any) => void;
   selection: Selection;
@@ -272,8 +272,8 @@ export class EventHandler extends React.PureComponent<EventsHandlerProps> {
     onMouseUp={this.handleMouseEvent}
     >
       {this.state.rightClickMenu && <FloatingMenu close={this.closeMenu} seq = {this.props.seq}
-      start={this.props.children.find(c => c !==false).props.selection.start}
-      end={this.props.children.find(c => c !==false).props.selection.end}
+      start={this.props?.children?.find(c => c !==false).props.selection.start}
+      end={this.props?.children?.find(c => c !==false).props.selection.end}
       top={this.state.yFloatingMenu}
       left={this.state.xFloatingMenu} />}
       {this.props.children}

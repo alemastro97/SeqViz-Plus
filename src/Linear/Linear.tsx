@@ -202,6 +202,9 @@ export default class Linear extends React.Component<LinearProps> {
           blockHeights={blockHeights}
           bpsPerBlock={bpsPerBlock}
           seqBlocks={seqBlocks}
+          seqBlocksCompare={seqBlocks}
+          seqBlocksSymbols={seqBlocks}
+          alignment={false}
           size={size}
           totalHeight={blockHeights.reduce((acc, h) => acc + h, 0)}
         />

@@ -1,3 +1,4 @@
+
 const path = require("path");
 const webpack = require("webpack");
 const nodeExternals = require("webpack-node-externals");
@@ -29,13 +30,13 @@ const cdnBuild = {
   },
   output: {
     globalObject: "this",
-    filename: "seqviz.min.js",
+    filename: "seqviz-plus.min.js",
     library: {
       name: package.name,
       type: "umd",
     },
     path: path.join(__dirname, "dist"),
-    publicPath: "/dist/",
+    publicPath: "./dist/",
     umdNamedDefine: true,
   },
   plugins: [
