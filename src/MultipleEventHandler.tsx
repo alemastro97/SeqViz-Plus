@@ -267,7 +267,8 @@ export class MultipleEventHandler extends React.PureComponent<EventsHandlerProps
     this.setState({ rightClickMenu: false });
   }
   render = () => (
-    <div className="flex la-vz-viewer-event-router" id="la-vz-event-router" role="presentation" tabIndex={-1}
+    <div className="la-vz-viewer-event-router" id="la-vz-event-router" role="presentation" tabIndex={-1}
+    style={{display:"flex", flexDirection:"column"}}
     onContextMenu={this.handleMouseEvent}
     onKeyDown={this.handleKeyPress}
     onMouseDown={this.handleMouseEvent}
