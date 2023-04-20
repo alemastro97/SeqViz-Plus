@@ -35,19 +35,19 @@ export default class Index extends React.PureComponent<IndexProps> {
     let tickInc = 0;
     switch (true) {
       case zoom.linear > 85:
-        tickInc = 3;
+        tickInc = 5;
         break;
       case zoom.linear > 40:
-        tickInc = 3;
+        tickInc = 10;
         break;
       case zoom.linear > 10:
-        tickInc = 3;
+        tickInc = 20;
         break;
       case zoom.linear >= 0:
-        tickInc = 3;
+        tickInc = 50;
         break;
       default:
-        tickInc = 3;
+        tickInc = 10;
     }
 
     // if rendering amino acids, double the tick frequency
