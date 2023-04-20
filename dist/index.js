@@ -1,5 +1,5 @@
 /*!
- * seqviz-plus - 2.0.2
+ * seqviz-plus - 2.0.4
  * provided and maintained by Lattice Automation (https://latticeautomation.com/)
  * LICENSE MIT
  */
@@ -2565,17 +2565,13 @@ var EventHandler = /** @class */ (function (_super) {
          */
         _this.handleMouseEvent = function (e) {
             var handleMouseEvent = _this.props.handleMouseEvent;
-            console.log('Enter in mouse event');
             // If the right click is performed
             if (e.button === 2 && e.type === "contextmenu") {
-                console.log('Mouse clicked');
-                console.log(e.clientX, e.clientY);
                 e.preventDefault();
                 _this.setState({ rightClickMenu: true });
                 // Box position (under the mouse)
                 _this.setState({ xFloatingMenu: e.clientX });
                 _this.setState({ yFloatingMenu: e.clientY });
-                console.log(_this.props);
                 return;
             }
             // Close the context menu if a left click is performed on the screen and the target is not a button 
@@ -2656,7 +2652,7 @@ function FloatingMenu(_a) {
     };
     var Translation = function (e) {
         e.preventDefault();
-        if (!(start % 3 === 0 && end % 3 === 2)) {
+        if (!(start % 3 === 0 && (end - 1) % 3 === 2)) {
             alert('You are selecting a sequence with blocks other than multiples of 3, the translation will not be the same as that of the entire sequence');
         }
         var val = (0, sequence_1.translate)(seq.substring(start || 0, end), 'dna');
