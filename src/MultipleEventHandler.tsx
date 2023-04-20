@@ -164,7 +164,6 @@ export class MultipleEventHandler extends React.PureComponent<EventsHandlerProps
       selection: { end, ref, start },
       seq,
     } = this.props;
-    console.log(this.props)
     if (!document) return;
 
     const formerFocus = document.activeElement;
@@ -230,7 +229,6 @@ export class MultipleEventHandler extends React.PureComponent<EventsHandlerProps
     
     // If the right click is performed
     if (e.button === 2 && e.type==="contextmenu" ) {
-      console.log(e.clientX, e.clientY);
       e.preventDefault();
       this.setState({ rightClickMenu: true });
       // Box position (under the mouse)

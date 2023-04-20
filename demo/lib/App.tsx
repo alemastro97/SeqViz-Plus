@@ -54,9 +54,9 @@ export default class App extends React.Component<any, AppState> {
     search: { query: "ttnnnaat" },
     searchResults: {},
     selection: {},
-    // seq: "TAGTATAGATATAGCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-    seq: "---TTTTAGTATAGATATAAGCAAKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA-----",
-    seqToCompare: "DTTTDTAGTATATAGATATAGCAAKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA-----",
+    seq: "mstesmirdvelaeealpkktggpqgsrrclflslfsflivagattlfcllhfgvigpqr",
+    // seq: "---TTTTAGTATAGATATAAGCAAKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA-----",
+    // seqToCompare: "DTTTDTAGTATATAGATATAGCAAKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA-----",
     showComplement:false,
     showIndex: true,
     showSelectionMeta: false,
@@ -158,11 +158,11 @@ export default class App extends React.Component<any, AppState> {
                     showComplement={this.state.showComplement}
                     showIndex={this.state.showIndex}
                     translations={this.state.translations}
-                    viewer="alignment"//{this.state.viewer as "linear" | "circular"}
+                    viewer="linear"//{this.state.viewer as "linear" | "circular"}
                     // seqType="aa"
                     zoom={{ linear: this.state.zoom }}
                     selection={this.state.selection}
-                    onSelection={selection => this.setState({ selection })}
+                    // onSelection={selection => this.setState({ selection })}
                   />
                 )}
               </div>

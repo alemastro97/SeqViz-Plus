@@ -140,12 +140,10 @@ export default class Alignment extends React.Component<LinearProps> {
       search && search.length ? createSingleRows(search, bpsPerBlock, arrSize) : new Array(arrSize).fill([]);
 
     const highlightRows = createSingleRows(highlights, bpsPerBlock, arrSize);
-    console.log(JSON.stringify(translations))
 
     const translationRows = translations.length
       ? createSingleRows(createTranslations(translations, seq, seqType), bpsPerBlock, arrSize)
       : new Array(arrSize).fill([]);
-      console.log(translations)
     const translationRowsForSymbols = translations.length
     ? createSingleRows(createTranslations(translations, seqSymbols, seqType), bpsPerBlock, arrSize)
     : new Array(arrSize).fill([]);// seqSymbols;
@@ -238,7 +236,6 @@ export default class Alignment extends React.Component<LinearProps> {
       });
       yDiff += blockHeights[i];
     }
-    console.log(translationRows)
     return (
       seqBlocks.length && (
         <>

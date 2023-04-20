@@ -242,7 +242,6 @@ export const complement = (origSeq: string, seqType: SeqType): { compSeq: string
  */
 export const reverseComplement = (inputSeq: string, seqType: SeqType): string => {
   const { compSeq } = complement(inputSeq, seqType);
-  console.log(compSeq.split("").reverse().join(""))
   return compSeq.split("").reverse().join("");
 };
 
@@ -293,7 +292,6 @@ export const translate = (seqInput: string, seqType: SeqType): string => {
   let aaSeq = "";
   for (let i = 0; i < seqLength; i += 3) {
     if (i + 2 < seqLength) {
-      console.log(seq[i] + seq[i + 1] + seq[i + 2]);
       aaSeq += codonMap[seq[i] + seq[i + 1] + seq[i + 2]] || "?";
     }
   }

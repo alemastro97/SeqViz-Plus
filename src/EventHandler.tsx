@@ -225,14 +225,17 @@ export class EventHandler extends React.PureComponent<EventsHandlerProps> {
    */
   handleMouseEvent = (e: React.MouseEvent) => {
     const { handleMouseEvent } = this.props;
-    
+    console.log('Enter in mouse event')
     // If the right click is performed
     if (e.button === 2 && e.type==="contextmenu" ) {
+      console.log('Mouse clicked')
+      console.log(e.clientX, e.clientY)
       e.preventDefault();
       this.setState({ rightClickMenu: true });
       // Box position (under the mouse)
       this.setState({ xFloatingMenu: e.clientX });
       this.setState({ yFloatingMenu: e.clientY });
+      console.log(this.props)
       return;
     }
     // Close the context menu if a left click is performed on the screen and the target is not a button 

@@ -1,5 +1,5 @@
 /*!
- * seqviz-plus - 2.0.1
+ * seqviz-plus - 2.0.2
  * provided and maintained by Lattice Automation (https://latticeautomation.com/)
  * LICENSE MIT
  */
@@ -302,6 +302,7 @@ var SeqViz = /** @class */ (function (_super) {
         console.error("Error caught in SeqViz: %v %v", error, errorInfo);
     };
     SeqViz.prototype.render = function () {
+        var _this = this;
         var _a = this.props, highlightedRegions = _a.highlightedRegions, highlights = _a.highlights, showComplement = _a.showComplement, showIndex = _a.showIndex, style = _a.style, zoom = _a.zoom, viewer = _a.viewer;
         var translations = this.props.translations;
         var _b = this.state, compSeq = _b.compSeq, seq = _b.seq, seqType = _b.seqType;
@@ -319,10 +320,10 @@ var SeqViz = /** @class */ (function (_super) {
             copyEvent: this.props.copyEvent || (function () { return false; }),
             cutSites: this.state.cutSites,
             highlights: (highlights || []).concat(highlightedRegions || []).map(function (h, i) { return (__assign(__assign({}, h), { direction: 1, end: h.end % (seq.length + 1), id: "highlight-".concat(i, "-").concat(h.start, "-").concat(h.end), name: "", start: h.start % (seq.length + 1) })); }),
-            onSelection: this.props.onSelection ||
-                (function () {
-                    // do nothing
-                }),
+            onSelection: (function (selection) {
+                // @ts-ignore
+                _this.setState({ selection: selection });
+            }),
             rotateOnScroll: !!this.props.rotateOnScroll,
             showComplement: (!!compSeq && (typeof showComplement !== "undefined" ? showComplement : true)) || false,
             showIndex: !!showIndex,
@@ -525,7 +526,6 @@ var SeqViewerContainer = /** @class */ (function (_super) {
             var _a = _this.props, seq = _a.seq, seqType = _a.seqType;
             var size = _this.props.testSize || { height: _this.props.height, width: _this.props.width };
             var zoom = _this.props.zoom.linear;
-            console.log(JSON.stringify(_this.props.translations));
             var seqFontSize = Math.min(Math.round(zoom * 0.1 + 9.5), 18); // max 18px
             // otherwise the sequence needs to be cut into smaller subsequences
             // a sliding scale in width related to the degree of zoom currently active
@@ -596,7 +596,6 @@ var SeqViewerContainer = /** @class */ (function (_super) {
         var _this = this;
         var _a = this.props, selectionProp = _a.selection, seq = _a.seq, viewer = _a.viewer, seqToCompare = _a.seqToCompare;
         var _b = this.state, centralIndex = _b.centralIndex, selection = _b.selection;
-        console.log(JSON.stringify(this.props.translations));
         var linearProps = this.linearProps();
         var circularProps = this.circularProps();
         var alignmentProps = this.alignmentProps();
@@ -2566,13 +2565,17 @@ var EventHandler = /** @class */ (function (_super) {
          */
         _this.handleMouseEvent = function (e) {
             var handleMouseEvent = _this.props.handleMouseEvent;
+            console.log('Enter in mouse event');
             // If the right click is performed
             if (e.button === 2 && e.type === "contextmenu") {
+                console.log('Mouse clicked');
+                console.log(e.clientX, e.clientY);
                 e.preventDefault();
                 _this.setState({ rightClickMenu: true });
                 // Box position (under the mouse)
                 _this.setState({ xFloatingMenu: e.clientX });
                 _this.setState({ yFloatingMenu: e.clientY });
+                console.log(_this.props);
                 return;
             }
             // Close the context menu if a left click is performed on the screen and the target is not a button 
@@ -2946,7 +2949,6 @@ exports.complement = complement;
  */
 var reverseComplement = function (inputSeq, seqType) {
     var compSeq = (0, exports.complement)(inputSeq, seqType).compSeq;
-    console.log(compSeq.split("").reverse().join(""));
     return compSeq.split("").reverse().join("");
 };
 exports.reverseComplement = reverseComplement;
@@ -2993,7 +2995,6 @@ var translate = function (seqInput, seqType) {
     var aaSeq = "";
     for (var i = 0; i < seqLength; i += 3) {
         if (i + 2 < seqLength) {
-            console.log(seq[i] + seq[i + 1] + seq[i + 2]);
             aaSeq += codonMap[seq[i] + seq[i + 1] + seq[i + 2]] || "?";
         }
     }
@@ -3298,7 +3299,6 @@ var MultipleEventHandler = /** @class */ (function (_super) {
          */
         _this.handleCopy = function () {
             var _a = _this.props, _b = _a.selection, end = _b.end, ref = _b.ref, start = _b.start, seq = _a.seq;
-            console.log(_this.props);
             if (!document)
                 return;
             var formerFocus = document.activeElement;
@@ -3348,7 +3348,6 @@ var MultipleEventHandler = /** @class */ (function (_super) {
             var handleMouseEvent = _this.props.handleMouseEvent;
             // If the right click is performed
             if (e.button === 2 && e.type === "contextmenu") {
-                console.log(e.clientX, e.clientY);
                 e.preventDefault();
                 _this.setState({ rightClickMenu: true });
                 // Box position (under the mouse)
@@ -3422,7 +3421,6 @@ function AlignmentStatistics(_a) {
         else {
             seqToCompare.split('').forEach(function (c, i) { return seqSymbols += [c, seq[i]].includes('-') ? ' ' : c === seq[i] ? '|' : '.'; });
         }
-        console.log(seqSymbols);
         return "".concat(seqSymbols);
     };
     return (React.createElement("div", { style: { border: '1px solid grey', margin: '10px', borderRadius: '1rem' } },
@@ -5887,11 +5885,9 @@ var Alignment = /** @class */ (function (_super) {
         var annotationRows = (0, elementsToRows_1.createMultiRows)((0, elementsToRows_1.stackElements)(vetAnnotations(annotations), seq.length), bpsPerBlock, arrSize);
         var searchRows = search && search.length ? (0, elementsToRows_1.createSingleRows)(search, bpsPerBlock, arrSize) : new Array(arrSize).fill([]);
         var highlightRows = (0, elementsToRows_1.createSingleRows)(highlights, bpsPerBlock, arrSize);
-        console.log(JSON.stringify(translations));
         var translationRows = translations.length
             ? (0, elementsToRows_1.createSingleRows)((0, sequence_1.createTranslations)(translations, seq, seqType), bpsPerBlock, arrSize)
             : new Array(arrSize).fill([]);
-        console.log(translations);
         var translationRowsForSymbols = translations.length
             ? (0, elementsToRows_1.createSingleRows)((0, sequence_1.createTranslations)(translations, seqSymbols, seqType), bpsPerBlock, arrSize)
             : new Array(arrSize).fill([]); // seqSymbols;
@@ -5951,7 +5947,6 @@ var Alignment = /** @class */ (function (_super) {
         for (var i = 0; i < arrSize; i += 1) {
             _loop_1(i);
         }
-        console.log(translationRows);
         return (seqBlocks.length && (React.createElement(React.Fragment, null,
             React.createElement(InfiniteScroll_1.InfiniteScroll, { alignment: true, blockHeights: blockHeights, bpsPerBlock: bpsPerBlock, seqBlocks: seqBlocks, seqBlocksCompare: seqBlocksCompare, seqBlocksSymbols: seqBlocksSymbols, size: { height: size.height, width: size.width }, totalHeight: blockHeights.reduce(function (acc, h) { return acc + h; }, 0) }))));
     };

@@ -17,7 +17,6 @@ export default function AlignmentStatistics({ seq, seqToCompare, seqType }) {
         } else {
           seqToCompare.split('').forEach((c, i) => seqSymbols += [c ,seq[i]].includes('-') ? ' ' : c === seq[i] ? '|' : '.' );
         }
-        console.log(seqSymbols)
         return `${seqSymbols}`
     }
     return (

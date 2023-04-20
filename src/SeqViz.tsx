@@ -405,9 +405,9 @@ export default class SeqViz extends React.Component<SeqVizProps, SeqVizState> {
         })
       ),
       onSelection:
-        this.props.onSelection ||
-        (() => {
-          // do nothing
+      ((selection) => {
+          // @ts-ignore
+          this.setState({ selection });
         }),
       rotateOnScroll: !!this.props.rotateOnScroll,
       showComplement: (!!compSeq && (typeof showComplement !== "undefined" ? showComplement : true)) || false,
