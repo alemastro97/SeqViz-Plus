@@ -27,7 +27,7 @@ export default function FloatingMenu({ close, seq, start, end, top, left, seqCom
   };
   const Translation = (e) => {
     e.preventDefault();
-    if (!(start % 3 === 0 && end % 3 === 2)){ alert('You are selecting a sequence with blocks other than multiples of 3, the translation will not be the same as that of the entire sequence'); }
+    if (!(start % 3 === 0 && (end - 1) % 3 === 2)){ alert('You are selecting a sequence with blocks other than multiples of 3, the translation will not be the same as that of the entire sequence'); }
     const val  = translate(seq.substring(start || 0, end), 'dna');
       copyOnClipboard(val, 0, val.length);
       close();
