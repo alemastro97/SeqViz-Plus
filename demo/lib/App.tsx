@@ -47,24 +47,39 @@ interface AppState {
 
 export default class App extends React.Component<any, AppState> {
   state: AppState = {
-    annotations: [],
+    // annotations: [],
     enzymes: ["PstI", "EcoRI", "XbaI", "SpeI"],
-    name: "",
-    primers: true,
-    search: { query: "ttnnnaat" },
-    searchResults: {},
-    selection: {},
-    // seq: "TATATATATATTA",
-    seq: "---TTTTAGTATAGATATAAGCAAKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA-----",
-    seqToCompare: "DTTTDTAGTATATAGATATAGCAAKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA-----",
-    showComplement:false,
-    showIndex: true,
-    showSelectionMeta: false,
-    showSidebar: false,
-    translations: [
-    ],
+    // name: "",
+    // primers: true,
+    // search: { query: "ttnnnaat" },
+    // searchResults: {},
+    // selection: {},
+    // // seq: "TATATATATATTA",
+    // seq: "---TTTTAGTATAGATATAAGCAAKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA-----",
+    // seqToCompare: "DTTTDTAGTATATAGATATAGCAAKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA-----",
+    // showComplement:false,
+    // showIndex: true,
+    // showSelectionMeta: false,
+    // showSidebar: false,
+    // translations: [
+    // ],
+    // viewer: "alignment",
+    // zoom: 50,
+    name: "P-pDONR223_DFCI_CCSB2",
+    seq: "CTTTCCTGCGTTATCCCCTGATTCTGTGGATAACCGTATTACCGCCTTTGAGTGAGCTGATACCGCTCGCCGCAGCCGAACGACCGAGCGCAGCGAGTCAGTGAGCGAGGAAGCGGAAGAGCGCCCAATACGCAAACCGCCTCTCCCCGCGCGTTGGCCGATTCATTAATGCAGCTGGCACGACAGGTTTCCCGACTGGAAAGCGGGCAGTGAGCGCAACGCAATTAATACGCGTACCGCTAGCCAGGAAGAGTTTGTAGAAACGCAAAAAGGCCATCCGTCAGGATGGCCTTCTGCTTAGTTTGATGCCTGGCAGTTTATGGCGGGCGTCCTGCCCGCCACCCTCCGGGCCGTTGCTTCACAACGTTCAAATCCGCTCCCGGCGGATTTGTCCTACTCAGGAGAGCGTTCACCGACAAACAACAGATAAAACGAAAGGCCCAGTCTTCCGACTGAGCCTTTCGTTTTATTTGATGCCTGGCAGTTCCCTACTCTCGCGTTAACGCTAGCATGGATGTTTTCCCAGTCACGACGTTGTAAAACGACGGCCAGTCTTAAGCTCGGGCCCCAAATAATGATTTTATTTTGACTGATAGTGACCTGTTCGTTGCAACAAATTGATGAGCAATGCTTTTTTATAATGCCAACTTTGTACAAAAAAGTTGGCACCNNNNNNTTGCCAACTTTCTTGTACAAAGTTGGCATTATAAGAAAGCATTGCTTATCAATTTGTTGCAACGAACAGGTCACTATCAGTCAAAATAAAATCATTATTTGCCATCCAGCTGATATCCCCTATAGTGAGTCGTATTACATGGTCATAGCTGTTTCCTGGCAGCTCTGGCCCGTGTCTCAAAATCTCTGATGTTACATTGCACAAGATAAAAATATATCATCATGCCTCCTCTAGACCAGCCAGGACAGAAATGCCTCGACTTCGCTGCTGCCCAAGGTTGCCGGGTGACGCACACCGTGGAAACGGATGAAGGCACGAACCCAGTGGACATAAGCCTGTTCGGTTCGTAAGCTGTAATGCAAGTAGCGTATGCGCTCACGCAACTGGTCCAGAACCTTGACCGAACGCAGCGGTGGTAACGGCGCAGTGGCGGTTTTCATGGCTTGTTATGACTGTTTTTTTGGGGTACAGTCTATGCCTCGGGCATCCAAGCAGCAAGCGCGTTACGCCGTGGGTCGATGTTTGATGTTATGGAGCAGCAACGATGTTACGCAGCAGGGCAGTCGCCCTAAAACAAAGTTAAACATCATGAGGGAAGCGGTGATCGCCGAAGTATCGACTCAACTATCAGAGGTAGTTGGCGTCATCGAGCGCCATCTCGAACCGACGTTGCTGGCCGTACATTTGTACGGCTCCGCAGTGGATGGCGGCCTGAAGCCACACAGTGATATTGATTTGCTGGTTACGGTGACCGTAAGGCTTGATGAAACAACGCGGCGAGCTTTGATCAACGACCTTTTGGAAACTTCGGCTTCCCCTGGAGAGAGCGAGATTCTCCGCGCTGTAGAAGTCACCATTGTTGTGCACGACGACATCATTCCGTGGCGTTATCCAGCTAAGCGCGAACTGCAATTTGGAGAATGGCAGCGCAATGACATTCTTGCAGGTATCTTCGAGCCAGCCACGATCGACATTGATCTGGCTATCTTGCTGACAAAAGCAAGAGAACATAGCGTTGCCTTGGTAGGTCCAGCGGCGGAGGAACTCTTTGATCCGGTTCCTGAACAGGATCTATTTGAGGCGCTAAATGAAACCTTAACGCTATGGAACTCGCCGCCCGACTGGGCTGGCGATGAGCGAAATGTAGTGCTTACGTTGTCCCGCATTTGGTACAGCGCAGTAACCGGCAAAATCGCGCCGAAGGATGTCGCTGCCGACTGGGCAATGGAGCGCCTGCCGGCCCAGTATCAGCCCGTCATACTTGAAGCTAGACAGGCTTATCTTGGACAAGAAGAAGATCGCTTGGCCTCGCGCGCAGATCAGTTGGAAGAATTTGTCCACTACGTGAAAGGCGAGATCACCAAGGTAGTCGGCAAATAACCCTCGAGCCACCCATGACCAAAATCCCTTAACGTGAGTTACGCGTCGTTCCACTGAGCGTCAGACCCCGTAGAAAAGATCAAAGGATCTTCTTGAGATCCTTTTTTTCTGCGCGTAATCTGCTGCTTGCAAACAAAAAAACCACCGCTACCAGCGGTGGTTTGTTTGCCGGATCAAGAGCTACCAACTCTTTTTCCGAAGGTAACTGGCTTCAGCAGAGCGCAGATACCAAATACTGTCCTTCTAGTGTAGCCGTAGTTAGGCCACCACTTCAAGAACTCTGTAGCACCGCCTACATACCTCGCTCTGCTAATCCTGTTACCAGTGGCTGCTGCCAGTGGCGATAAGTCGTGTCTTACCGGGTTGGACTCAAGACGATAGTTACCGGATAAGGCGCAGCGGTCGGGCTGAACGGGGGGTTCGTGCACACAGCCCAGCTTGGAGCGAACGACCTACACCGAACTGAGATACCTACAGCGTGAGCATTGAGAAAGCGCCACGCTTCCCGAAGGGAGAAAGGCGGACAGGTATCCGGTAAGCGGCAGGGTCGGAACAGGAGAGCGCACGAGGGAGCTTCCAGGGGGAAACGCCTGGTATCTTTATAGTCCTGTCGGGTTTCGCCACCTCTGACTTGAGCGTCGATTTTTGTGATGCTCGTCAGGGGGGCGGAGCCTATGGAAAAACGCCAGCAACGCGGCCTTTTTACGGTTCCTGGCCTTTTGCTGGCCTTTTGCTCACATGTT",
     viewer: "alignment",
-    zoom: 50,
+    annotations: [{ "start": 655, "end": 670, "name": "D-attB1_CCSB2", "color": "tan", "direction": 1 }, { "start": 676, "end": 691, "name": "D-attB2_CCSB2", "color": "tan", "direction": 1 }, { "start": 1045, "end": 2056, "name": "D-SpnR", "color": "tan", "direction": 1 }],
+    translations: [{ "start": 655, "end": 670, "name": "D-attB1_CCSB2", "direction": 1 }, { "start": 676, "end": 691, "name": "D-attB2_CCSB2", "direction": 1 }, { "start": 1045, "end": 2056, "name": "D-SpnR", "direction": 1 }],
+    showAnnotations: true,
+    showTranslations: true,
+    showPrimers: true,
+    showComplement: true,
+    showIndex: true, 
+    onSelection: console.log, 
+    copyEvent: event => event.key === "c" && (event.metaKey || event.ctrlKey), 
+    style: { height: "calc(600px)", width: "100%" },
+    zoom: { linear: 50, circular: 10 }, 
+    rotateOnScroll: false
   };
 
   componentDidMount = async () => {
@@ -148,21 +163,40 @@ export default class App extends React.Component<any, AppState> {
               <div id="seqviewer">
                 {this.state.seq && (
                   <SeqViz
-                    // accession="MN623123"
-                    annotations={this.state.annotations}
-                    enzymes={this.state.enzymes}
                     name={this.state.name}
-                    search={this.state.search}
                     seq={this.state.seq}
-                    seqToCompare={this.state.seqToCompare}
+                    viewer={this.state.viewer}
+                    annotations={this.state.annotations}
+                    translations={this.state.translations}
+                    showAnnotations={this.state.showAnnotations}
+                    showTranslations={this.state.showTranslations}
+                    showPrimers={this.state.showPrimers}
                     showComplement={this.state.showComplement}
                     showIndex={this.state.showIndex}
-                    translations={this.state.translations}
-                    viewer={this.state.viewer}
-                    // seqType="aa"
-                    zoom={{ linear: this.state.zoom }}
-                    selection={this.state.selection}
-                    // onSelection={selection => this.setState({ selection })}
+                    onSelection={this.state.onSelection}
+                    copyEvent={this.state.copyEvent}
+                    style={this.state.style}
+                    zoom={this.state.zoom}
+                    rotateOnScroll={this.state.rotateOnScroll}
+                  
+                  
+                  
+                    
+                    
+                    
+                    
+                    // annotations={this.state.annotations}
+                    enzymes={this.state.enzymes}
+                    // name={this.state.name}
+                    // search={this.state.search}
+                    // seq={this.state.seq}
+                    // seqToCompare={this.state.seqToCompare}
+                    // showComplement={this.state.showComplement}
+                    // showIndex={this.state.showIndex}
+                    // translations={this.state.translations}
+                    // viewer={this.state.viewer}
+                    // zoom={{ linear: this.state.zoom }}
+                    // selection={this.state.selection}
                   />
                 )}
               </div>

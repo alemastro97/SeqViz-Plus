@@ -71,5 +71,6 @@ export declare class EventHandler extends React.PureComponent<EventsHandlerProps
      */
     handleMouseEvent: (e: React.MouseEvent) => void;
     closeMenu: () => void;
+    getSelectionValue: (key: any) => any;
     render: () => JSX.Element;
 }

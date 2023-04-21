@@ -1,5 +1,5 @@
 /*!
- * seqviz-plus - 2.0.4.1
+ * seqviz-plus - 2.0.5
  * provided and maintained by Lattice Automation (https://latticeautomation.com/)
  * LICENSE MIT
  */
@@ -2572,6 +2572,7 @@ var EventHandler = /** @class */ (function (_super) {
                 // Box position (under the mouse)
                 _this.setState({ xFloatingMenu: e.clientX });
                 _this.setState({ yFloatingMenu: e.clientY });
+                console.log(_this.props);
                 return;
             }
             // Close the context menu if a left click is performed on the screen and the target is not a button 
@@ -2603,12 +2604,20 @@ var EventHandler = /** @class */ (function (_super) {
         _this.closeMenu = function () {
             _this.setState({ rightClickMenu: false });
         };
-        _this.render = function () {
-            var _a, _b, _c, _d;
-            return (React.createElement("div", { className: "la-vz-viewer-event-router", id: "la-vz-event-router", role: "presentation", tabIndex: -1, onContextMenu: _this.handleMouseEvent, onKeyDown: _this.handleKeyPress, onMouseDown: _this.handleMouseEvent, onMouseMove: _this.props.handleMouseEvent, onMouseUp: _this.handleMouseEvent },
-                _this.state.rightClickMenu && React.createElement(FloatingMenu_1.default, { close: _this.closeMenu, seq: _this.props.seq, start: (_b = (_a = _this.props) === null || _a === void 0 ? void 0 : _a.children) === null || _b === void 0 ? void 0 : _b.find(function (c) { return c !== false; }).props.selection.start, end: (_d = (_c = _this.props) === null || _c === void 0 ? void 0 : _c.children) === null || _d === void 0 ? void 0 : _d.find(function (c) { return c !== false; }).props.selection.end, top: _this.state.yFloatingMenu, left: _this.state.xFloatingMenu }),
-                _this.props.children));
+        _this.getSelectionValue = function (key) {
+            var children = _this.props.children;
+            var nestedChilds = children.find(function (c) { return c !== false; }).props;
+            if (nestedChilds.hasOwnProperty('children')) {
+                nestedChilds = nestedChilds.children.find(function (el) { return el.type.name === 'Linear'; }).props;
+            }
+            if (nestedChilds.hasOwnProperty('selection')) {
+                return nestedChilds.selection[key];
+            }
+            return { start: 0, end: nestedChilds.seq.length }[key];
         };
+        _this.render = function () { return (React.createElement("div", { className: "la-vz-viewer-event-router", id: "la-vz-event-router", role: "presentation", tabIndex: -1, onContextMenu: _this.handleMouseEvent, onKeyDown: _this.handleKeyPress, onMouseDown: _this.handleMouseEvent, onMouseMove: _this.props.handleMouseEvent, onMouseUp: _this.handleMouseEvent },
+            _this.state.rightClickMenu && React.createElement(FloatingMenu_1.default, { close: _this.closeMenu, seq: _this.props.seq, start: _this.getSelectionValue('start'), end: _this.getSelectionValue('end'), top: _this.state.yFloatingMenu, left: _this.state.xFloatingMenu }),
+            _this.props.children)); };
         return _this;
     }
     EventHandler.contextType = centralIndexContext_1.default;

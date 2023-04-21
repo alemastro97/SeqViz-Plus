@@ -232,6 +232,7 @@ export class EventHandler extends React.PureComponent<EventsHandlerProps> {
       // Box position (under the mouse)
       this.setState({ xFloatingMenu: e.clientX });
       this.setState({ yFloatingMenu: e.clientY });
+      console.log(this.props)
       return;
     }
     // Close the context menu if a left click is performed on the screen and the target is not a button 
@@ -262,6 +263,22 @@ export class EventHandler extends React.PureComponent<EventsHandlerProps> {
   closeMenu = () => {
     this.setState({ rightClickMenu: false });
   }
+  getSelectionValue = (key) => {
+    const {children} = this.props;
+    let nestedChilds = children.find(c => c !==false).props;
+
+    if (nestedChilds.hasOwnProperty('children')) {
+      nestedChilds = nestedChilds.children.find(el => el.type.name === 'Linear').props;
+       
+    }
+    if (nestedChilds.hasOwnProperty('selection')) {
+       
+      return nestedChilds.selection[key];
+    }
+    return {start:0, end:nestedChilds.seq.length}[key];
+  
+
+  }
   render = () => (
     <div className="la-vz-viewer-event-router" id="la-vz-event-router" role="presentation" tabIndex={-1}
     onContextMenu={this.handleMouseEvent}
@@ -271,8 +288,8 @@ export class EventHandler extends React.PureComponent<EventsHandlerProps> {
     onMouseUp={this.handleMouseEvent}
     >
       {this.state.rightClickMenu && <FloatingMenu close={this.closeMenu} seq = {this.props.seq}
-      start={this.props?.children?.find(c => c !==false).props.selection.start}
-      end={this.props?.children?.find(c => c !==false).props.selection.end}
+      start={this.getSelectionValue('start')}
+      end={this.getSelectionValue('end')}
       top={this.state.yFloatingMenu}
       left={this.state.xFloatingMenu} />}
       {this.props.children}
