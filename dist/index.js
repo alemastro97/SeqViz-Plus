@@ -1,5 +1,5 @@
 /*!
- * seqviz-plus - 2.0.5
+ * seqviz-plus - 2.0.6
  * provided and maintained by Lattice Automation (https://latticeautomation.com/)
  * LICENSE MIT
  */
@@ -2605,10 +2605,12 @@ var EventHandler = /** @class */ (function (_super) {
             _this.setState({ rightClickMenu: false });
         };
         _this.getSelectionValue = function (key) {
+            var _a;
             var children = _this.props.children;
             var nestedChilds = children.find(function (c) { return c !== false; }).props;
-            if (nestedChilds.hasOwnProperty('children')) {
-                nestedChilds = nestedChilds.children.find(function (el) { return el.type.name === 'Linear'; }).props;
+            console.log(nestedChilds);
+            if (nestedChilds.hasOwnProperty('children') && nestedChilds.children !== null) {
+                nestedChilds = ((_a = nestedChilds.children.find(function (el) { return el.type.name === 'Linear'; })) === null || _a === void 0 ? void 0 : _a.props) || nestedChilds.children[0].props;
             }
             if (nestedChilds.hasOwnProperty('selection')) {
                 return nestedChilds.selection[key];
