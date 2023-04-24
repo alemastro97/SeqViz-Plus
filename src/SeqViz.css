@@ -186,7 +186,7 @@
 
 /** Floating Menu */
  .la-fm-container {
-  position: absolute;
+  position: fixed;
   border: 1px solid lightgrey;
   display: flex;
   flex-direction: column;

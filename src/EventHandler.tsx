@@ -266,7 +266,6 @@ export class EventHandler extends React.PureComponent<EventsHandlerProps> {
   getSelectionValue = (key) => {
     const {children} = this.props;
     let nestedChilds = children.find(c => c !==false).props;
-    console.log(nestedChilds)
     if (nestedChilds.hasOwnProperty('children') && nestedChilds.children !== null) {
       nestedChilds = nestedChilds.children.find(el => el.type.name === 'Linear')?.props || nestedChilds.children[0].props;
        
