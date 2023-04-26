@@ -197,13 +197,13 @@ export default class Alignment extends React.Component<LinearProps> {
     for (let i = 0; i < arrSize; i += 1) {
       const firstBase = i * bpsPerBlock;
       [
-        { translationRow:translationRows,array:seqBlocks,fullSequence:seq,sequence: seqs, id: ids, multiplyFactor: 0.3, showIndex: false },
-        { translationRow:translationRowsForSymbols,array:seqBlocksSymbols,fullSequence:seqSymbols,sequence: seqsSymbols, id: idsSy, multiplyFactor: 0.3, showIndex: false },
-        { translationRow:translationRowsComparison,array:seqBlocksCompare,fullSequence:seqToCompare,sequence: seqsToCompare, id: idsCp, multiplyFactor: 1, showIndex: true },
-      ].forEach(({ translationRow, array, fullSequence, sequence, id, multiplyFactor, showIndex }) => {
+        { identifier:'seq1', translationRow:translationRows,array:seqBlocks,fullSequence:seq,sequence: seqs, id: ids, multiplyFactor: 0.3, showIndex: false },
+        { identifier:'symbol', translationRow:translationRowsForSymbols,array:seqBlocksSymbols,fullSequence:seqSymbols,sequence: seqsSymbols, id: idsSy, multiplyFactor: 0.3, showIndex: false },
+        { identifier:'seq2', translationRow:translationRowsComparison,array:seqBlocksCompare,fullSequence:seqToCompare,sequence: seqsToCompare, id: idsCp, multiplyFactor: 1, showIndex: true },
+      ].forEach(({ identifier, translationRow, array, fullSequence, sequence, id, multiplyFactor, showIndex }) => {
         array.push(
           <SeqBlock
-            key={id[i]}
+            key={`${id[i]}_${identifier}`}
             annotationRows={annotationRows[i]}
             blockHeight={blockHeights[i] * multiplyFactor}
             bpColors={this.props.bpColors}
@@ -236,6 +236,7 @@ export default class Alignment extends React.Component<LinearProps> {
       });
       yDiff += blockHeights[i];
     }
+    console.log(seqBlocks)
     return (
       seqBlocks.length && (
         <>

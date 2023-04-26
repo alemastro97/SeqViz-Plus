@@ -5941,18 +5941,19 @@ var Alignment = /** @class */ (function (_super) {
         var _loop_1 = function (i) {
             var firstBase = i * bpsPerBlock;
             [
-                { translationRow: translationRows, array: seqBlocks, fullSequence: seq, sequence: seqs, id: ids, multiplyFactor: 0.3, showIndex: false },
-                { translationRow: translationRowsForSymbols, array: seqBlocksSymbols, fullSequence: seqSymbols, sequence: seqsSymbols, id: idsSy, multiplyFactor: 0.3, showIndex: false },
-                { translationRow: translationRowsComparison, array: seqBlocksCompare, fullSequence: seqToCompare, sequence: seqsToCompare, id: idsCp, multiplyFactor: 1, showIndex: true },
+                { identifier: 'seq1', translationRow: translationRows, array: seqBlocks, fullSequence: seq, sequence: seqs, id: ids, multiplyFactor: 0.3, showIndex: false },
+                { identifier: 'symbol', translationRow: translationRowsForSymbols, array: seqBlocksSymbols, fullSequence: seqSymbols, sequence: seqsSymbols, id: idsSy, multiplyFactor: 0.3, showIndex: false },
+                { identifier: 'seq2', translationRow: translationRowsComparison, array: seqBlocksCompare, fullSequence: seqToCompare, sequence: seqsToCompare, id: idsCp, multiplyFactor: 1, showIndex: true },
             ].forEach(function (_a) {
-                var translationRow = _a.translationRow, array = _a.array, fullSequence = _a.fullSequence, sequence = _a.sequence, id = _a.id, multiplyFactor = _a.multiplyFactor, showIndex = _a.showIndex;
-                array.push(React.createElement(SeqBlock_1.SeqBlock, { key: id[i], annotationRows: annotationRows[i], blockHeight: blockHeights[i] * multiplyFactor, bpColors: _this.props.bpColors, bpsPerBlock: bpsPerBlock, charWidth: _this.props.charWidth, compSeq: seqToCompare, cutSiteRows: cutSiteRows[i], elementHeight: elementHeight, firstBase: firstBase, fullSeq: fullSequence, handleMouseEvent: _this.props.handleMouseEvent, highlights: highlightRows[i], id: id[i], inputRef: _this.props.inputRef, lineHeight: lineHeight, searchRows: searchRows[i], seq: sequence[i], seqFontSize: _this.props.seqFontSize, seqType: seqType, showComplement: false, showIndex: showIndex, size: size, translations: translationRow[i], y: yDiff, zoom: zoom, zoomed: zoomed, onUnmount: onUnmount }));
+                var identifier = _a.identifier, translationRow = _a.translationRow, array = _a.array, fullSequence = _a.fullSequence, sequence = _a.sequence, id = _a.id, multiplyFactor = _a.multiplyFactor, showIndex = _a.showIndex;
+                array.push(React.createElement(SeqBlock_1.SeqBlock, { key: "".concat(id[i], "_").concat(identifier), annotationRows: annotationRows[i], blockHeight: blockHeights[i] * multiplyFactor, bpColors: _this.props.bpColors, bpsPerBlock: bpsPerBlock, charWidth: _this.props.charWidth, compSeq: seqToCompare, cutSiteRows: cutSiteRows[i], elementHeight: elementHeight, firstBase: firstBase, fullSeq: fullSequence, handleMouseEvent: _this.props.handleMouseEvent, highlights: highlightRows[i], id: id[i], inputRef: _this.props.inputRef, lineHeight: lineHeight, searchRows: searchRows[i], seq: sequence[i], seqFontSize: _this.props.seqFontSize, seqType: seqType, showComplement: false, showIndex: showIndex, size: size, translations: translationRow[i], y: yDiff, zoom: zoom, zoomed: zoomed, onUnmount: onUnmount }));
             });
             yDiff += blockHeights[i];
         };
         for (var i = 0; i < arrSize; i += 1) {
             _loop_1(i);
         }
+        console.log(seqBlocks);
         return (seqBlocks.length && (React.createElement(React.Fragment, null,
             React.createElement(InfiniteScroll_1.InfiniteScroll, { alignment: true, blockHeights: blockHeights, bpsPerBlock: bpsPerBlock, seqBlocks: seqBlocks, seqBlocksCompare: seqBlocksCompare, seqBlocksSymbols: seqBlocksSymbols, size: { height: size.height, width: size.width }, totalHeight: blockHeights.reduce(function (acc, h) { return acc + h; }, 0) }))));
     };
