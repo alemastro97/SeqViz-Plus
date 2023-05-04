@@ -1,5 +1,5 @@
 /*!
- * seqviz-plus - 2.0.8
+ * seqviz-plus - 2.0.9
  * provided and maintained by Lattice Automation (https://latticeautomation.com/)
  * LICENSE MIT
  */
@@ -358,6 +358,7 @@ var SeqViz = /** @class */ (function (_super) {
         search: { mismatch: 0, query: "" },
         seq: "",
         seqToCompare: "",
+        colorized: true,
         showComplement: true,
         showIndex: true,
         style: {},
@@ -488,7 +489,7 @@ var SeqViewerContainer = /** @class */ (function (_super) {
          * on the screen at a given time and what should their size be
          */
         _this.linearProps = function () {
-            var _a = _this.props, seq = _a.seq, seqType = _a.seqType, viewer = _a.viewer;
+            var _a = _this.props, seq = _a.seq, seqType = _a.seqType, viewer = _a.viewer, colorized = _a.colorized;
             var size = _this.props.testSize || { height: _this.props.height, width: _this.props.width };
             var zoom = _this.props.zoom.linear;
             // hack
@@ -499,7 +500,7 @@ var SeqViewerContainer = /** @class */ (function (_super) {
             // otherwise the sequence needs to be cut into smaller subsequences
             // a sliding scale in width related to the degree of zoom currently active
             var bpsPerBlock = Math.round((size.width / seqFontSize) * 1.4) || 1; // width / 1 * seqFontSize
-            if (seqType === "aa") {
+            if (seqType === "aa" && colorized) {
                 bpsPerBlock = Math.round(bpsPerBlock / 3); // more space for each amino acid
             }
             if (zoom <= 5) {
@@ -523,14 +524,14 @@ var SeqViewerContainer = /** @class */ (function (_super) {
             return __assign(__assign({}, _this.props), { bpsPerBlock: bpsPerBlock, charWidth: charWidth, elementHeight: elementHeight, lineHeight: lineHeight, seqFontSize: seqFontSize, size: size, zoom: { linear: zoom } });
         };
         _this.alignmentProps = function () {
-            var _a = _this.props, seq = _a.seq, seqType = _a.seqType;
+            var _a = _this.props, seq = _a.seq, seqType = _a.seqType, colorized = _a.colorized;
             var size = _this.props.testSize || { height: _this.props.height, width: _this.props.width };
             var zoom = _this.props.zoom.linear;
             var seqFontSize = Math.min(Math.round(zoom * 0.1 + 9.5), 18); // max 18px
             // otherwise the sequence needs to be cut into smaller subsequences
             // a sliding scale in width related to the degree of zoom currently active
             var bpsPerBlock = Math.round((size.width / seqFontSize) * 1.4) || 1; // width / 1 * seqFontSize
-            if (seqType === "aa") {
+            if (seqType === "aa" && colorized) {
                 bpsPerBlock = Math.round(bpsPerBlock / 3); // more space for each amino acid
             }
             if (zoom <= 5) {
@@ -3594,7 +3595,7 @@ var Linear = /** @class */ (function (_super) {
         var yDiff = 0;
         for (var i = 0; i < arrSize; i += 1) {
             var firstBase = i * bpsPerBlock;
-            seqBlocks.push(React.createElement(SeqBlock_1.SeqBlock, { key: ids[i], annotationRows: annotationRows[i], blockHeight: blockHeights[i], bpColors: this.props.bpColors, bpsPerBlock: bpsPerBlock, charWidth: this.props.charWidth, compSeq: compSeqs[i], cutSiteRows: cutSiteRows[i], elementHeight: elementHeight, firstBase: firstBase, fullSeq: seq, handleMouseEvent: this.props.handleMouseEvent, highlights: highlightRows[i], id: ids[i], inputRef: this.props.inputRef, lineHeight: lineHeight, searchRows: searchRows[i], seq: seqs[i], seqFontSize: this.props.seqFontSize, seqType: seqType, showComplement: showComplement, showIndex: showIndex, size: size, translations: translationRows[i], y: yDiff, zoom: zoom, zoomed: zoomed, onUnmount: onUnmount }));
+            seqBlocks.push(React.createElement(SeqBlock_1.SeqBlock, { key: ids[i], annotationRows: annotationRows[i], blockHeight: blockHeights[i], bpColors: this.props.bpColors, bpsPerBlock: bpsPerBlock, charWidth: this.props.charWidth, compSeq: compSeqs[i], cutSiteRows: cutSiteRows[i], elementHeight: elementHeight, firstBase: firstBase, fullSeq: seq, handleMouseEvent: this.props.handleMouseEvent, highlights: highlightRows[i], id: ids[i], inputRef: this.props.inputRef, colorized: this.props.colorized, lineHeight: lineHeight, searchRows: searchRows[i], seq: seqs[i], seqFontSize: this.props.seqFontSize, seqType: seqType, showComplement: showComplement, showIndex: showIndex, size: size, translations: translationRows[i], y: yDiff, zoom: zoom, zoomed: zoomed, onUnmount: onUnmount }));
             yDiff += blockHeights[i];
         }
         return (seqBlocks.length && (React.createElement(InfiniteScroll_1.InfiniteScroll, { blockHeights: blockHeights, bpsPerBlock: bpsPerBlock, seqBlocks: seqBlocks, seqBlocksCompare: seqBlocks, seqBlocksSymbols: seqBlocks, alignment: false, size: size, totalHeight: blockHeights.reduce(function (acc, h) { return acc + h; }, 0) })));
@@ -4039,7 +4040,7 @@ var SeqBlock = /** @class */ (function (_super) {
         return _this;
     }
     SeqBlock.prototype.render = function () {
-        var _a = this.props, annotationRows = _a.annotationRows, blockHeight = _a.blockHeight, bpsPerBlock = _a.bpsPerBlock, charWidth = _a.charWidth, compSeq = _a.compSeq, cutSiteRows = _a.cutSiteRows, elementHeight = _a.elementHeight, firstBase = _a.firstBase, fullSeq = _a.fullSeq, handleMouseEvent = _a.handleMouseEvent, highlights = _a.highlights, id = _a.id, inputRef = _a.inputRef, lineHeight = _a.lineHeight, onUnmount = _a.onUnmount, searchRows = _a.searchRows, seq = _a.seq, seqFontSize = _a.seqFontSize, seqType = _a.seqType, showComplement = _a.showComplement, showIndex = _a.showIndex, size = _a.size, translations = _a.translations, zoom = _a.zoom, zoomed = _a.zoomed;
+        var _a = this.props, annotationRows = _a.annotationRows, blockHeight = _a.blockHeight, bpsPerBlock = _a.bpsPerBlock, charWidth = _a.charWidth, compSeq = _a.compSeq, cutSiteRows = _a.cutSiteRows, elementHeight = _a.elementHeight, firstBase = _a.firstBase, fullSeq = _a.fullSeq, handleMouseEvent = _a.handleMouseEvent, highlights = _a.highlights, id = _a.id, inputRef = _a.inputRef, lineHeight = _a.lineHeight, onUnmount = _a.onUnmount, colorized = _a.colorized, searchRows = _a.searchRows, seq = _a.seq, seqFontSize = _a.seqFontSize, seqType = _a.seqType, showComplement = _a.showComplement, showIndex = _a.showIndex, size = _a.size, translations = _a.translations, zoom = _a.zoom, zoomed = _a.zoomed;
         if (!size.width || !size.height)
             return null;
         var textProps = {
@@ -4089,9 +4090,9 @@ var SeqBlock = /** @class */ (function (_super) {
                 React.createElement(Highlights_1.default, { compYDiff: compYDiff - 3, findXAndWidth: this.findXAndWidthElement, firstBase: firstBase, highlights: highlights, indexYDiff: indexYDiff - 3, inputRef: inputRef, lastBase: lastBase, lineHeight: lineHeight, listenerOnly: false, seqBlockRef: this }),
                 React.createElement(Selection_1.default.Edges, { findXAndWidth: this.findXAndWidth, firstBase: firstBase, fullSeq: fullSeq, lastBase: lastBase, selectEdgeHeight: selectEdgeHeight }),
                 React.createElement(Find_1.default, { compYDiff: compYDiff - 3, filteredRows: showComplement ? searchRows : searchRows.filter(function (r) { return r.direction === 1; }), findXAndWidth: this.findXAndWidth, firstBase: firstBase, indexYDiff: indexYDiff - 3, inputRef: inputRef, lastBase: lastBase, lineHeight: lineHeight, listenerOnly: false, zoomed: zoomed }),
-                translations.length && (React.createElement(Translations_1.TranslationRows, { bpsPerBlock: bpsPerBlock, charWidth: charWidth, elementHeight: elementHeight, findXAndWidth: this.findXAndWidth, firstBase: firstBase, fullSeq: fullSeq, inputRef: inputRef, lastBase: lastBase, seqType: seqType, translations: translations, yDiff: translationYDiff, onUnmount: onUnmount })),
+                colorized && translations.length && (React.createElement(Translations_1.TranslationRows, { bpsPerBlock: bpsPerBlock, charWidth: charWidth, elementHeight: elementHeight, findXAndWidth: this.findXAndWidth, firstBase: firstBase, fullSeq: fullSeq, inputRef: inputRef, lastBase: lastBase, seqType: seqType, translations: translations, yDiff: translationYDiff, onUnmount: onUnmount })),
                 annotationRows.length && (React.createElement(Annotations_1.default, { annotationRows: annotationRows, bpsPerBlock: bpsPerBlock, elementHeight: elementHeight, findXAndWidth: this.findXAndWidthElement, firstBase: firstBase, fullSeq: fullSeq, inputRef: inputRef, lastBase: lastBase, seqBlockRef: this, width: size.width, yDiff: annYDiff })),
-                zoomed && seqType !== "aa" ? (React.createElement("text", __assign({}, textProps, { className: "la-vz-seq", "data-testid": "la-vz-seq", id: id, transform: "translate(0, ".concat(indexYDiff + lineHeight / 2, ")") }), seq.split("").map(this.seqTextSpan))) : null,
+                zoomed && (seqType !== "aa" || !colorized) ? (React.createElement("text", __assign({}, textProps, { className: "la-vz-seq", "data-testid": "la-vz-seq", id: id, transform: "translate(0, ".concat(indexYDiff + lineHeight / 2, ")") }), seq.split("").map(this.seqTextSpan))) : null,
                 compSeq && zoomed && showComplement && seqType !== "aa" ? (React.createElement("text", __assign({}, textProps, { className: "la-vz-comp-seq", "data-testid": "la-vz-comp-seq", id: id, transform: "translate(0, ".concat(compYDiff + lineHeight / 2, ")") }), compSeq.split("").map(this.seqTextSpan))) : null,
                 zoomed && (React.createElement(CutSites_1.CutSites, { cutSites: cutSiteRows, findXAndWidth: this.findXAndWidth, firstBase: firstBase, inputRef: inputRef, lastBase: lastBase, lineHeight: lineHeight, size: size, yDiff: cutSiteYDiff - 3, zoom: zoom })),
                 React.createElement(Find_1.default, { compYDiff: compYDiff - 3, filteredRows: showComplement ? searchRows : searchRows.filter(function (r) { return r.direction === 1; }), findXAndWidth: this.findXAndWidth, firstBase: firstBase, indexYDiff: indexYDiff - 3, inputRef: inputRef, lastBase: lastBase, lineHeight: lineHeight, listenerOnly: true, zoomed: zoomed }),
@@ -5946,7 +5947,7 @@ var Alignment = /** @class */ (function (_super) {
                 { identifier: 'seq2', translationRow: translationRowsComparison, array: seqBlocksCompare, fullSequence: seqToCompare, sequence: seqsToCompare, id: idsCp, multiplyFactor: 1, showIndex: true },
             ].forEach(function (_a) {
                 var identifier = _a.identifier, translationRow = _a.translationRow, array = _a.array, fullSequence = _a.fullSequence, sequence = _a.sequence, id = _a.id, multiplyFactor = _a.multiplyFactor, showIndex = _a.showIndex;
-                array.push(React.createElement(SeqBlock_1.SeqBlock, { key: "".concat(id[i], "_").concat(identifier), annotationRows: annotationRows[i], blockHeight: blockHeights[i] * multiplyFactor, bpColors: _this.props.bpColors, bpsPerBlock: bpsPerBlock, charWidth: _this.props.charWidth, compSeq: seqToCompare, cutSiteRows: cutSiteRows[i], elementHeight: elementHeight, firstBase: firstBase, fullSeq: fullSequence, handleMouseEvent: _this.props.handleMouseEvent, highlights: highlightRows[i], id: id[i], inputRef: _this.props.inputRef, lineHeight: lineHeight, searchRows: searchRows[i], seq: sequence[i], seqFontSize: _this.props.seqFontSize, seqType: seqType, showComplement: false, showIndex: showIndex, size: size, translations: translationRow[i], y: yDiff, zoom: zoom, zoomed: zoomed, onUnmount: onUnmount }));
+                array.push(React.createElement(SeqBlock_1.SeqBlock, { key: "".concat(id[i], "_").concat(identifier), annotationRows: annotationRows[i], blockHeight: blockHeights[i] * multiplyFactor, bpColors: _this.props.bpColors, bpsPerBlock: bpsPerBlock, charWidth: _this.props.charWidth, compSeq: seqToCompare, cutSiteRows: cutSiteRows[i], elementHeight: elementHeight, firstBase: firstBase, fullSeq: fullSequence, handleMouseEvent: _this.props.handleMouseEvent, highlights: highlightRows[i], id: id[i], inputRef: _this.props.inputRef, lineHeight: lineHeight, searchRows: searchRows[i], colorized: _this.props.colorized, seq: sequence[i], seqFontSize: _this.props.seqFontSize, seqType: seqType, showComplement: false, showIndex: showIndex, size: size, translations: translationRow[i], y: yDiff, zoom: zoom, zoomed: zoomed, onUnmount: onUnmount }));
             });
             yDiff += blockHeights[i];
         };

@@ -14,6 +14,7 @@ interface SeqViewerContainerProps {
     };
     compSeq: string;
     copyEvent: (event: React.KeyboardEvent<HTMLElement>) => boolean;
+    colorized: boolean;
     cutSites: CutSite[];
     height: number;
     highlights: Highlight[];

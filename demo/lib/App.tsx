@@ -60,6 +60,7 @@ export default class App extends React.Component<any, AppState> {
     showComplement:false,
     showIndex: true,
     showSelectionMeta: false,
+    colorized: false,
     showSidebar: false,
     translations: [
     ],
@@ -184,6 +185,7 @@ export default class App extends React.Component<any, AppState> {
                     
                     
                     
+                    colorized={this.state.colorized}
                     
                     annotations={this.state.annotations}
                     enzymes={this.state.enzymes}
@@ -191,6 +193,46 @@ export default class App extends React.Component<any, AppState> {
                     search={this.state.search}
                     seq={this.state.seq}
                     seqToCompare={this.state.seqToCompare}
+                    showComplement={this.state.showComplement}
+                    showIndex={this.state.showIndex}
+                    translations={this.state.translations}
+                    viewer={this.state.viewer}
+                    zoom={{ linear: this.state.zoom }}
+                    selection={this.state.selection}
+                  />
+                )}
+              </div> <div id="seqviewer">
+                {this.state.seq && (
+                  <SeqViz
+                    // name={this.state.name}
+                    // seq={this.state.seq}
+                    // viewer={this.state.viewer}
+                    // annotations={this.state.annotations}
+                    // translations={this.state.translations}
+                    // showAnnotations={this.state.showAnnotations}
+                    // showTranslations={this.state.showTranslations}
+                    // showPrimers={this.state.showPrimers}
+                    // showComplement={this.state.showComplement}
+                    // showIndex={this.state.showIndex}
+                    // onSelection={this.state.onSelection}
+                    // copyEvent={this.state.copyEvent}
+                    // style={this.state.style}
+                    // zoom={this.state.zoom}
+                    // rotateOnScroll={this.state.rotateOnScroll}
+                  
+                  
+                  
+                    
+                    
+                    
+                    
+                    annotations={this.state.annotations}
+                    enzymes={this.state.enzymes}
+                    name={this.state.name}
+                    search={this.state.search}
+                    seq='TATATATATATATATATTATATATTTTATATATTATA'
+                    seqToCompare='TATATATATATATATATTATATATTTTATATATTATA'
+                    colorized={this.state.colorized}
                     showComplement={this.state.showComplement}
                     showIndex={this.state.showIndex}
                     translations={this.state.translations}

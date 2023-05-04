@@ -37,6 +37,7 @@ interface SeqBlockProps {
     seqType: SeqType;
     showComplement: boolean;
     showIndex: boolean;
+    colorized: boolean;
     size: Size;
     translations: Translation[];
     y: number;

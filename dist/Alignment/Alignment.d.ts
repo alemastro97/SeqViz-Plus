@@ -22,6 +22,7 @@ export interface LinearProps {
     seqFontSize: number;
     seqType: SeqType;
     showComplement: boolean;
+    colorized: boolean;
     showIndex: boolean;
     size: Size;
     translations: Range[];

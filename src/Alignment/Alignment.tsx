@@ -27,6 +27,7 @@ export interface LinearProps {
   seqFontSize: number;
   seqType: SeqType;
   showComplement: boolean;
+  colorized: boolean;
   showIndex: boolean;
   size: Size;
   translations: Range[];
@@ -177,7 +178,7 @@ export default class Alignment extends React.Component<LinearProps> {
       if (showIndex) {
         blockHeight += lineHeight; // another for index row
       }
-      if (translationRows[i].length) {
+      if (translationRows[i].length ) {
         blockHeight += translationRows[i].length * elementHeight;
       }
       if (annotationRows[i].length) {
@@ -220,6 +221,7 @@ export default class Alignment extends React.Component<LinearProps> {
             inputRef={this.props.inputRef}
             lineHeight={lineHeight}
             searchRows={searchRows[i]}
+            colorized={this.props.colorized}
             seq={sequence[i]}
             seqFontSize={this.props.seqFontSize}
             seqType={seqType}

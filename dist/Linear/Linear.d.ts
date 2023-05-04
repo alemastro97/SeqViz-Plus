@@ -20,6 +20,7 @@ export interface LinearProps {
     seq: string;
     seqFontSize: number;
     seqType: SeqType;
+    colorized: boolean;
     showComplement: boolean;
     showIndex: boolean;
     size: Size;

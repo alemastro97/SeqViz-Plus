@@ -25,6 +25,7 @@ export interface LinearProps {
   seq: string;
   seqFontSize: number;
   seqType: SeqType;
+  colorized: boolean;
   showComplement: boolean;
   showIndex: boolean;
   size: Size;
@@ -178,6 +179,7 @@ export default class Linear extends React.Component<LinearProps> {
           highlights={highlightRows[i]}
           id={ids[i]}
           inputRef={this.props.inputRef}
+          colorized={this.props.colorized}
           lineHeight={lineHeight}
           searchRows={searchRows[i]}
           seq={seqs[i]}
@@ -201,6 +203,7 @@ export default class Linear extends React.Component<LinearProps> {
         <InfiniteScroll
           blockHeights={blockHeights}
           bpsPerBlock={bpsPerBlock}
+          
           seqBlocks={seqBlocks}
           seqBlocksCompare={seqBlocks}
           seqBlocksSymbols={seqBlocks}

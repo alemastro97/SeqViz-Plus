@@ -111,7 +111,7 @@ export interface SeqVizProps {
   /** a sequence to render. Can be DNA, RNA, or an amino acid sequence. Setting accession or file overrides this */
   seq?: string;
   seqToCompare: string;
-
+  colorized: boolean;
   /** the type of the sequence. If this isn't passed, the type is guessed */
   seqType?: "dna" | "rna" | "aa";
 
@@ -182,6 +182,7 @@ export default class SeqViz extends React.Component<SeqVizProps, SeqVizState> {
     search: { mismatch: 0, query: "" },
     seq: "",
     seqToCompare: "",
+    colorized: true,
     showComplement: true,
     showIndex: true,
     style: {},

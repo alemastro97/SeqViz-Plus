@@ -48,6 +48,7 @@ interface SeqBlockProps {
   seqType: SeqType;
   showComplement: boolean;
   showIndex: boolean;
+  colorized: boolean;
   size: Size;
   translations: Translation[];
   y: number;
@@ -228,6 +229,7 @@ export class SeqBlock extends React.PureComponent<SeqBlockProps> {
       inputRef,
       lineHeight,
       onUnmount,
+      colorized,
       searchRows,
       seq,
       seqFontSize,
@@ -359,7 +361,7 @@ export class SeqBlock extends React.PureComponent<SeqBlockProps> {
           listenerOnly={false}
           zoomed={zoomed}
         />
-        {translations.length && (
+        {colorized && translations.length && (
           <TranslationRows
             bpsPerBlock={bpsPerBlock}
             charWidth={charWidth}
@@ -390,7 +392,8 @@ export class SeqBlock extends React.PureComponent<SeqBlockProps> {
             yDiff={annYDiff}
           />
         )}
-        {zoomed && seqType !== "aa" ? (
+        {zoomed && (seqType !== "aa" || !colorized) ? (
+          
           <text
             {...textProps}
             className="la-vz-seq"
