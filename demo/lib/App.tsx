@@ -30,6 +30,7 @@ interface AppState {
   annotations: AnnotationProp[];
   enzymes: any[];
   name: string;
+  nameToCompare: string;
   primers: boolean;
   search: { query: string };
   searchResults: any;
@@ -49,7 +50,8 @@ export default class App extends React.Component<any, AppState> {
   state: AppState = {
     // annotations: [],
     enzymes: ["PstI", "EcoRI", "XbaI", "SpeI"],
-    name: "",
+    name: "Sequenza 1",
+    nameToCompare: "Sequence 2",
     primers: true,
     search: { query: "ttnnnaat" },
     searchResults: {},
@@ -190,6 +192,7 @@ export default class App extends React.Component<any, AppState> {
                     annotations={this.state.annotations}
                     enzymes={this.state.enzymes}
                     name={this.state.name}
+                    nameToCompare={this.state.nameToCompare}
                     search={this.state.search}
                     seq={this.state.seq}
                     seqToCompare={this.state.seqToCompare}
@@ -229,6 +232,7 @@ export default class App extends React.Component<any, AppState> {
                     annotations={this.state.annotations}
                     enzymes={this.state.enzymes}
                     name={this.state.name}
+                    nameToCompare={this.state.nameToCompare}
                     search={this.state.search}
                     seq='TATATATATATATATATTATATATTTTATATATTATA'
                     seqToCompare='TATATATATATATATATTATATATTTTATATATTATA'

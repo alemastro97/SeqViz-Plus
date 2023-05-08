@@ -8,6 +8,8 @@ export interface EventsHandlerProps {
     handleMouseEvent: (e: any) => void;
     selection: Selection;
     seq: string[];
+    name: string;
+    nameToCompare?: string;
     setSelection: (selection: Selection) => void;
 }
 export interface EventsHandlerState {

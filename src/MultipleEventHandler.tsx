@@ -14,6 +14,8 @@ export interface EventsHandlerProps {
   handleMouseEvent: (e: any) => void;
   selection: Selection;
   seq: string[];
+  name: string;
+  nameToCompare?: string;
   setSelection: (selection: Selection) => void;
 }
 export interface EventsHandlerState {
@@ -273,9 +275,11 @@ export class MultipleEventHandler extends React.PureComponent<EventsHandlerProps
     onMouseMove={this.props.handleMouseEvent}
     onMouseUp={this.handleMouseEvent}
     >
-    <AlignmentStatistics seq={this.props.seq[0]} seqToCompare={this.props.seq[1]} seqType={guessType(this.props.seq[0])}/>
+    <AlignmentStatistics   name = {this.props.name}
+      nameToCompare = {this.props.nameToCompare} seq={this.props.seq[0]} seqToCompare={this.props.seq[1]} seqType={guessType(this.props.seq[0])}/>
       {this.state.rightClickMenu && <FloatingMenu close={this.closeMenu}
       seq = {this.props.seq[0]}
+    
       start={this.props.children.props.selection.start}
       end={this.props.children.props.selection.end}
       seqComp={this.props.seq[1]}

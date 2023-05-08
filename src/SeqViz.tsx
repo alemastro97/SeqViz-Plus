@@ -82,6 +82,7 @@ export interface SeqVizProps {
 
   /** the name of the sequence to show in the middle of the circular viewer */
   name?: string;
+  nameToCompare?: string;
 
   /** a callback that's executed on each change to the search parameters or sequence */
   onSearch?: (search: Range[]) => void;
@@ -176,6 +177,7 @@ export default class SeqViz extends React.Component<SeqVizProps, SeqVizState> {
     enzymes: [],
     enzymesCustom: {},
     name: "",
+    nameToCompare: "",
     onSearch: (_: Range[]) => null,
     onSelection: (_: Selection) => null,
     rotateOnScroll: true,

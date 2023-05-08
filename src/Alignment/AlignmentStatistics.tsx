@@ -1,6 +1,6 @@
 import * as React from "react";
 
-export default function AlignmentStatistics({ seq, seqToCompare, seqType }) {
+export default function AlignmentStatistics({ name, nameToCompare, seq, seqToCompare, seqType }) {
   const generateFunctionSymbol = () => {
     const blossom_block = [
       ['c'],
@@ -28,12 +28,12 @@ export default function AlignmentStatistics({ seq, seqToCompare, seqType }) {
         className="alignment-table-col">Fraction Identical</th><th
         className="alignment-table-col">Coverage</th></tr>
         <tr className="alignment-table-row"><th 
-        className="alignment-table-col">Sequence 1</th><td
+        className="alignment-table-col">{ name }</th><td
         className="alignment-table-col">{seq.split("").filter(el => el !== '-').length}</td><td
         className="alignment-table-col">{(generateFunctionSymbol().split('').reduce((a, c) => { if (c === '|') return a += 1; return a }, 0) / seq.split("").filter(el => el !== '-').length).toFixed(2)}</td><td
         className="alignment-table-col">{(generateFunctionSymbol().split('').reduce((a, c) => { if (['|', '.'].includes(c)) return a += 1; return a }, 0) / seq.split("").filter(el => el !== '-').length).toFixed(2)}</td></tr>
         <tr className="alignment-table-row"><th 
-        className="alignment-table-col">Sequence 2</th><td
+        className="alignment-table-col">{nameToCompare}</th><td
         className="alignment-table-col">{seqToCompare.split("").filter(el => el !== '-').length}</td><td
         className="alignment-table-col">{(generateFunctionSymbol().split('').reduce((a, c) => { if (c === '|') return a += 1; return a }, 0) / seqToCompare.split("").filter(el => el !== '-').length).toFixed(2)}</td><td
         className="alignment-table-col">{(generateFunctionSymbol().split('').reduce((a, c) => { if (['|', '.'].includes(c)) return a += 1; return a }, 0) / seqToCompare.split("").filter(el => el !== '-').length).toFixed(2)}</td></tr>

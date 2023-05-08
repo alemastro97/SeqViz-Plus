@@ -30,6 +30,7 @@ interface SeqViewerContainerProps {
   height: number;
   highlights: Highlight[];
   name: string;
+  nameToCompare?: string;
   onSelection: (selection: Selection) => void;
   rotateOnScroll: boolean;
   search: NameRange[];
@@ -373,6 +374,8 @@ class SeqViewerContainer extends React.Component<SeqViewerContainerProps, SeqVie
                 <MultipleEventHandler
                   bpsPerBlock={linearProps.bpsPerBlock}
                   copyEvent={this.props.copyEvent}
+                  name={this.props.name}
+                  nameToCompare={this.props.nameToCompare}
                   handleMouseEvent={handleMouseEvent}
                   selection={selection}
                   seq={[seq, seqToCompare]}

@@ -1,5 +1,7 @@
 /// <reference types="react" />
-export default function AlignmentStatistics({ seq, seqToCompare, seqType }: {
+export default function AlignmentStatistics({ name, nameToCompare, seq, seqToCompare, seqType }: {
+    name: any;
+    nameToCompare: any;
     seq: any;
     seqToCompare: any;
     seqType: any;

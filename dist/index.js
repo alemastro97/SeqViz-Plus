@@ -1,5 +1,5 @@
 /*!
- * seqviz-plus - 2.0.10
+ * seqviz-plus - 2.0.11
  * provided and maintained by Lattice Automation (https://latticeautomation.com/)
  * LICENSE MIT
  */
@@ -352,6 +352,7 @@ var SeqViz = /** @class */ (function (_super) {
         enzymes: [],
         enzymesCustom: {},
         name: "",
+        nameToCompare: "",
         onSearch: function (_) { return null; },
         onSelection: function (_) { return null; },
         rotateOnScroll: true,
@@ -615,7 +616,7 @@ var SeqViewerContainer = /** @class */ (function (_super) {
                     viewer === 'alignment' &&
                         React.createElement(React.Fragment, null,
                             seq.length !== seqToCompare.length && React.createElement("div", { className: "warning-banner" }, "Attention: the two inserted sequences do not have the same length"),
-                            React.createElement(MultipleSequenceSelectionHandler_1.default, { bpsPerBlock: linearProps.bpsPerBlock, center: circularProps.center, centralIndex: centralIndex.circular, seq: [seq, seqToCompare], setCentralIndex: this.setCentralIndex, setSelection: this.setSelection, yDiff: circularProps.yDiff }, function (inputRef, handleMouseEvent, onUnmount) { return (React.createElement(MultipleEventHandler_1.MultipleEventHandler, { bpsPerBlock: linearProps.bpsPerBlock, copyEvent: _this.props.copyEvent, handleMouseEvent: handleMouseEvent, selection: selection, seq: [seq, seqToCompare], setSelection: _this.setSelection },
+                            React.createElement(MultipleSequenceSelectionHandler_1.default, { bpsPerBlock: linearProps.bpsPerBlock, center: circularProps.center, centralIndex: centralIndex.circular, seq: [seq, seqToCompare], setCentralIndex: this.setCentralIndex, setSelection: this.setSelection, yDiff: circularProps.yDiff }, function (inputRef, handleMouseEvent, onUnmount) { return (React.createElement(MultipleEventHandler_1.MultipleEventHandler, { bpsPerBlock: linearProps.bpsPerBlock, copyEvent: _this.props.copyEvent, name: _this.props.name, nameToCompare: _this.props.nameToCompare, handleMouseEvent: handleMouseEvent, selection: selection, seq: [seq, seqToCompare], setSelection: _this.setSelection },
                                 React.createElement(Alignment_1.default, __assign({}, alignmentProps, { handleMouseEvent: handleMouseEvent, inputRef: inputRef, onUnmount: onUnmount })))); }))))));
     };
     return SeqViewerContainer;
@@ -3392,7 +3393,7 @@ var MultipleEventHandler = /** @class */ (function (_super) {
             _this.setState({ rightClickMenu: false });
         };
         _this.render = function () { return (React.createElement("div", { className: "la-vz-viewer-event-router", id: "la-vz-event-router", role: "presentation", tabIndex: -1, style: { display: "flex", flexDirection: "column" }, onContextMenu: _this.handleMouseEvent, onKeyDown: _this.handleKeyPress, onMouseDown: _this.handleMouseEvent, onMouseMove: _this.props.handleMouseEvent, onMouseUp: _this.handleMouseEvent },
-            React.createElement(AlignmentStatistics_1.default, { seq: _this.props.seq[0], seqToCompare: _this.props.seq[1], seqType: (0, sequence_1.guessType)(_this.props.seq[0]) }),
+            React.createElement(AlignmentStatistics_1.default, { name: _this.props.name, nameToCompare: _this.props.nameToCompare, seq: _this.props.seq[0], seqToCompare: _this.props.seq[1], seqType: (0, sequence_1.guessType)(_this.props.seq[0]) }),
             _this.state.rightClickMenu && React.createElement(FloatingMenu_1.default, { close: _this.closeMenu, seq: _this.props.seq[0], start: _this.props.children.props.selection.start, end: _this.props.children.props.selection.end, seqComp: _this.props.seq[1], top: _this.state.yFloatingMenu, left: _this.state.xFloatingMenu }),
             _this.props.children)); };
         return _this;
@@ -3411,7 +3412,7 @@ exports.MultipleEventHandler = MultipleEventHandler;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var React = __webpack_require__(1);
 function AlignmentStatistics(_a) {
-    var seq = _a.seq, seqToCompare = _a.seqToCompare, seqType = _a.seqType;
+    var name = _a.name, nameToCompare = _a.nameToCompare, seq = _a.seq, seqToCompare = _a.seqToCompare, seqType = _a.seqType;
     var generateFunctionSymbol = function () {
         var blossom_block = [
             ['c'],
@@ -3438,14 +3439,14 @@ function AlignmentStatistics(_a) {
                 React.createElement("th", { className: "alignment-table-col" }, "Fraction Identical"),
                 React.createElement("th", { className: "alignment-table-col" }, "Coverage")),
             React.createElement("tr", { className: "alignment-table-row" },
-                React.createElement("th", { className: "alignment-table-col" }, "Sequence 1"),
+                React.createElement("th", { className: "alignment-table-col" }, name),
                 React.createElement("td", { className: "alignment-table-col" }, seq.split("").filter(function (el) { return el !== '-'; }).length),
                 React.createElement("td", { className: "alignment-table-col" }, (generateFunctionSymbol().split('').reduce(function (a, c) { if (c === '|')
                     return a += 1; return a; }, 0) / seq.split("").filter(function (el) { return el !== '-'; }).length).toFixed(2)),
                 React.createElement("td", { className: "alignment-table-col" }, (generateFunctionSymbol().split('').reduce(function (a, c) { if (['|', '.'].includes(c))
                     return a += 1; return a; }, 0) / seq.split("").filter(function (el) { return el !== '-'; }).length).toFixed(2))),
             React.createElement("tr", { className: "alignment-table-row" },
-                React.createElement("th", { className: "alignment-table-col" }, "Sequence 2"),
+                React.createElement("th", { className: "alignment-table-col" }, nameToCompare),
                 React.createElement("td", { className: "alignment-table-col" }, seqToCompare.split("").filter(function (el) { return el !== '-'; }).length),
                 React.createElement("td", { className: "alignment-table-col" }, (generateFunctionSymbol().split('').reduce(function (a, c) { if (c === '|')
                     return a += 1; return a; }, 0) / seqToCompare.split("").filter(function (el) { return el !== '-'; }).length).toFixed(2)),
