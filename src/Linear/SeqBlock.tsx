@@ -9,6 +9,7 @@ import Highlights from "./Highlights";
 import IndexRow from "./Index";
 import Selection from "./Selection";
 import { TranslationRows } from "./Translations";
+import { colorByGroup } from "../colors";
 
 export type FindXAndWidthType = (
   n1?: number | null,
@@ -49,6 +50,7 @@ interface SeqBlockProps {
   showComplement: boolean;
   showIndex: boolean;
   colorized: boolean;
+  aagrouping?: boolean;
   size: Size;
   translations: Translation[];
   y: number;
@@ -206,9 +208,43 @@ export class SeqBlock extends React.PureComponent<SeqBlockProps> {
     return (
       // the +0.2 here and above is to offset the characters they're not right on the left edge. When they are,
       // other elements look like they're shifted too far to the right.
-      <tspan key={i + bp + id} fill={color || undefined} x={charWidth * i + charWidth * 0.2}>
+      <tspan
+      key={i + bp + id} fill={color || undefined} x={charWidth * i + charWidth * 0.2}>
         {bp}
       </tspan>
+    );
+  };
+  alignmentSeqTextSpan = (bp: string, i: number, textProps, indexYDiff, lineHeight) => {
+    const { bpColors, charWidth, firstBase, id } = this.props;
+
+    let color: string | undefined;
+    if (bpColors) {
+      color =
+        bpColors[bp] ||
+        bpColors[bp.toUpperCase()] ||
+        bpColors[bp.toLowerCase()] ||
+        bpColors[i + firstBase] ||
+        undefined;
+    }
+
+    return (
+      // the +0.2 here and above is to offset the characters they're not right on the left edge. When they are,
+      // other elements look like they're shifted too far to the right.
+      <>
+            <rect x={charWidth * i + charWidth * 0.2} width="10" height="10" style={{fill:['|',' ','.',''].includes(bp) ?  '#0000' : colorByGroup(bp)}} />
+       <text
+            {...textProps}
+            className="la-vz-seq"
+            data-testid="la-vz-seq"
+            id={id}
+            transform={`translate(0, ${indexYDiff + lineHeight / 2})`}
+          >
+
+<tspan
+      // fill={['|',' ','.'].includes(bp) ?  '#0000' : colorByGroup(bp)}
+      key={i + bp + id} fill={color || undefined} x={charWidth * i + charWidth * 0.2}>
+        {bp}
+      </tspan></text></>
     );
   };
 
@@ -223,7 +259,7 @@ export class SeqBlock extends React.PureComponent<SeqBlockProps> {
       elementHeight,
       firstBase,
       fullSeq,
-      handleMouseEvent,
+      handleMouseEvent,aagrouping,
       highlights,
       id,
       inputRef,
@@ -361,7 +397,7 @@ export class SeqBlock extends React.PureComponent<SeqBlockProps> {
           listenerOnly={false}
           zoomed={zoomed}
         />
-        {colorized && translations.length && (
+        {(colorized && !aagrouping) && translations.length && (
           <TranslationRows
             bpsPerBlock={bpsPerBlock}
             charWidth={charWidth}
@@ -369,6 +405,7 @@ export class SeqBlock extends React.PureComponent<SeqBlockProps> {
             findXAndWidth={this.findXAndWidth}
             firstBase={firstBase}
             fullSeq={fullSeq}
+            aagrouping={aagrouping}
             inputRef={inputRef}
             lastBase={lastBase}
             seqType={seqType}
@@ -392,9 +429,9 @@ export class SeqBlock extends React.PureComponent<SeqBlockProps> {
             yDiff={annYDiff}
           />
         )}
-        {zoomed && (seqType !== "aa" || !colorized) ? (
+        {zoomed && (seqType !== "aa" || !colorized || aagrouping) ? (
           
-          <text
+          <>{seqType !== "aa" && <text
             {...textProps}
             className="la-vz-seq"
             data-testid="la-vz-seq"
@@ -402,7 +439,21 @@ export class SeqBlock extends React.PureComponent<SeqBlockProps> {
             transform={`translate(0, ${indexYDiff + lineHeight / 2})`}
           >
             {seq.split("").map(this.seqTextSpan)}
-          </text>
+          </text>}
+          {seqType == "aa" && 
+          // <text
+          //   {...textProps}
+          //   className="la-vz-seq"
+          //   data-testid="la-vz-seq"
+          //   id={id}
+          //   transform={`translate(0, ${indexYDiff + lineHeight / 2})`}
+          // >
+            // {
+              seq.split("").map((bp, i) => this.alignmentSeqTextSpan(bp, i, textProps,indexYDiff,lineHeight))
+            // }
+          // </text>
+        }
+          </>
         ) : null}
         {compSeq && zoomed && showComplement && seqType !== "aa" ? (
           <text

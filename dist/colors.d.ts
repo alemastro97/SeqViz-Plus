@@ -19,6 +19,7 @@ export declare const COLOR_BORDER_MAP: {
     "#FAA887": string;
 };
 export declare const chooseRandomColor: (colors?: string[]) => string;
+export declare const colorByGroup: (c: string) => string | undefined;
 /** get an "indexed" color from the colors array */
 export declare const colorByIndex: (i: number, colors?: string[]) => string;
 /** get an "indexed" color from the colors array */

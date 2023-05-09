@@ -23,6 +23,7 @@ export interface LinearProps {
     seqType: SeqType;
     showComplement: boolean;
     colorized: boolean;
+    aagrouping?: boolean;
     showIndex: boolean;
     size: Size;
     translations: Range[];

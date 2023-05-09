@@ -64,6 +64,16 @@ export const chooseRandomColor = (colors?: string[]) => {
   return choices[randIndex];
 };
 
+const colorGroups = {
+  '#e6bcbc':['R','H','K','D','E'],
+  '#e0cfe8':['S','T','N','Q'],
+  '#faf49e':['C','U','G','P'],
+  '#ceeac8':['A','V','I','L','M','F','Y','W'],
+  '#00000000':['-']
+}
+
+export const colorByGroup = (c: string) => Object.keys(colorGroups).find((k) => colorGroups[k].includes(c))
+
 /** get an "indexed" color from the colors array */
 export const colorByIndex = (i: number, colors?: string[]) => (colors || COLORS)[i % (colors || COLORS).length];
 

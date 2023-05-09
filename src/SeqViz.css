@@ -225,3 +225,10 @@
 .alignment-table-row {border: 1px solid RGB(235 235 235)}
 .alignment-table-row:nth-child(2n + 1) {background: rgb(248, 248, 248);}
 .alignment-table-col {border: 1px solid #ddd; padding: 8px; text-align: center;}
+
+
+
+
+.bg-align {
+  font-family: 'Ahem, sans-serif'
+}

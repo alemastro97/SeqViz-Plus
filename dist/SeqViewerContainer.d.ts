@@ -20,6 +20,7 @@ interface SeqViewerContainerProps {
     highlights: Highlight[];
     name: string;
     nameToCompare?: string;
+    aagrouping?: boolean;
     onSelection: (selection: Selection) => void;
     rotateOnScroll: boolean;
     search: NameRange[];

@@ -87,6 +87,7 @@ export interface SeqVizProps {
      * @deprecated to avoid rendering annotations, don't pass any
      */
     showAnnotations?: boolean;
+    aagrouping?: boolean;
     /** whether to render the complement sequence */
     showComplement?: boolean;
     /** whether to show the index row with ticks and indexes  */

@@ -31,6 +31,7 @@ interface SeqViewerContainerProps {
   highlights: Highlight[];
   name: string;
   nameToCompare?: string;
+  aagrouping?: boolean;
   onSelection: (selection: Selection) => void;
   rotateOnScroll: boolean;
   search: NameRange[];
@@ -131,7 +132,7 @@ class SeqViewerContainer extends React.Component<SeqViewerContainerProps, SeqVie
    * on the screen at a given time and what should their size be
    */
   linearProps = () => {
-    const { seq, seqType, viewer, colorized } = this.props;
+    const { seq, seqType, viewer, colorized,aagrouping } = this.props;
     const size = this.props.testSize || { height: this.props.height, width: this.props.width };
     const zoom = this.props.zoom.linear;
 
@@ -145,7 +146,7 @@ class SeqViewerContainer extends React.Component<SeqViewerContainerProps, SeqVie
     // otherwise the sequence needs to be cut into smaller subsequences
     // a sliding scale in width related to the degree of zoom currently active
     let bpsPerBlock = Math.round((size.width / seqFontSize) * 1.4) || 1; // width / 1 * seqFontSize
-    if (seqType === "aa" && colorized) {
+    if (seqType === "aa" && (colorized) && !aagrouping) {
       bpsPerBlock = Math.round(bpsPerBlock / 3); // more space for each amino acid
     }
 
@@ -181,7 +182,7 @@ class SeqViewerContainer extends React.Component<SeqViewerContainerProps, SeqVie
     };
   };
   alignmentProps = () => {
-    const { seq, seqType, colorized } = this.props;
+    const { seq, seqType, colorized, aagrouping } = this.props;
     const size = this.props.testSize || { height: this.props.height, width: this.props.width };
     const zoom = this.props.zoom.linear;
 
@@ -191,7 +192,7 @@ class SeqViewerContainer extends React.Component<SeqViewerContainerProps, SeqVie
     // a sliding scale in width related to the degree of zoom currently active
     let bpsPerBlock = Math.round((size.width / seqFontSize) * 1.4) || 1; // width / 1 * seqFontSize
     
-    if (seqType === "aa" && colorized) {
+    if (seqType === "aa" && colorized && !aagrouping) {
       bpsPerBlock = Math.round(bpsPerBlock / 3); // more space for each amino acid
     }
 
@@ -358,9 +359,9 @@ class SeqViewerContainer extends React.Component<SeqViewerContainerProps, SeqVie
             
             {viewer === 'alignment' &&
             <>
-            {seq.length !== seqToCompare.length && <div className="warning-banner">
+            {/* {seq.length !== seqToCompare.length && <div className="warning-banner">
               Attention: the two inserted sequences do not have the same length
-            </div>}
+            </div>} */}
             <MultipleSequenceSelectionHandler
               bpsPerBlock={linearProps.bpsPerBlock}
               center={circularProps.center}
@@ -374,6 +375,7 @@ class SeqViewerContainer extends React.Component<SeqViewerContainerProps, SeqVie
                 <MultipleEventHandler
                   bpsPerBlock={linearProps.bpsPerBlock}
                   copyEvent={this.props.copyEvent}
+                  aagrouping={this.props.aagrouping}
                   name={this.props.name}
                   nameToCompare={this.props.nameToCompare}
                   handleMouseEvent={handleMouseEvent}

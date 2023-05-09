@@ -38,6 +38,7 @@ interface SeqBlockProps {
     showComplement: boolean;
     showIndex: boolean;
     colorized: boolean;
+    aagrouping?: boolean;
     size: Size;
     translations: Translation[];
     y: number;
@@ -90,6 +91,7 @@ export declare class SeqBlock extends React.PureComponent<SeqBlockProps> {
      * wrapping it in a textSpan with that color as a fill
      */
     seqTextSpan: (bp: string, i: number) => JSX.Element;
+    alignmentSeqTextSpan: (bp: string, i: number, textProps: any, indexYDiff: any, lineHeight: any) => JSX.Element;
     render(): JSX.Element | null;
 }
 export {};

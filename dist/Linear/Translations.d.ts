@@ -10,11 +10,12 @@ interface TranslationRowsProps {
     fullSeq: string;
     inputRef: InputRefFunc;
     lastBase: number;
+    aagrouping?: boolean;
     onUnmount: (a: unknown) => void;
     seqType: SeqType;
     translations: Translation[];
     yDiff: number;
 }
 /** Rows of translations */
-export declare const TranslationRows: ({ bpsPerBlock, charWidth, elementHeight, findXAndWidth, firstBase, fullSeq, inputRef, lastBase, onUnmount, seqType, translations, yDiff }: TranslationRowsProps) => JSX.Element;
+export declare const TranslationRows: ({ aagrouping, bpsPerBlock, charWidth, elementHeight, findXAndWidth, firstBase, fullSeq, inputRef, lastBase, onUnmount, seqType, translations, yDiff }: TranslationRowsProps) => JSX.Element;
 export {};

@@ -10,6 +10,7 @@ import { guessType } from "./sequence";
 export interface EventsHandlerProps {
   bpsPerBlock: number;
   children: any;
+  aagrouping?: boolean;
   copyEvent: (e: React.KeyboardEvent<HTMLElement>) => boolean;
   handleMouseEvent: (e: any) => void;
   selection: Selection;

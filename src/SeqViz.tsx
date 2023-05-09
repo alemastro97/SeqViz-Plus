@@ -122,6 +122,7 @@ export interface SeqVizProps {
    * @deprecated to avoid rendering annotations, don't pass any
    */
   showAnnotations?: boolean;
+  aagrouping?: boolean;
 
   /** whether to render the complement sequence */
   showComplement?: boolean;
@@ -185,6 +186,7 @@ export default class SeqViz extends React.Component<SeqVizProps, SeqVizState> {
     seq: "",
     seqToCompare: "",
     colorized: true,
+    aagrouping: true,
     showComplement: true,
     showIndex: true,
     style: {},

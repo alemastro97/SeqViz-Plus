@@ -28,6 +28,7 @@ export interface LinearProps {
   seqType: SeqType;
   showComplement: boolean;
   colorized: boolean;
+  aagrouping?: boolean;
   showIndex: boolean;
   size: Size;
   translations: Range[];
@@ -213,6 +214,7 @@ export default class Alignment extends React.Component<LinearProps> {
             compSeq={seqToCompare}
             cutSiteRows={cutSiteRows[i]}
             elementHeight={elementHeight}
+            aagrouping={this.props.aagrouping}
             firstBase={firstBase}
             fullSeq={fullSequence}
             handleMouseEvent={this.props.handleMouseEvent}

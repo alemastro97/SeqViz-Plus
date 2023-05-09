@@ -57,12 +57,11 @@ export default class App extends React.Component<any, AppState> {
     searchResults: {},
     selection: {},
     // seq: "TATATATATATTA",
-    seq: "---TTTTAGTATAGATATAAGCAAKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA-----",
-    seqToCompare: "DTTTDTAGTATATAGATATAGCAAKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA-----",
+    seq: "MDGEEKTYGGCEGPDAMYVKLISSDGHEFIVKREHALTSGTIKAMLSGPGQFAENETNEVNFREIPSHVLSKVCMYFTYKVRYTNSSTEIPEFPIAPEIALELLMAANFLDC",
+    seqToCompare: "MDGEEKTYGGCEGPDAMYVKLISSDGHEFIVKREHALTSGTIKAMLSGPGQFAENETNEVNFREIPSHVLSKVCMYFTYKVRYTNSSTEIPEFPIAPEIALELLMAANFLDC",
     showComplement:false,
     showIndex: true,
     showSelectionMeta: false,
-    colorized: false,
     showSidebar: false,
     translations: [
     ],
@@ -187,8 +186,7 @@ export default class App extends React.Component<any, AppState> {
                     
                     
                     
-                    colorized={this.state.colorized}
-                    
+                 
                     annotations={this.state.annotations}
                     enzymes={this.state.enzymes}
                     name={this.state.name}
@@ -236,7 +234,6 @@ export default class App extends React.Component<any, AppState> {
                     search={this.state.search}
                     seq='TATATATATATATATATTATATATTTTATATATTATA'
                     seqToCompare='TATATATATATATATATTATATATTTTATATATTATA'
-                    colorized={this.state.colorized}
                     showComplement={this.state.showComplement}
                     showIndex={this.state.showIndex}
                     translations={this.state.translations}
