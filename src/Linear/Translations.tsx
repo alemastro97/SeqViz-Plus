@@ -111,7 +111,7 @@ class TranslationRow extends React.PureComponent<TranslationRowProps> {
     // particular sequence block
     const AAs = AAseq.split('');
     return (
-      <>{aagrouping && <g
+      <>{!aagrouping && <g
         ref={inputRef(id, {
           end,
           name: 'translation',

@@ -187,6 +187,8 @@ export default class App extends React.Component<any, AppState> {
                     
                     
                  
+                    colorized={true}
+                    aagrouping={false}
                     annotations={this.state.annotations}
                     enzymes={this.state.enzymes}
                     name={this.state.name}
