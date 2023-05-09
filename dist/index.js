@@ -1,5 +1,5 @@
 /*!
- * seqviz-plus - 2.0.12
+ * seqviz-plus - 2.0.14
  * provided and maintained by Lattice Automation (https://latticeautomation.com/)
  * LICENSE MIT
  */
@@ -4985,7 +4985,7 @@ var TranslationRow = /** @class */ (function (_super) {
         // substring and split only the amino acids that are relevant to this
         // particular sequence block
         var AAs = AAseq.split('');
-        return (React.createElement(React.Fragment, null, aagrouping && React.createElement("g", { ref: inputRef(id, {
+        return (React.createElement(React.Fragment, null, !aagrouping && React.createElement("g", { ref: inputRef(id, {
                 end: end,
                 name: 'translation',
                 parent: __assign(__assign({}, translation), { type: 'TRANSLATION' }),
