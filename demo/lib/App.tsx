@@ -114,7 +114,7 @@ export default class App extends React.Component<any, AppState> {
 
   render() {
     return (
-      <div style={{ height: "100vh" }}>
+      <div style={{ height: "120vh" }}>
         <Sidebar.Pushable className="sidebar-container">
           <Sidebar
             animation="overlay"
@@ -199,7 +199,7 @@ export default class App extends React.Component<any, AppState> {
                     showComplement={this.state.showComplement}
                     showIndex={this.state.showIndex}
                     translations={this.state.translations}
-                    viewer={this.state.viewer}
+                    viewer={"both"}
                     zoom={{ linear: this.state.zoom }}
                     selection={this.state.selection}
                   />
@@ -239,7 +239,7 @@ export default class App extends React.Component<any, AppState> {
                     showComplement={this.state.showComplement}
                     showIndex={this.state.showIndex}
                     translations={this.state.translations}
-                    viewer={this.state.viewer}
+                    viewer={"alignment"}
                     zoom={{ linear: this.state.zoom }}
                     selection={this.state.selection}
                   />

@@ -229,9 +229,10 @@ export class EventHandler extends React.PureComponent<EventsHandlerProps> {
     if (e.button === 2 && e.type==="contextmenu" ) {
       e.preventDefault();
       this.setState({ rightClickMenu: true });
+      console.log(window.pageXOffset)
       // Box position (under the mouse)
-      this.setState({ xFloatingMenu: e.clientX });
-      this.setState({ yFloatingMenu: e.clientY });
+      this.setState({ xFloatingMenu: e.clientX + window.pageXOffset});
+      this.setState({ yFloatingMenu: e.clientY + window.pageYOffset});
       console.log(this.props)
       return;
     }
