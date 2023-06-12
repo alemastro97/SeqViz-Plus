@@ -231,8 +231,8 @@ export class EventHandler extends React.PureComponent<EventsHandlerProps> {
       this.setState({ rightClickMenu: true });
       console.log(window.pageXOffset)
       // Box position (under the mouse)
-      this.setState({ xFloatingMenu: e.clientX + window.pageXOffset});
-      this.setState({ yFloatingMenu: e.clientY + window.pageYOffset});
+      this.setState({ xFloatingMenu: e.clientX - window.pageXOffset});
+      this.setState({ yFloatingMenu: e.clientY - window.pageYOffset});
       console.log(this.props)
       return;
     }

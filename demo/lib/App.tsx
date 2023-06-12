@@ -114,7 +114,7 @@ export default class App extends React.Component<any, AppState> {
 
   render() {
     return (
-      <div style={{ height: "120vh" }}>
+      <div style={{ height: "2000vh" }}>
         <Sidebar.Pushable className="sidebar-container">
           <Sidebar
             animation="overlay"
@@ -204,7 +204,8 @@ export default class App extends React.Component<any, AppState> {
                     selection={this.state.selection}
                   />
                 )}
-              </div> <div id="seqviewer">
+              </div> 
+              <div style={{background:"red", justifyContent:"center", width: "50%", height:"1000px", alignItems:"end"}} id="seqviewer">
                 {this.state.seq && (
                   <SeqViz
                     // name={this.state.name}
@@ -240,6 +241,47 @@ export default class App extends React.Component<any, AppState> {
                     showIndex={this.state.showIndex}
                     translations={this.state.translations}
                     viewer={"alignment"}
+                    zoom={{ linear: this.state.zoom }}
+                    selection={this.state.selection}
+                  />
+                )}
+              <div style={{display:"flex", justifyContent:"center", width: "50%", height:"100vh", alignItems:"end"}} id="seqviewer"></div>  
+              </div>  <div style={{display:"flex", justifyContent:"center", width: "50%", height:"100vh", alignItems:"end"}} id="seqviewer">
+                {this.state.seq && (
+                  <SeqViz
+                    // name={this.state.name}
+                    // seq={this.state.seq}
+                    // viewer={this.state.viewer}
+                    // annotations={this.state.annotations}
+                    // translations={this.state.translations}
+                    // showAnnotations={this.state.showAnnotations}
+                    // showTranslations={this.state.showTranslations}
+                    // showPrimers={this.state.showPrimers}
+                    // showComplement={this.state.showComplement}
+                    // showIndex={this.state.showIndex}
+                    // onSelection={this.state.onSelection}
+                    // copyEvent={this.state.copyEvent}
+                    // style={this.state.style}
+                    // zoom={this.state.zoom}
+                    // rotateOnScroll={this.state.rotateOnScroll}
+                  
+                  
+                  
+                    
+                    
+                    
+                    
+                    annotations={this.state.annotations}
+                    enzymes={this.state.enzymes}
+                    name={this.state.name}
+                    nameToCompare={this.state.nameToCompare}
+                    search={this.state.search}
+                    seq='TATATATATATATATATTATATATTTTATATATTATA'
+                    seqToCompare='TATATATATATATATATTATATATTTTATATATTATA'
+                    showComplement={this.state.showComplement}
+                    showIndex={this.state.showIndex}
+                    translations={this.state.translations}
+                    viewer={"linear"}
                     zoom={{ linear: this.state.zoom }}
                     selection={this.state.selection}
                   />

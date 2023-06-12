@@ -235,8 +235,8 @@ export class MultipleEventHandler extends React.PureComponent<EventsHandlerProps
       e.preventDefault();
       this.setState({ rightClickMenu: true });
       // Box position (under the mouse)
-      this.setState({ xFloatingMenu: e.clientX + window.pageXOffset});
-      this.setState({ yFloatingMenu: e.clientY + window.pageYOffset});
+      this.setState({ xFloatingMenu: e.clientX - window.pageXOffset});
+      this.setState({ yFloatingMenu: e.clientY - window.pageYOffset});
       return;
     }
     // Close the context menu if a left click is performed on the screen and the target is not a button 
