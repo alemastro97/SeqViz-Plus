@@ -1,5 +1,5 @@
 /*!
- * seqviz-plus - 2.0.16
+ * seqviz-plus - 2.0.18
  * provided and maintained by Lattice Automation (https://latticeautomation.com/)
  * LICENSE MIT
  */
@@ -2582,8 +2582,8 @@ var EventHandler = /** @class */ (function (_super) {
                 _this.setState({ rightClickMenu: true });
                 console.log(window.pageXOffset);
                 // Box position (under the mouse)
-                _this.setState({ xFloatingMenu: e.clientX + window.pageXOffset });
-                _this.setState({ yFloatingMenu: e.clientY + window.pageYOffset });
+                _this.setState({ xFloatingMenu: e.clientX - window.pageXOffset });
+                _this.setState({ yFloatingMenu: e.clientY - window.pageYOffset });
                 console.log(_this.props);
                 return;
             }
@@ -3369,8 +3369,8 @@ var MultipleEventHandler = /** @class */ (function (_super) {
                 e.preventDefault();
                 _this.setState({ rightClickMenu: true });
                 // Box position (under the mouse)
-                _this.setState({ xFloatingMenu: e.clientX + window.pageXOffset });
-                _this.setState({ yFloatingMenu: e.clientY + window.pageYOffset });
+                _this.setState({ xFloatingMenu: e.clientX - window.pageXOffset });
+                _this.setState({ yFloatingMenu: e.clientY - window.pageYOffset });
                 return;
             }
             // Close the context menu if a left click is performed on the screen and the target is not a button 
