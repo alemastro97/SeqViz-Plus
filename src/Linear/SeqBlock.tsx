@@ -32,6 +32,7 @@ interface SeqBlockProps {
   bpsPerBlock: number;
   charWidth: number;
   compSeq: string;
+  symbolSeq: string;
   cutSiteRows: CutSite[];
   elementHeight: number;
   firstBase: number;
@@ -192,8 +193,8 @@ export class SeqBlock extends React.PureComponent<SeqBlockProps> {
    * We're looking up each bp in the props.bpColors map to see if it should be shaded and, if so,
    * wrapping it in a textSpan with that color as a fill
    */
-  seqTextSpan = (bp: string, i: number) => {
-    const { bpColors, charWidth, firstBase, id } = this.props;
+  seqTextSpan = (bp: string, i: number, textProps, indexYDiff, lineHeight) => {
+    const { bpColors, charWidth, firstBase, id, symbolSeq } = this.props;
 
     let color: string | undefined;
     if (bpColors) {
@@ -204,14 +205,25 @@ export class SeqBlock extends React.PureComponent<SeqBlockProps> {
         bpColors[i + firstBase] ||
         undefined;
     }
-
+    if (symbolSeq && symbolSeq[i] !== '|') {
+      color = "#FF0000"
+    }
     return (
       // the +0.2 here and above is to offset the characters they're not right on the left edge. When they are,
       // other elements look like they're shifted too far to the right.
-      <tspan
-      key={i + bp + id} fill={color || undefined} x={charWidth * i + charWidth * 0.2}>
-        {bp}
-      </tspan>
+      <>      <rect x={charWidth * i + charWidth * 0.2} width="10" height="20" style={{ fill: symbolSeq  && symbolSeq[i] && [' ', '.'].includes(symbolSeq[i]) ? "#E9C4C4" : '#0000' }} />
+
+        <text
+          {...textProps}
+          className="la-vz-seq"
+          data-testid="la-vz-seq"
+          id={id}
+          transform={`translate(0, ${indexYDiff + lineHeight / 2})`}
+        ><tspan
+          key={i + bp + id} fill={color || undefined} x={charWidth * i + charWidth * 0.2}>
+            {bp}
+          </tspan>
+        </text></>
     );
   };
   alignmentSeqTextSpan = (bp: string, i: number, textProps, indexYDiff, lineHeight) => {
@@ -231,20 +243,20 @@ export class SeqBlock extends React.PureComponent<SeqBlockProps> {
       // the +0.2 here and above is to offset the characters they're not right on the left edge. When they are,
       // other elements look like they're shifted too far to the right.
       <>
-            <rect x={charWidth * i + charWidth * 0.2} width="10" height="10" style={{fill:['|',' ','.',''].includes(bp) ?  '#0000' : colorByGroup(bp)}} />
-       <text
-            {...textProps}
-            className="la-vz-seq"
-            data-testid="la-vz-seq"
-            id={id}
-            transform={`translate(0, ${indexYDiff + lineHeight / 2})`}
-          >
+        <rect x={charWidth * i + charWidth * 0.2} width="10" height="10" style={{ fill: ['|', ' ', '.', ''].includes(bp) ? '#0000' : colorByGroup(bp) }} />
+        <text
+          {...textProps}
+          className="la-vz-seq"
+          data-testid="la-vz-seq"
+          id={id}
+          transform={`translate(0, ${indexYDiff + lineHeight / 2})`}
+        >
 
-<tspan
-      // fill={['|',' ','.'].includes(bp) ?  '#0000' : colorByGroup(bp)}
-      key={i + bp + id} fill={color || undefined} x={charWidth * i + charWidth * 0.2}>
-        {bp}
-      </tspan></text></>
+          <tspan
+            // fill={['|',' ','.'].includes(bp) ?  '#0000' : colorByGroup(bp)}
+            key={i + bp + id} fill={color || undefined} x={charWidth * i + charWidth * 0.2}>
+            {bp}
+          </tspan></text></>
     );
   };
 
@@ -259,7 +271,7 @@ export class SeqBlock extends React.PureComponent<SeqBlockProps> {
       elementHeight,
       firstBase,
       fullSeq,
-      handleMouseEvent,aagrouping,
+      handleMouseEvent, aagrouping,
       highlights,
       id,
       inputRef,
@@ -325,185 +337,161 @@ export class SeqBlock extends React.PureComponent<SeqBlockProps> {
 
     return (
       <>
-      <svg
-        ref={inputRef(id, {
-          end: lastBase,
-          ref: id,
-          start: firstBase,
-          type: "SEQ",
-          viewer: "LINEAR",
-        })}
-        className="la-vz-seqblock"
-        cursor="text"
-        data-testid="la-vz-seqblock"
-        display="block"
-        height={blockHeight}
-        id={id}
-        width={size.width >= 0 ? size.width : 0}
-        onMouseDown={handleMouseEvent}
-        onMouseMove={handleMouseEvent}
-        onMouseUp={handleMouseEvent}
-      >
-        {showIndex && (
-          <IndexRow
-            charWidth={charWidth}
-            findXAndWidth={this.findXAndWidth}
-            firstBase={firstBase}
-            lastBase={lastBase}
-            seq={seq}
-            seqType={seqType}
-            showIndex={showIndex}
-            size={size}
-            yDiff={indexRowYDiff}
-            zoom={zoom}
-          />
-        )}
-        <Selection.Block
-          findXAndWidth={this.findXAndWidth}
-          firstBase={firstBase}
-          fullSeq={fullSeq}
-          lastBase={lastBase}
-          selectHeight={selectHeight}
-          onUnmount={onUnmount}
-        />
-        <Highlights
-          compYDiff={compYDiff - 3}
-          findXAndWidth={this.findXAndWidthElement}
-          firstBase={firstBase}
-          highlights={highlights}
-          indexYDiff={indexYDiff - 3}
-          inputRef={inputRef}
-          lastBase={lastBase}
-          lineHeight={lineHeight}
-          listenerOnly={false}
-          seqBlockRef={this}
-        />
-        <Selection.Edges
-          findXAndWidth={this.findXAndWidth}
-          firstBase={firstBase}
-          fullSeq={fullSeq}
-          lastBase={lastBase}
-          selectEdgeHeight={selectEdgeHeight}
-        />
-        <Find
-          compYDiff={compYDiff - 3}
-          filteredRows={showComplement ? searchRows : searchRows.filter(r => r.direction === 1)}
-          findXAndWidth={this.findXAndWidth}
-          firstBase={firstBase}
-          indexYDiff={indexYDiff - 3}
-          inputRef={inputRef}
-          lastBase={lastBase}
-          lineHeight={lineHeight}
-          listenerOnly={false}
-          zoomed={zoomed}
-        />
-        {(colorized && !aagrouping) && translations.length && (
-          <TranslationRows
-            bpsPerBlock={bpsPerBlock}
-            charWidth={charWidth}
-            elementHeight={elementHeight}
+        <svg
+          ref={inputRef(id, {
+            end: lastBase,
+            ref: id,
+            start: firstBase,
+            type: "SEQ",
+            viewer: "LINEAR",
+          })}
+          className="la-vz-seqblock"
+          cursor="text"
+          data-testid="la-vz-seqblock"
+          display="block"
+          height={blockHeight}
+          id={id}
+          width={size.width >= 0 ? size.width : 0}
+          onMouseDown={handleMouseEvent}
+          onMouseMove={handleMouseEvent}
+          onMouseUp={handleMouseEvent}
+        >
+          {showIndex && (
+            <IndexRow
+              charWidth={charWidth}
+              findXAndWidth={this.findXAndWidth}
+              firstBase={firstBase}
+              lastBase={lastBase}
+              seq={seq}
+              seqType={seqType}
+              showIndex={showIndex}
+              size={size}
+              yDiff={indexRowYDiff}
+              zoom={zoom}
+            />
+          )}
+          <Selection.Block
             findXAndWidth={this.findXAndWidth}
             firstBase={firstBase}
             fullSeq={fullSeq}
-            aagrouping={aagrouping}
-            inputRef={inputRef}
             lastBase={lastBase}
-            seqType={seqType}
-            translations={translations}
-            yDiff={translationYDiff}
+            selectHeight={selectHeight}
             onUnmount={onUnmount}
           />
-        )}
-        {annotationRows.length && (
-          <AnnotationRows
-            annotationRows={annotationRows}
-            bpsPerBlock={bpsPerBlock}
-            elementHeight={elementHeight}
+          <Highlights
+            compYDiff={compYDiff - 3}
             findXAndWidth={this.findXAndWidthElement}
             firstBase={firstBase}
-            fullSeq={fullSeq}
-            inputRef={inputRef}
-            lastBase={lastBase}
-            seqBlockRef={this}
-            width={size.width}
-            yDiff={annYDiff}
-          />
-        )}
-        {zoomed && (seqType !== "aa" || !colorized || aagrouping) ? (
-          
-          <>{seqType !== "aa" && <text
-            {...textProps}
-            className="la-vz-seq"
-            data-testid="la-vz-seq"
-            id={id}
-            transform={`translate(0, ${indexYDiff + lineHeight / 2})`}
-          >
-            {seq.split("").map(this.seqTextSpan)}
-          </text>}
-          {seqType == "aa" && 
-          // <text
-          //   {...textProps}
-          //   className="la-vz-seq"
-          //   data-testid="la-vz-seq"
-          //   id={id}
-          //   transform={`translate(0, ${indexYDiff + lineHeight / 2})`}
-          // >
-            // {
-              seq.split("").map((bp, i) => this.alignmentSeqTextSpan(bp, i, textProps,indexYDiff,lineHeight))
-            // }
-          // </text>
-        }
-          </>
-        ) : null}
-        {compSeq && zoomed && showComplement && seqType !== "aa" ? (
-          <text
-            {...textProps}
-            className="la-vz-comp-seq"
-            data-testid="la-vz-comp-seq"
-            id={id}
-            transform={`translate(0, ${compYDiff + lineHeight/2})`}
-          >
-            {compSeq.split("").map(this.seqTextSpan)}
-          </text>
-        ) : null}
-        {zoomed && (
-          <CutSites
-            cutSites={cutSiteRows}
-            findXAndWidth={this.findXAndWidth}
-            firstBase={firstBase}
+            highlights={highlights}
+            indexYDiff={indexYDiff - 3}
             inputRef={inputRef}
             lastBase={lastBase}
             lineHeight={lineHeight}
-            size={size}
-            yDiff={cutSiteYDiff - 3}
-            zoom={zoom}
+            listenerOnly={false}
+            seqBlockRef={this}
           />
-        )}
-        <Find
-          compYDiff={compYDiff - 3}
-          filteredRows={showComplement ? searchRows : searchRows.filter(r => r.direction === 1)}
-          findXAndWidth={this.findXAndWidth}
-          firstBase={firstBase}
-          indexYDiff={indexYDiff - 3}
-          inputRef={inputRef}
-          lastBase={lastBase}
-          lineHeight={lineHeight}
-          listenerOnly={true}
-          zoomed={zoomed}
-        />
-        <Highlights
-          compYDiff={compYDiff - 3}
-          findXAndWidth={this.findXAndWidthElement}
-          firstBase={firstBase}
-          highlights={highlights}
-          indexYDiff={indexYDiff - 3}
-          inputRef={inputRef}
-          lastBase={lastBase}
-          lineHeight={lineHeight}
-          listenerOnly={true}
-          seqBlockRef={this}
-        />
-      </svg>
+          <Selection.Edges
+            findXAndWidth={this.findXAndWidth}
+            firstBase={firstBase}
+            fullSeq={fullSeq}
+            lastBase={lastBase}
+            selectEdgeHeight={selectEdgeHeight}
+          />
+          <Find
+            compYDiff={compYDiff - 3}
+            filteredRows={showComplement ? searchRows : searchRows.filter(r => r.direction === 1)}
+            findXAndWidth={this.findXAndWidth}
+            firstBase={firstBase}
+            indexYDiff={indexYDiff - 3}
+            inputRef={inputRef}
+            lastBase={lastBase}
+            lineHeight={lineHeight}
+            listenerOnly={false}
+            zoomed={zoomed}
+          />
+          {(colorized && !aagrouping) && translations.length && (
+            <TranslationRows
+              bpsPerBlock={bpsPerBlock}
+              charWidth={charWidth}
+              elementHeight={elementHeight}
+              findXAndWidth={this.findXAndWidth}
+              firstBase={firstBase}
+              fullSeq={fullSeq}
+              aagrouping={aagrouping}
+              inputRef={inputRef}
+              lastBase={lastBase}
+              seqType={seqType}
+              translations={translations}
+              yDiff={translationYDiff}
+              onUnmount={onUnmount}
+            />
+          )}
+          {annotationRows.length && (
+            <AnnotationRows
+              annotationRows={annotationRows}
+              bpsPerBlock={bpsPerBlock}
+              elementHeight={elementHeight}
+              findXAndWidth={this.findXAndWidthElement}
+              firstBase={firstBase}
+              fullSeq={fullSeq}
+              inputRef={inputRef}
+              lastBase={lastBase}
+              seqBlockRef={this}
+              width={size.width}
+              yDiff={annYDiff}
+            />
+          )}
+          {zoomed && (seqType !== "aa" || !colorized || aagrouping) ? (
+            <>
+              {seqType !== "aa" &&
+                seq.split("").map((bp, i) => this.seqTextSpan(bp, i, textProps, indexYDiff, lineHeight))
+              }
+              {seqType == "aa" &&
+                seq.split("").map((bp, i) => this.alignmentSeqTextSpan(bp, i, textProps, indexYDiff, lineHeight))
+              }
+            </>
+          ) : null}
+          {compSeq && zoomed && showComplement && seqType !== "aa" ? (
+            seq.split("").map((bp, i) => this.seqTextSpan(bp, i, textProps, indexYDiff, lineHeight))
+          ) : null}
+          {zoomed && (
+            <CutSites
+              cutSites={cutSiteRows}
+              findXAndWidth={this.findXAndWidth}
+              firstBase={firstBase}
+              inputRef={inputRef}
+              lastBase={lastBase}
+              lineHeight={lineHeight}
+              size={size}
+              yDiff={cutSiteYDiff - 3}
+              zoom={zoom}
+            />
+          )}
+          <Find
+            compYDiff={compYDiff - 3}
+            filteredRows={showComplement ? searchRows : searchRows.filter(r => r.direction === 1)}
+            findXAndWidth={this.findXAndWidth}
+            firstBase={firstBase}
+            indexYDiff={indexYDiff - 3}
+            inputRef={inputRef}
+            lastBase={lastBase}
+            lineHeight={lineHeight}
+            listenerOnly={true}
+            zoomed={zoomed}
+          />
+          <Highlights
+            compYDiff={compYDiff - 3}
+            findXAndWidth={this.findXAndWidthElement}
+            firstBase={firstBase}
+            highlights={highlights}
+            indexYDiff={indexYDiff - 3}
+            inputRef={inputRef}
+            lastBase={lastBase}
+            lineHeight={lineHeight}
+            listenerOnly={true}
+            seqBlockRef={this}
+          />
+        </svg>
       </>
     );
   }

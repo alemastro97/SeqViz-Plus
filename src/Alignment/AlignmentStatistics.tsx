@@ -25,8 +25,9 @@ export default function AlignmentStatistics({ name, nameToCompare, seq, seqToCom
         <tr className="alignment-table-row"><th 
         className="alignment-table-col"></th><th 
         className="alignment-table-col">Length</th><th
-        className="alignment-table-col">Fraction Identical</th><th
-        className="alignment-table-col">Coverage</th></tr>
+        className="alignment-table-col">Fraction Identical</th>
+        <th className="alignment-table-col">Coverage</th>
+        </tr>
         <tr className="alignment-table-row"><th 
         className="alignment-table-col">{ name }</th><td
         className="alignment-table-col">{seq.split("").filter(el => el !== '-').length}</td><td
@@ -38,7 +39,7 @@ export default function AlignmentStatistics({ name, nameToCompare, seq, seqToCom
         className="alignment-table-col">{(generateFunctionSymbol().split('').reduce((a, c) => { if (c === '|') return a += 1; return a }, 0) / seqToCompare.split("").filter(el => el !== '-').length).toFixed(2)}</td><td
         className="alignment-table-col">{(generateFunctionSymbol().split('').reduce((a, c) => { if (['|', '.'].includes(c)) return a += 1; return a }, 0) / seqToCompare.split("").filter(el => el !== '-').length).toFixed(2)}</td></tr>
       </table>
-      <div style={{ margin: '20px', fontFamily: 'sans-serif' }}><b>Number of mismatches</b>: {generateFunctionSymbol().split('').reduce((a, c) => { if (c === '*') return a += 1; return a }, 0)} </div>
+      <div style={{ margin: '20px', fontFamily: 'sans-serif' }}><b>Number of mismatches</b>: {generateFunctionSymbol().split('').reduce((a, c) => { if ([' ', '.'].includes(c)) return a += 1; return a }, 0)} </div>
 </>
   )
 }

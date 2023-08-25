@@ -205,7 +205,7 @@ export default class App extends React.Component<any, AppState> {
                   />
                 )}
               </div> 
-              <div style={{background:"red", justifyContent:"center", width: "50%", height:"1000px", alignItems:"end"}} id="seqviewer">
+              <div style={{background:"", justifyContent:"center", width: "50%", height:"1000px", alignItems:"end"}} id="seqviewer">
                 {this.state.seq && (
                   <SeqViz
                     // name={this.state.name}
@@ -235,7 +235,7 @@ export default class App extends React.Component<any, AppState> {
                     name={this.state.name}
                     nameToCompare={this.state.nameToCompare}
                     search={this.state.search}
-                    seq='TATATATATATATATATTATATATTTTATATATTATA'
+                    seq='TATATATATATATATATTATATATTTTATATATA-TA'
                     seqToCompare='TATATATATATATATATTATATATTTTATATATTATA'
                     showComplement={this.state.showComplement}
                     showIndex={this.state.showIndex}

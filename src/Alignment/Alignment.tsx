@@ -212,6 +212,7 @@ export default class Alignment extends React.Component<LinearProps> {
             bpsPerBlock={bpsPerBlock}
             charWidth={this.props.charWidth}
             compSeq={seqToCompare}
+            symbolSeq={seqSymbols}
             cutSiteRows={cutSiteRows[i]}
             elementHeight={elementHeight}
             aagrouping={this.props.aagrouping}
@@ -240,7 +241,7 @@ export default class Alignment extends React.Component<LinearProps> {
       });
       yDiff += blockHeights[i];
     }
-    console.log(seqBlocks)
+
     return (
       seqBlocks.length && (
         <>
