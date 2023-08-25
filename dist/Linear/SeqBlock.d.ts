@@ -20,6 +20,7 @@ interface SeqBlockProps {
     bpsPerBlock: number;
     charWidth: number;
     compSeq: string;
+    symbolSeq: string;
     cutSiteRows: CutSite[];
     elementHeight: number;
     firstBase: number;
@@ -90,7 +91,7 @@ export declare class SeqBlock extends React.PureComponent<SeqBlockProps> {
      * We're looking up each bp in the props.bpColors map to see if it should be shaded and, if so,
      * wrapping it in a textSpan with that color as a fill
      */
-    seqTextSpan: (bp: string, i: number) => JSX.Element;
+    seqTextSpan: (bp: string, i: number, textProps: any, indexYDiff: any, lineHeight: any) => JSX.Element;
     alignmentSeqTextSpan: (bp: string, i: number, textProps: any, indexYDiff: any, lineHeight: any) => JSX.Element;
     render(): JSX.Element | null;
 }

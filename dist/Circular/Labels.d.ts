@@ -52,7 +52,7 @@ export declare class Labels extends React.Component<LabelsProps, LabelsState> {
             lineCoor: Coor;
             name: string;
             overflow: unknown;
-            textAnchor: "end" | "start";
+            textAnchor: "start" | "end";
         }[];
     };
     /**
@@ -76,7 +76,7 @@ export declare class Labels extends React.Component<LabelsProps, LabelsState> {
         lineCoor: Coor;
         name: string;
         overflow: unknown;
-        textAnchor: "end" | "start";
+        textAnchor: "start" | "end";
     }[];
     setHoveredGroup: (hoveredGroup: string) => void;
     render(): JSX.Element;

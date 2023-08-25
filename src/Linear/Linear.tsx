@@ -175,6 +175,7 @@ export default class Linear extends React.Component<LinearProps> {
           elementHeight={elementHeight}
           firstBase={firstBase}
           fullSeq={seq}
+          symbolSeq=""
           handleMouseEvent={this.props.handleMouseEvent}
           highlights={highlightRows[i]}
           id={ids[i]}

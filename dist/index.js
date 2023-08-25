@@ -3465,7 +3465,7 @@ function AlignmentStatistics(_a) {
         React.createElement("div", { style: { margin: '20px', fontFamily: 'sans-serif' } },
             React.createElement("b", null, "Number of mismatches"),
             ": ",
-            generateFunctionSymbol().split('').reduce(function (a, c) { if (c === '*')
+            generateFunctionSymbol().split('').reduce(function (a, c) { if ([' ', '.'].includes(c))
                 return a += 1; return a; }, 0),
             " ")));
 }
@@ -3598,7 +3598,7 @@ var Linear = /** @class */ (function (_super) {
         var yDiff = 0;
         for (var i = 0; i < arrSize; i += 1) {
             var firstBase = i * bpsPerBlock;
-            seqBlocks.push(React.createElement(SeqBlock_1.SeqBlock, { key: ids[i], annotationRows: annotationRows[i], blockHeight: blockHeights[i], bpColors: this.props.bpColors, bpsPerBlock: bpsPerBlock, charWidth: this.props.charWidth, compSeq: compSeqs[i], cutSiteRows: cutSiteRows[i], elementHeight: elementHeight, firstBase: firstBase, fullSeq: seq, handleMouseEvent: this.props.handleMouseEvent, highlights: highlightRows[i], id: ids[i], inputRef: this.props.inputRef, colorized: this.props.colorized, lineHeight: lineHeight, searchRows: searchRows[i], seq: seqs[i], seqFontSize: this.props.seqFontSize, seqType: seqType, showComplement: showComplement, showIndex: showIndex, size: size, translations: translationRows[i], y: yDiff, zoom: zoom, zoomed: zoomed, onUnmount: onUnmount }));
+            seqBlocks.push(React.createElement(SeqBlock_1.SeqBlock, { key: ids[i], annotationRows: annotationRows[i], blockHeight: blockHeights[i], bpColors: this.props.bpColors, bpsPerBlock: bpsPerBlock, charWidth: this.props.charWidth, compSeq: compSeqs[i], cutSiteRows: cutSiteRows[i], elementHeight: elementHeight, firstBase: firstBase, fullSeq: seq, symbolSeq: "", handleMouseEvent: this.props.handleMouseEvent, highlights: highlightRows[i], id: ids[i], inputRef: this.props.inputRef, colorized: this.props.colorized, lineHeight: lineHeight, searchRows: searchRows[i], seq: seqs[i], seqFontSize: this.props.seqFontSize, seqType: seqType, showComplement: showComplement, showIndex: showIndex, size: size, translations: translationRows[i], y: yDiff, zoom: zoom, zoomed: zoomed, onUnmount: onUnmount }));
             yDiff += blockHeights[i];
         }
         return (seqBlocks.length && (React.createElement(InfiniteScroll_1.InfiniteScroll, { blockHeights: blockHeights, bpsPerBlock: bpsPerBlock, seqBlocks: seqBlocks, seqBlocksCompare: seqBlocks, seqBlocksSymbols: seqBlocks, alignment: false, size: size, totalHeight: blockHeights.reduce(function (acc, h) { return acc + h; }, 0) })));
@@ -4025,8 +4025,8 @@ var SeqBlock = /** @class */ (function (_super) {
          * We're looking up each bp in the props.bpColors map to see if it should be shaded and, if so,
          * wrapping it in a textSpan with that color as a fill
          */
-        _this.seqTextSpan = function (bp, i) {
-            var _a = _this.props, bpColors = _a.bpColors, charWidth = _a.charWidth, firstBase = _a.firstBase, id = _a.id;
+        _this.seqTextSpan = function (bp, i, textProps, indexYDiff, lineHeight) {
+            var _a = _this.props, bpColors = _a.bpColors, charWidth = _a.charWidth, firstBase = _a.firstBase, id = _a.id, symbolSeq = _a.symbolSeq;
             var color;
             if (bpColors) {
                 color =
@@ -4036,10 +4036,17 @@ var SeqBlock = /** @class */ (function (_super) {
                         bpColors[i + firstBase] ||
                         undefined;
             }
+            if (symbolSeq && symbolSeq[i] !== '|') {
+                color = "#FF0000";
+            }
             return (
             // the +0.2 here and above is to offset the characters they're not right on the left edge. When they are,
             // other elements look like they're shifted too far to the right.
-            React.createElement("tspan", { key: i + bp + id, fill: color || undefined, x: charWidth * i + charWidth * 0.2 }, bp));
+            React.createElement(React.Fragment, null,
+                "      ",
+                React.createElement("rect", { x: charWidth * i + charWidth * 0.2, width: "10", height: "20", style: { fill: symbolSeq && symbolSeq[i] && [' ', '.'].includes(symbolSeq[i]) ? "#E9C4C4" : '#0000' } }),
+                React.createElement("text", __assign({}, textProps, { className: "la-vz-seq", "data-testid": "la-vz-seq", id: id, transform: "translate(0, ".concat(indexYDiff + lineHeight / 2, ")") }),
+                    React.createElement("tspan", { key: i + bp + id, fill: color || undefined, x: charWidth * i + charWidth * 0.2 }, bp))));
         };
         _this.alignmentSeqTextSpan = function (bp, i, textProps, indexYDiff, lineHeight) {
             var _a = _this.props, bpColors = _a.bpColors, charWidth = _a.charWidth, firstBase = _a.firstBase, id = _a.id;
@@ -4119,21 +4126,11 @@ var SeqBlock = /** @class */ (function (_super) {
                 (colorized && !aagrouping) && translations.length && (React.createElement(Translations_1.TranslationRows, { bpsPerBlock: bpsPerBlock, charWidth: charWidth, elementHeight: elementHeight, findXAndWidth: this.findXAndWidth, firstBase: firstBase, fullSeq: fullSeq, aagrouping: aagrouping, inputRef: inputRef, lastBase: lastBase, seqType: seqType, translations: translations, yDiff: translationYDiff, onUnmount: onUnmount })),
                 annotationRows.length && (React.createElement(Annotations_1.default, { annotationRows: annotationRows, bpsPerBlock: bpsPerBlock, elementHeight: elementHeight, findXAndWidth: this.findXAndWidthElement, firstBase: firstBase, fullSeq: fullSeq, inputRef: inputRef, lastBase: lastBase, seqBlockRef: this, width: size.width, yDiff: annYDiff })),
                 zoomed && (seqType !== "aa" || !colorized || aagrouping) ? (React.createElement(React.Fragment, null,
-                    seqType !== "aa" && React.createElement("text", __assign({}, textProps, { className: "la-vz-seq", "data-testid": "la-vz-seq", id: id, transform: "translate(0, ".concat(indexYDiff + lineHeight / 2, ")") }), seq.split("").map(this.seqTextSpan)),
+                    seqType !== "aa" &&
+                        seq.split("").map(function (bp, i) { return _this.seqTextSpan(bp, i, textProps, indexYDiff, lineHeight); }),
                     seqType == "aa" &&
-                        // <text
-                        //   {...textProps}
-                        //   className="la-vz-seq"
-                        //   data-testid="la-vz-seq"
-                        //   id={id}
-                        //   transform={`translate(0, ${indexYDiff + lineHeight / 2})`}
-                        // >
-                        // {
-                        seq.split("").map(function (bp, i) { return _this.alignmentSeqTextSpan(bp, i, textProps, indexYDiff, lineHeight); })
-                // }
-                // </text>
-                )) : null,
-                compSeq && zoomed && showComplement && seqType !== "aa" ? (React.createElement("text", __assign({}, textProps, { className: "la-vz-comp-seq", "data-testid": "la-vz-comp-seq", id: id, transform: "translate(0, ".concat(compYDiff + lineHeight / 2, ")") }), compSeq.split("").map(this.seqTextSpan))) : null,
+                        seq.split("").map(function (bp, i) { return _this.alignmentSeqTextSpan(bp, i, textProps, indexYDiff, lineHeight); }))) : null,
+                compSeq && zoomed && showComplement && seqType !== "aa" ? (seq.split("").map(function (bp, i) { return _this.seqTextSpan(bp, i, textProps, indexYDiff, lineHeight); })) : null,
                 zoomed && (React.createElement(CutSites_1.CutSites, { cutSites: cutSiteRows, findXAndWidth: this.findXAndWidth, firstBase: firstBase, inputRef: inputRef, lastBase: lastBase, lineHeight: lineHeight, size: size, yDiff: cutSiteYDiff - 3, zoom: zoom })),
                 React.createElement(Find_1.default, { compYDiff: compYDiff - 3, filteredRows: showComplement ? searchRows : searchRows.filter(function (r) { return r.direction === 1; }), findXAndWidth: this.findXAndWidth, firstBase: firstBase, indexYDiff: indexYDiff - 3, inputRef: inputRef, lastBase: lastBase, lineHeight: lineHeight, listenerOnly: true, zoomed: zoomed }),
                 React.createElement(Highlights_1.default, { compYDiff: compYDiff - 3, findXAndWidth: this.findXAndWidthElement, firstBase: firstBase, highlights: highlights, indexYDiff: indexYDiff - 3, inputRef: inputRef, lastBase: lastBase, lineHeight: lineHeight, listenerOnly: true, seqBlockRef: this }))));
@@ -5987,14 +5984,13 @@ var Alignment = /** @class */ (function (_super) {
                 { identifier: 'seq2', translationRow: translationRowsComparison, array: seqBlocksCompare, fullSequence: seqToCompare, sequence: seqsToCompare, id: idsCp, multiplyFactor: 1, showIndex: true },
             ].forEach(function (_a) {
                 var identifier = _a.identifier, translationRow = _a.translationRow, array = _a.array, fullSequence = _a.fullSequence, sequence = _a.sequence, id = _a.id, multiplyFactor = _a.multiplyFactor, showIndex = _a.showIndex;
-                array.push(React.createElement(SeqBlock_1.SeqBlock, { key: "".concat(id[i], "_").concat(identifier), annotationRows: annotationRows[i], blockHeight: blockHeights[i] * multiplyFactor, bpColors: _this.props.bpColors, bpsPerBlock: bpsPerBlock, charWidth: _this.props.charWidth, compSeq: seqToCompare, cutSiteRows: cutSiteRows[i], elementHeight: elementHeight, aagrouping: _this.props.aagrouping, firstBase: firstBase, fullSeq: fullSequence, handleMouseEvent: _this.props.handleMouseEvent, highlights: highlightRows[i], id: id[i], inputRef: _this.props.inputRef, lineHeight: lineHeight, searchRows: searchRows[i], colorized: _this.props.colorized, seq: sequence[i], seqFontSize: _this.props.seqFontSize, seqType: seqType, showComplement: false, showIndex: showIndex, size: size, translations: translationRow[i], y: yDiff, zoom: zoom, zoomed: zoomed, onUnmount: onUnmount }));
+                array.push(React.createElement(SeqBlock_1.SeqBlock, { key: "".concat(id[i], "_").concat(identifier), annotationRows: annotationRows[i], blockHeight: blockHeights[i] * multiplyFactor, bpColors: _this.props.bpColors, bpsPerBlock: bpsPerBlock, charWidth: _this.props.charWidth, compSeq: seqToCompare, symbolSeq: seqSymbols, cutSiteRows: cutSiteRows[i], elementHeight: elementHeight, aagrouping: _this.props.aagrouping, firstBase: firstBase, fullSeq: fullSequence, handleMouseEvent: _this.props.handleMouseEvent, highlights: highlightRows[i], id: id[i], inputRef: _this.props.inputRef, lineHeight: lineHeight, searchRows: searchRows[i], colorized: _this.props.colorized, seq: sequence[i], seqFontSize: _this.props.seqFontSize, seqType: seqType, showComplement: false, showIndex: showIndex, size: size, translations: translationRow[i], y: yDiff, zoom: zoom, zoomed: zoomed, onUnmount: onUnmount }));
             });
             yDiff += blockHeights[i];
         };
         for (var i = 0; i < arrSize; i += 1) {
             _loop_1(i);
         }
-        console.log(seqBlocks);
         return (seqBlocks.length && (React.createElement(React.Fragment, null,
             React.createElement(InfiniteScroll_1.InfiniteScroll, { alignment: true, blockHeights: blockHeights, bpsPerBlock: bpsPerBlock, seqBlocks: seqBlocks, seqBlocksCompare: seqBlocksCompare, seqBlocksSymbols: seqBlocksSymbols, size: { height: size.height, width: size.width }, totalHeight: blockHeights.reduce(function (acc, h) { return acc + h; }, 0) }))));
     };
