@@ -235,8 +235,8 @@ export default class App extends React.Component<any, AppState> {
                     name={this.state.name}
                     nameToCompare={this.state.nameToCompare}
                     search={this.state.search}
-                    seq='TATATATATATATATATTATATATTTTATATATA-TA'
-                    seqToCompare='TATATATATATATATATTATATATTTTATATATTATA'
+                    seq='TATATATATATATATATTATATATTTTATATATA-TATATATATATATATATATTATATATTTTATATATA-TATATATATATATATATATTATATATTTTATATATA-TATATATATATATATATATTATATATTTTATATATA-TATATATATATATATATATTATATATTTTATATATA-TA'
+                    seqToCompare='TATATATATATATATATTATATATTTTATATATTATATATATATATATATATATTATATATTTTATATATTATATATATATATATATATATTATATATTTTATATATTATATATATATATATATATATTATATATTTTATATATTATATATATATATATATATATTATATATTTTATATATTATA'
                     showComplement={this.state.showComplement}
                     showIndex={this.state.showIndex}
                     translations={this.state.translations}

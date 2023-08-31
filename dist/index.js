@@ -1,5 +1,5 @@
 /*!
- * seqviz-plus - 2.0.18
+ * seqviz-plus - 2.0.19
  * provided and maintained by Lattice Automation (https://latticeautomation.com/)
  * LICENSE MIT
  */
@@ -4036,7 +4036,7 @@ var SeqBlock = /** @class */ (function (_super) {
                         bpColors[i + firstBase] ||
                         undefined;
             }
-            if (symbolSeq && symbolSeq[i] !== '|') {
+            if (symbolSeq && symbolSeq[i + firstBase] !== '|') {
                 color = "#FF0000";
             }
             return (
@@ -4044,7 +4044,7 @@ var SeqBlock = /** @class */ (function (_super) {
             // other elements look like they're shifted too far to the right.
             React.createElement(React.Fragment, null,
                 "      ",
-                React.createElement("rect", { x: charWidth * i + charWidth * 0.2, width: "10", height: "20", style: { fill: symbolSeq && symbolSeq[i] && [' ', '.'].includes(symbolSeq[i]) ? "#E9C4C4" : '#0000' } }),
+                React.createElement("rect", { x: charWidth * i + charWidth * 0.2, width: "10", height: "20", style: { fill: symbolSeq && symbolSeq[i + firstBase] && [' ', '.'].includes(symbolSeq[i + firstBase]) ? "#E9C4C4" : '#0000' } }),
                 React.createElement("text", __assign({}, textProps, { className: "la-vz-seq", "data-testid": "la-vz-seq", id: id, transform: "translate(0, ".concat(indexYDiff + lineHeight / 2, ")") }),
                     React.createElement("tspan", { key: i + bp + id, fill: color || undefined, x: charWidth * i + charWidth * 0.2 }, bp))));
         };

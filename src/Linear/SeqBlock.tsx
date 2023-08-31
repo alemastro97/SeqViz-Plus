@@ -205,13 +205,13 @@ export class SeqBlock extends React.PureComponent<SeqBlockProps> {
         bpColors[i + firstBase] ||
         undefined;
     }
-    if (symbolSeq && symbolSeq[i] !== '|') {
+    if (symbolSeq && symbolSeq[i+firstBase] !== '|') {
       color = "#FF0000"
     }
     return (
       // the +0.2 here and above is to offset the characters they're not right on the left edge. When they are,
       // other elements look like they're shifted too far to the right.
-      <>      <rect x={charWidth * i + charWidth * 0.2} width="10" height="20" style={{ fill: symbolSeq  && symbolSeq[i] && [' ', '.'].includes(symbolSeq[i]) ? "#E9C4C4" : '#0000' }} />
+      <>      <rect x={charWidth * i + charWidth * 0.2} width="10" height="20" style={{ fill: symbolSeq  && symbolSeq[i+firstBase] && [' ', '.'].includes(symbolSeq[i+firstBase]) ? "#E9C4C4" : '#0000' }} />
 
         <text
           {...textProps}
