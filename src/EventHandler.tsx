@@ -159,18 +159,17 @@ export class EventHandler extends React.PureComponent<EventsHandlerProps> {
    */
   handleCopy = () => {
     const {
-      selection: { end, ref, start },
+      selection: { ref },
       seq,
     } = this.props;
 
     if (!document) return;
-
-    const formerFocus = document.activeElement;
     const tempNode = document.createElement('textarea');
+
     if (ref === 'ALL') {
       tempNode.innerText = seq;
     } else {
-      tempNode.innerText = seq.substring(start || 0, end);
+      tempNode.innerText = seq.substring(this.getSelectionValue('end') || 0, this.getSelectionValue('start'));
     }
     if (document.body) {
       document.body.appendChild(tempNode);
@@ -178,10 +177,6 @@ export class EventHandler extends React.PureComponent<EventsHandlerProps> {
     tempNode.select();
     document.execCommand('copy');
     tempNode.remove();
-    if (formerFocus) {
-      // @ts-expect-error ts-migrate(2339) FIXME: Property 'focus' does not exist on type 'Element'.
-      formerFocus.focus();
-    }
   };
 
   /**

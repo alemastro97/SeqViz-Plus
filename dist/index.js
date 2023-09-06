@@ -1,5 +1,5 @@
 /*!
- * seqviz-plus - 2.0.19
+ * seqviz-plus - 2.0.20
  * provided and maintained by Lattice Automation (https://latticeautomation.com/)
  * LICENSE MIT
  */
@@ -2528,16 +2528,15 @@ var EventHandler = /** @class */ (function (_super) {
          * Copy the current sequence selection to the user's clipboard
          */
         _this.handleCopy = function () {
-            var _a = _this.props, _b = _a.selection, end = _b.end, ref = _b.ref, start = _b.start, seq = _a.seq;
+            var _a = _this.props, ref = _a.selection.ref, seq = _a.seq;
             if (!document)
                 return;
-            var formerFocus = document.activeElement;
             var tempNode = document.createElement('textarea');
             if (ref === 'ALL') {
                 tempNode.innerText = seq;
             }
             else {
-                tempNode.innerText = seq.substring(start || 0, end);
+                tempNode.innerText = seq.substring(_this.getSelectionValue('end') || 0, _this.getSelectionValue('start'));
             }
             if (document.body) {
                 document.body.appendChild(tempNode);
@@ -2545,10 +2544,6 @@ var EventHandler = /** @class */ (function (_super) {
             tempNode.select();
             document.execCommand('copy');
             tempNode.remove();
-            if (formerFocus) {
-                // @ts-expect-error ts-migrate(2339) FIXME: Property 'focus' does not exist on type 'Element'.
-                formerFocus.focus();
-            }
         };
         /**
          * select all of the sequence
@@ -4043,9 +4038,8 @@ var SeqBlock = /** @class */ (function (_super) {
             // the +0.2 here and above is to offset the characters they're not right on the left edge. When they are,
             // other elements look like they're shifted too far to the right.
             React.createElement(React.Fragment, null,
-                "      ",
-                React.createElement("rect", { x: charWidth * i + charWidth * 0.2, width: "10", height: "20", style: { fill: symbolSeq && symbolSeq[i + firstBase] && [' ', '.'].includes(symbolSeq[i + firstBase]) ? "#E9C4C4" : '#0000' } }),
-                React.createElement("text", __assign({}, textProps, { className: "la-vz-seq", "data-testid": "la-vz-seq", id: id, transform: "translate(0, ".concat(indexYDiff + lineHeight / 2, ")") }),
+                React.createElement("rect", { key: "rect_".concat(i), x: charWidth * i + charWidth * 0.2, width: "10", height: "20", style: { fill: symbolSeq && symbolSeq[i + firstBase] && [' ', '.'].includes(symbolSeq[i + firstBase]) ? "#E9C4C4" : '#0000' } }),
+                React.createElement("text", __assign({ key: "text_".concat(i) }, textProps, { className: "la-vz-seq", "data-testid": "la-vz-seq", id: id, transform: "translate(0, ".concat(indexYDiff + lineHeight / 2, ")") }),
                     React.createElement("tspan", { key: i + bp + id, fill: color || undefined, x: charWidth * i + charWidth * 0.2 }, bp))));
         };
         _this.alignmentSeqTextSpan = function (bp, i, textProps, indexYDiff, lineHeight) {
@@ -4127,10 +4121,10 @@ var SeqBlock = /** @class */ (function (_super) {
                 annotationRows.length && (React.createElement(Annotations_1.default, { annotationRows: annotationRows, bpsPerBlock: bpsPerBlock, elementHeight: elementHeight, findXAndWidth: this.findXAndWidthElement, firstBase: firstBase, fullSeq: fullSeq, inputRef: inputRef, lastBase: lastBase, seqBlockRef: this, width: size.width, yDiff: annYDiff })),
                 zoomed && (seqType !== "aa" || !colorized || aagrouping) ? (React.createElement(React.Fragment, null,
                     seqType !== "aa" &&
-                        seq.split("").map(function (bp, i) { return _this.seqTextSpan(bp, i, textProps, indexYDiff, lineHeight); }),
+                        seq.split("").map(function (bp, i) { return React.createElement(React.Fragment, null, _this.seqTextSpan(bp, i, textProps, indexYDiff, lineHeight)); }),
                     seqType == "aa" &&
                         seq.split("").map(function (bp, i) { return _this.alignmentSeqTextSpan(bp, i, textProps, indexYDiff, lineHeight); }))) : null,
-                compSeq && zoomed && showComplement && seqType !== "aa" ? (seq.split("").map(function (bp, i) { return _this.seqTextSpan(bp, i, textProps, indexYDiff, lineHeight); })) : null,
+                compSeq && zoomed && showComplement && seqType !== "aa" ? (compSeq.split("").map(function (bp, i) { return _this.seqTextSpan(bp, i, textProps, compYDiff, lineHeight); })) : null,
                 zoomed && (React.createElement(CutSites_1.CutSites, { cutSites: cutSiteRows, findXAndWidth: this.findXAndWidth, firstBase: firstBase, inputRef: inputRef, lastBase: lastBase, lineHeight: lineHeight, size: size, yDiff: cutSiteYDiff - 3, zoom: zoom })),
                 React.createElement(Find_1.default, { compYDiff: compYDiff - 3, filteredRows: showComplement ? searchRows : searchRows.filter(function (r) { return r.direction === 1; }), findXAndWidth: this.findXAndWidth, firstBase: firstBase, indexYDiff: indexYDiff - 3, inputRef: inputRef, lastBase: lastBase, lineHeight: lineHeight, listenerOnly: true, zoomed: zoomed }),
                 React.createElement(Highlights_1.default, { compYDiff: compYDiff - 3, findXAndWidth: this.findXAndWidthElement, firstBase: firstBase, highlights: highlights, indexYDiff: indexYDiff - 3, inputRef: inputRef, lastBase: lastBase, lineHeight: lineHeight, listenerOnly: true, seqBlockRef: this }))));

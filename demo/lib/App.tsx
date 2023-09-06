@@ -113,6 +113,79 @@ export default class App extends React.Component<any, AppState> {
   };
 
   render() {
+    const pro = {
+      name: "P-pDONR223-APOE",
+      seq: "CTTTCCTGCGTTATCCCCTGATTCTGTGGATAACCGTATTACCGCCTTTGAGTGAGCTGATACCGCTCGCCGCAGCCGAACGACCGAGCGCAGCGAGTCAGTGAGCGAGGAAGCGGAAGAGCGCCCAATACGCAAACCGCCTCTCCCCGCGCGTTGGCCGATTCATTAATGCAGCTGGCACGACAGGTTTCCCGACTGGAAAGCGGGCAGTGAGCGCAACGCAATTAATACGCGTACCGCTAGCCAGGAAGAGTTTGTAGAAACGCAAAAAGGCCATCCGTCAGGATGGCCTTCTGCTTAGTTTGATGCCTGGCAGTTTATGGCGGGCGTCCTGCCCGCCACCCTCCGGGCCGTTGCTTCACAACGTTCAAATCCGCTCCCGGCGGATTTGTCCTACTCAGGAGAGCGTTCACCGACAAACAACAGATAAAACGAAAGGCCCAGTCTTCCGACTGAGCCTTTCGTTTTATTTGATGCCTGGCAGTTCCCTACTCTCGCGTTAACGCTAGCATGGATGTTTTCCCAGTCACGACGTTGTAAAACGACGGCCAGTCTTAAGCTCGGGCCCCAAATAATGATTTTATTTTGACTGATAGTGACCTGTTCGTTGCAACAAATTGATGAGCAATGCTTTTTTATAATGCCAACTTTGTACAAAAAAGTTGGCACCATGAAGGTTCTGTGGGCTGCGTTGCTGGTCACATTCCTGGCAGGATGCCAGGCCAAGGTGGAGCAAGCGGTGGAGACAGAGCCGGAGCCCGAGCTGCGCCAGCAGACCGAGTGGCAGAGCGGCCAGCGCTGGGAACTGGCACTGGGTCGCTTTTGGGATTACCTGCGCTGGGTGCAGACACTGTCTGAGCAGGTGCAGGAGGAGCTGCTCAGCTCCCAGGTCACCCAGGAACTGAGGGCGCTGATGGACGAGACCATGAAGGAGTTGAAGGCCTACAAATCGGAACTGGAGGAACAACTGACCCCGGTGGCGGAGGAGACGCGGGCACGGCTGTCCAAGGAGCTGCAGGCGGCGCAGGCCCGGCTGGGCGCGGACATGGAGGACGTGTGCGGCCGCCTGGTGCAGTACCGCGGCGAGGTGCAGGCCATGCTCGGCCAGAGCACCGAGGAGCTGCGGGTGCGCCTCGCCTCCCACCTGCGCAAGCTGCGTAAGCGGCTCCTCCGCGATGCCGATGACCTGCAGAAGCGCCTGGCAGTGTACCAGGCCGGGGCCCGCGAGGGCGCCGAGCGCGGCCTCAGCGCCATCCGCGAGCGCCTGGGGCCCCTGGTGGAACAGGGCCGCGTGCGGGCCGCCACTGTGGGCTCCCTGGCCGGCCAGCCGCTACAGGAGCGGGCCCAGGCCTGGGGCGAGCGGCTGCGCGCGCGGATGGAGGAGATGGGCAGCCGGACCCGCGACCGCCTGGACGAGGTGAAGGAGCAGGTGGCGGAGGTGCGCGCCAAGCTGGAGGAGCAGGCCCAGCAGATACGCCTGCAGGCCGAGGCCTTCCAGGCCCGCCTCAAGAGCTGGTTCGAGCCCCTGGTGGAAGACATGCAGCGCCAGTGGGCCGGGCTGGTGGAGAAGGTGCAGGCTGCCGTGGGCACCAGCGCCGCCCCTGTGCCCAGCGACAATCACTTGCCAACTTTCTTGTACAAAGTTGGCATTATAAGAAAGCATTGCTTATCAATTTGTTGCAACGAACAGGTCACTATCAGTCAAAATAAAATCATTATTTGCCATCCAGCTGATATCCCCTATAGTGAGTCGTATTACATGGTCATAGCTGTTTCCTGGCAGCTCTGGCCCGTGTCTCAAAATCTCTGATGTTACATTGCACAAGATAAAAATATATCATCATGCCTCCTCTAGACCAGCCAGGACAGAAATGCCTCGACTTCGCTGCTGCCCAAGGTTGCCGGGTGACGCACACCGTGGAAACGGATGAAGGCACGAACCCAGTGGACATAAGCCTGTTCGGTTCGTAAGCTGTAATGCAAGTAGCGTATGCGCTCACGCAACTGGTCCAGAACCTTGACCGAACGCAGCGGTGGTAACGGCGCAGTGGCGGTTTTCATGGCTTGTTATGACTGTTTTTTTGGGGTACAGTCTATGCCTCGGGCATCCAAGCAGCAAGCGCGTTACGCCGTGGGTCGATGTTTGATGTTATGGAGCAGCAACGATGTTACGCAGCAGGGCAGTCGCCCTAAAACAAAGTTAAACATCATGAGGGAAGCGGTGATCGCCGAAGTATCGACTCAACTATCAGAGGTAGTTGGCGTCATCGAGCGCCATCTCGAACCGACGTTGCTGGCCGTACATTTGTACGGCTCCGCAGTGGATGGCGGCCTGAAGCCACACAGTGATATTGATTTGCTGGTTACGGTGACCGTAAGGCTTGATGAAACAACGCGGCGAGCTTTGATCAACGACCTTTTGGAAACTTCGGCTTCCCCTGGAGAGAGCGAGATTCTCCGCGCTGTAGAAGTCACCATTGTTGTGCACGACGACATCATTCCGTGGCGTTATCCAGCTAAGCGCGAACTGCAATTTGGAGAATGGCAGCGCAATGACATTCTTGCAGGTATCTTCGAGCCAGCCACGATCGACATTGATCTGGCTATCTTGCTGACAAAAGCAAGAGAACATAGCGTTGCCTTGGTAGGTCCAGCGGCGGAGGAACTCTTTGATCCGGTTCCTGAACAGGATCTATTTGAGGCGCTAAATGAAACCTTAACGCTATGGAACTCGCCGCCCGACTGGGCTGGCGATGAGCGAAATGTAGTGCTTACGTTGTCCCGCATTTGGTACAGCGCAGTAACCGGCAAAATCGCGCCGAAGGATGTCGCTGCCGACTGGGCAATGGAGCGCCTGCCGGCCCAGTATCAGCCCGTCATACTTGAAGCTAGACAGGCTTATCTTGGACAAGAAGAAGATCGCTTGGCCTCGCGCGCAGATCAGTTGGAAGAATTTGTCCACTACGTGAAAGGCGAGATCACCAAGGTAGTCGGCAAATAACCCTCGAGCCACCCATGACCAAAATCCCTTAACGTGAGTTACGCGTCGTTCCACTGAGCGTCAGACCCCGTAGAAAAGATCAAAGGATCTTCTTGAGATCCTTTTTTTCTGCGCGTAATCTGCTGCTTGCAAACAAAAAAACCACCGCTACCAGCGGTGGTTTGTTTGCCGGATCAAGAGCTACCAACTCTTTTTCCGAAGGTAACTGGCTTCAGCAGAGCGCAGATACCAAATACTGTCCTTCTAGTGTAGCCGTAGTTAGGCCACCACTTCAAGAACTCTGTAGCACCGCCTACATACCTCGCTCTGCTAATCCTGTTACCAGTGGCTGCTGCCAGTGGCGATAAGTCGTGTCTTACCGGGTTGGACTCAAGACGATAGTTACCGGATAAGGCGCAGCGGTCGGGCTGAACGGGGGGTTCGTGCACACAGCCCAGCTTGGAGCGAACGACCTACACCGAACTGAGATACCTACAGCGTGAGCATTGAGAAAGCGCCACGCTTCCCGAAGGGAGAAAGGCGGACAGGTATCCGGTAAGCGGCAGGGTCGGAACAGGAGAGCGCACGAGGGAGCTTCCAGGGGGAAACGCCTGGTATCTTTATAGTCCTGTCGGGTTTCGCCACCTCTGACTTGAGCGTCGATTTTTGTGATGCTCGTCAGGGGGGCGGAGCCTATGGAAAAACGCCAGCAACGCGGCCTTTTTACGGTTCCTGGCCTTTTGCTGGCCTTTTGCTCACATGTT",
+      // viewer: "both",
+      annotations: [
+        {
+          start: 535,
+          end: 553,
+          name: "D-O-4",
+          color: "tan",
+          direction: 1
+        }, {
+          start: 655,
+          end: 670,
+          name: "D-attB1_CCSB2",
+          color: "tan",
+          direction: 1
+        }, {
+          start: 670,
+          end: 1621,
+          name: "D-APOE",
+          color: "tan",
+          direction: 1
+        }, {
+          start: 1621,
+          end: 1636,
+          name: "D-attB2_CCSB2",
+          color: "tan", 
+          direction: 1
+        }, {
+          start: 1990,
+          end: 3001,
+          name: "D-SpnR",
+          color: "tan",
+          direction: 1
+        }],
+        translations: [{
+          start: 535,
+          end: 553,
+          name: "D-O-4",
+          direction: 1
+        }, {
+          start: 655,
+          end: 670,
+          name: "D-attB1_CCSB2",
+          direction: 1
+        }, {
+          start: 670,
+          end: 1621,
+          name: "D-APOE",
+          direction: 1
+        }, {
+          start: 1621,
+          end: 1636,
+          name: "D-attB2_CCSB2",
+          direction: 1
+        }, {
+          start: 1990,
+          end: 3001,
+          name: "D-SpnR",
+          direction: 1
+        }],
+        showAnnotations: true,
+        showTranslations: true,
+        showPrimers: true,
+        showComplement: true,
+        showIndex: true,
+        onSelection: console.log,
+        copyEvent: event => event.key === "c" && (event.metaKey || event.ctrlKey),
+        style: {height: "calc(600px)", width: "100%" },
+        zoom: {linear: 50, circular: 10 },
+        rotateOnScroll: false
+      }
     return (
       <div style={{ height: "2000vh" }}>
         <Sidebar.Pushable className="sidebar-container">
@@ -165,6 +238,7 @@ export default class App extends React.Component<any, AppState> {
               <div id="seqviewer">
                 {this.state.seq && (
                   <SeqViz
+                  viewer="both"
                     // name={this.state.name}
                     // seq={this.state.seq}
                     // viewer={this.state.viewer}
@@ -185,27 +259,27 @@ export default class App extends React.Component<any, AppState> {
                   
                     
                     
-                    
+                    {...pro}                    
                  
-                    colorized={true}
-                    aagrouping={false}
-                    annotations={this.state.annotations}
-                    enzymes={this.state.enzymes}
-                    name={this.state.name}
-                    nameToCompare={this.state.nameToCompare}
-                    search={this.state.search}
-                    seq={this.state.seq}
-                    seqToCompare={this.state.seqToCompare}
-                    showComplement={this.state.showComplement}
-                    showIndex={this.state.showIndex}
-                    translations={this.state.translations}
-                    viewer={"both"}
-                    zoom={{ linear: this.state.zoom }}
-                    selection={this.state.selection}
+                    // colorized={true}
+                    // aagrouping={false}
+                    // annotations={this.state.annotations}
+                    // enzymes={this.state.enzymes}
+                    // name={this.state.name}
+                    // nameToCompare={this.state.nameToCompare}
+                    // search={this.state.search}
+                    // seq={this.state.seq}
+                    // seqToCompare={this.state.seqToCompare}
+                    showComplement={true}
+                    // showIndex={this.state.showIndex}
+                    // translations={this.state.translations}
+                    // viewer={"both"}
+                    // zoom={{ linear: this.state.zoom }}
+                    // selection={this.state.selection}
                   />
                 )}
               </div> 
-              <div style={{background:"", justifyContent:"center", width: "50%", height:"1000px", alignItems:"end"}} id="seqviewer">
+              <div style={{background:"", justifyContent:"center", width: "50%", height:"200px", alignItems:"end"}} id="seqviewer">
                 {this.state.seq && (
                   <SeqViz
                     // name={this.state.name}

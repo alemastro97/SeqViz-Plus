@@ -211,9 +211,11 @@ export class SeqBlock extends React.PureComponent<SeqBlockProps> {
     return (
       // the +0.2 here and above is to offset the characters they're not right on the left edge. When they are,
       // other elements look like they're shifted too far to the right.
-      <>      <rect x={charWidth * i + charWidth * 0.2} width="10" height="20" style={{ fill: symbolSeq  && symbolSeq[i+firstBase] && [' ', '.'].includes(symbolSeq[i+firstBase]) ? "#E9C4C4" : '#0000' }} />
+      <>      
+      <rect key={`rect_${i}`} x={charWidth * i + charWidth * 0.2} width="10" height="20" style={{ fill: symbolSeq  && symbolSeq[i+firstBase] && [' ', '.'].includes(symbolSeq[i+firstBase]) ? "#E9C4C4" : '#0000' }} />
 
         <text
+        key={`text_${i}`}
           {...textProps}
           className="la-vz-seq"
           data-testid="la-vz-seq"
@@ -444,7 +446,7 @@ export class SeqBlock extends React.PureComponent<SeqBlockProps> {
           {zoomed && (seqType !== "aa" || !colorized || aagrouping) ? (
             <>
               {seqType !== "aa" &&
-                seq.split("").map((bp, i) => this.seqTextSpan(bp, i, textProps, indexYDiff, lineHeight))
+                seq.split("").map((bp, i) => <>{this.seqTextSpan(bp, i, textProps, indexYDiff, lineHeight)}</>)
               }
               {seqType == "aa" &&
                 seq.split("").map((bp, i) => this.alignmentSeqTextSpan(bp, i, textProps, indexYDiff, lineHeight))
@@ -452,7 +454,7 @@ export class SeqBlock extends React.PureComponent<SeqBlockProps> {
             </>
           ) : null}
           {compSeq && zoomed && showComplement && seqType !== "aa" ? (
-            seq.split("").map((bp, i) => this.seqTextSpan(bp, i, textProps, indexYDiff, lineHeight))
+            compSeq.split("").map((bp, i) => this.seqTextSpan(bp, i, textProps, compYDiff, lineHeight))
           ) : null}
           {zoomed && (
             <CutSites
