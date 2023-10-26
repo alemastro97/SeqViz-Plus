@@ -282,21 +282,22 @@ export default class App extends React.Component<any, AppState> {
               <div style={{background:"", justifyContent:"center", width: "100%", height:"200px"}} id="seqviewer">
                 {this.state.seq && (
                   <SeqViz
-                    annotations={this.state.annotations}
-                    enzymes={this.state.enzymes}
-                    name={this.state.name}
-                    nameToCompare={this.state.nameToCompare}
-                    search={this.state.search}
+                    // annotations={this.state.annotations}
+                    // enzymes={this.state.enzymes}
+                    // name={this.state.name}
+                    // nameToCompare={this.state.nameToCompare}
+                    // search={this.state.search}
                     // colorized={true}
-                    showTranslations={true}
-                    seq='ATATATATATATATATTATATATATATATATATATATATTATATATATATATATATATATATTATATATATATATATATATATATTATATATATATATATATATATATTATATATATATATATATATATATTATATATATATATATATATATATTATATAT'
-                    seqToCompare='MGSAFERVVRRVVQELDHGGEFIPVTSLQSSTGFQPYCLVVRKPSSSWFW----KCVNLSIKDILEPDAAEPDVQRGRSFHFYDAMDGQIQGSVELAAPGQAKIAGGAAVSDSSSTSMNVYSLSVDPNTWQTLLHERHLRQPEHKVLQQLRSRGDNVYVVTEVLQTQKEVEVTRTHKREGSGRFSLPGATCLQGEGQGHLSQKKTVTIPSGSTLAFRVAQLVIDSDLDVLLFPDKKQRTFQPPATGHKRSTSEGAWPQLPSGLSMMRCLHNFLTDGVPAEGAFTEDFQGLRAEVETISKELELLDRELCQLLLEGLEGVLRDQLALRALEEALEQGQSLGPVEPLDGPAGAVLECLVLSSGMLVPELAIPVVYLLGALTMLSETQHKLLAEALESQTLLGPLELVGSLLEQSAPWQERSTMSLPPGLLGNSWGEGAPAWVLLDECGLELGEDTPHVCWEPQAQGRMCALYASLALLSGLSQEPH'
-                    showComplement={this.state.showComplement}
-                    showIndex={this.state.showIndex}
+                    // showTranslations={true}
+                    // seq='ATATATATATATATATTATATATATATATATATATATATTATATATATATATATATATATATTATATATATATATATATATATATTATATATATATATATATATATATTATATATATATATATATATATATTATATATATATATATATATATATTATATAT'
+                    // seqToCompare='MGSAFERVVRRVVQELDHGGEFIPVTSLQSSTGFQPYCLVVRKPSSSWFW----KCVNLSIKDILEPDAAEPDVQRGRSFHFYDAMDGQIQGSVELAAPGQAKIAGGAAVSDSSSTSMNVYSLSVDPNTWQTLLHERHLRQPEHKVLQQLRSRGDNVYVVTEVLQTQKEVEVTRTHKREGSGRFSLPGATCLQGEGQGHLSQKKTVTIPSGSTLAFRVAQLVIDSDLDVLLFPDKKQRTFQPPATGHKRSTSEGAWPQLPSGLSMMRCLHNFLTDGVPAEGAFTEDFQGLRAEVETISKELELLDRELCQLLLEGLEGVLRDQLALRALEEALEQGQSLGPVEPLDGPAGAVLECLVLSSGMLVPELAIPVVYLLGALTMLSETQHKLLAEALESQTLLGPLELVGSLLEQSAPWQERSTMSLPPGLLGNSWGEGAPAWVLLDECGLELGEDTPHVCWEPQAQGRMCALYASLALLSGLSQEPH'
+                    // showComplement={false}
+                    // showIndex={this.state.showIndex}
                     // translations={[{start:0,end:23,direction:1}]}
-                    viewer={"both"}
-                    zoom={{ linear: this.state.zoom }}
-                    selection={this.state.selection}
+                    // viewer={"linear"}
+                    {...{"name": "D-GSDMD", "seq": "ATATATATATATATATTATATATATATATATATATATATTATATATATATATATATATATATTATATATATATATATATATATATTATATATATATATATATATATATTATATATATATATATATATATATTATATATATATATATATATATATTATATAT", "viewer": "linear", "annotations": [], "showAnnotations": true, "showTranslations": false, "showPrimers": true, "showComplement": false, "showIndex": true, "onSelection": console.log, "copyEvent": event => event.key === "c" && (event.metaKey || event.ctrlKey), "style": {height: "calc(800px)", width: "100%" }, "zoom": {linear: 50, circular: 10 }, "rotateOnScroll": false}}
+                    // zoom={{ linear: this.state.zoom }}
+                    // selection={this.state.selection}
                   />
                 )}
               {/* <div style={{display:"flex", justifyContent:"center", width: "50%", height:"100vh", alignItems:"end"}} id="seqviewer"></div>   */}

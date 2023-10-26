@@ -1,5 +1,5 @@
 /*!
- * seqviz-plus - 2.0.22
+ * seqviz-plus - 2.0.23
  * provided and maintained by Lattice Automation (https://latticeautomation.com/)
  * LICENSE MIT
  */
@@ -360,7 +360,7 @@ var SeqViz = /** @class */ (function (_super) {
         search: { mismatch: 0, query: "" },
         seq: "",
         seqToCompare: "",
-        colorized: true,
+        colorized: false,
         aagrouping: true,
         showComplement: true,
         showTranslations: false,
