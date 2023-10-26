@@ -22,6 +22,7 @@ export interface LinearProps {
   lineHeight: number;
   onUnmount: (id: string) => void;
   search: NameRange[];
+  viewer:string
   seq: string;
   seqFontSize: number;
   seqType: SeqType;
@@ -77,6 +78,7 @@ export default class Linear extends React.Component<LinearProps> {
       size,
       translations,
       zoom,
+      viewer
     } = this.props;
 
     // un-official definition for being zoomed in. Being over 10 seems like a decent cut-off
@@ -184,6 +186,7 @@ export default class Linear extends React.Component<LinearProps> {
           lineHeight={lineHeight}
           searchRows={searchRows[i]}
           seq={seqs[i]}
+          viewer={viewer}
           seqFontSize={this.props.seqFontSize}
           seqType={seqType}
           showComplement={showComplement}

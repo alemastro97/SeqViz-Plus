@@ -15,6 +15,7 @@ export interface LinearProps {
   charWidth: number;
   compSeq: string;
   cutSites: CutSite[];
+  viewer:string;
   elementHeight: number;
   handleMouseEvent: React.MouseEventHandler;
   highlights: Highlight[];
@@ -68,6 +69,7 @@ export default class Alignment extends React.Component<LinearProps> {
       compSeq,
       cutSites,
       elementHeight,
+      viewer,
       highlights,
       lineHeight,
       seqToCompare,
@@ -221,6 +223,7 @@ export default class Alignment extends React.Component<LinearProps> {
             handleMouseEvent={this.props.handleMouseEvent}
             highlights={highlightRows[i]}
             id={id[i]}
+            viewer={viewer}
             inputRef={this.props.inputRef}
             lineHeight={lineHeight}
             searchRows={searchRows[i]}

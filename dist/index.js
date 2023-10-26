@@ -1,5 +1,5 @@
 /*!
- * seqviz-plus - 2.0.23
+ * seqviz-plus - 2.0.24
  * provided and maintained by Lattice Automation (https://latticeautomation.com/)
  * LICENSE MIT
  */
@@ -360,7 +360,7 @@ var SeqViz = /** @class */ (function (_super) {
         search: { mismatch: 0, query: "" },
         seq: "",
         seqToCompare: "",
-        colorized: false,
+        colorized: true,
         aagrouping: true,
         showComplement: true,
         showTranslations: false,
@@ -525,10 +525,10 @@ var SeqViewerContainer = /** @class */ (function (_super) {
             var charWidth = size.width / bpsPerBlock; // width of each basepair
             var lineHeight = 1.4 * seqFontSize; // aspect ratio is 1.4 for roboto mono
             var elementHeight = 16; // the height, in pixels, of annotations, ORFs, etc
-            return __assign(__assign({}, _this.props), { bpsPerBlock: bpsPerBlock, charWidth: charWidth, elementHeight: elementHeight, lineHeight: lineHeight, seqFontSize: seqFontSize, size: size, zoom: { linear: zoom } });
+            return __assign(__assign({}, _this.props), { bpsPerBlock: bpsPerBlock, charWidth: charWidth, elementHeight: elementHeight, lineHeight: lineHeight, seqFontSize: seqFontSize, viewer: viewer, size: size, zoom: { linear: zoom } });
         };
         _this.alignmentProps = function () {
-            var _a = _this.props, seq = _a.seq, seqType = _a.seqType, colorized = _a.colorized, aagrouping = _a.aagrouping;
+            var _a = _this.props, seq = _a.seq, seqType = _a.seqType, colorized = _a.colorized, aagrouping = _a.aagrouping, viewer = _a.viewer;
             var size = _this.props.testSize || { height: _this.props.height, width: _this.props.width };
             var zoom = _this.props.zoom.linear;
             var seqFontSize = Math.min(Math.round(zoom * 0.1 + 9.5), 18); // max 18px
@@ -556,7 +556,7 @@ var SeqViewerContainer = /** @class */ (function (_super) {
             var charWidth = size.width / bpsPerBlock; // width of each basepair
             var lineHeight = 1.4 * seqFontSize; // aspect ratio is 1.4 for roboto mono
             var elementHeight = 16; // the height, in pixels, of annotations, ORFs, etc
-            return __assign(__assign({}, _this.props), { bpsPerBlock: bpsPerBlock, charWidth: charWidth, elementHeight: elementHeight, lineHeight: lineHeight, seqFontSize: seqFontSize, size: size, zoom: { linear: zoom } });
+            return __assign(__assign({}, _this.props), { bpsPerBlock: bpsPerBlock, charWidth: charWidth, viewer: viewer, elementHeight: elementHeight, lineHeight: lineHeight, seqFontSize: seqFontSize, size: size, zoom: { linear: zoom } });
         };
         /**
          * given the length of the sequence and the dimensions of the viewbox, how should
@@ -3527,7 +3527,7 @@ var Linear = /** @class */ (function (_super) {
      * the second seqBlock, and "AG" to the third seqBlock.
      */
     Linear.prototype.render = function () {
-        var _a = this.props, annotations = _a.annotations, bpsPerBlock = _a.bpsPerBlock, compSeq = _a.compSeq, cutSites = _a.cutSites, elementHeight = _a.elementHeight, highlights = _a.highlights, lineHeight = _a.lineHeight, onUnmount = _a.onUnmount, search = _a.search, seq = _a.seq, seqType = _a.seqType, showComplement = _a.showComplement, showIndex = _a.showIndex, size = _a.size, translations = _a.translations, zoom = _a.zoom;
+        var _a = this.props, annotations = _a.annotations, bpsPerBlock = _a.bpsPerBlock, compSeq = _a.compSeq, cutSites = _a.cutSites, elementHeight = _a.elementHeight, highlights = _a.highlights, lineHeight = _a.lineHeight, onUnmount = _a.onUnmount, search = _a.search, seq = _a.seq, seqType = _a.seqType, showComplement = _a.showComplement, showIndex = _a.showIndex, size = _a.size, translations = _a.translations, zoom = _a.zoom, viewer = _a.viewer;
         // un-official definition for being zoomed in. Being over 10 seems like a decent cut-off
         var zoomed = zoom.linear > 10;
         // the actual fragmenting of the sequence into subblocks. generates all info that will be needed
@@ -3595,7 +3595,7 @@ var Linear = /** @class */ (function (_super) {
         var yDiff = 0;
         for (var i = 0; i < arrSize; i += 1) {
             var firstBase = i * bpsPerBlock;
-            seqBlocks.push(React.createElement(SeqBlock_1.SeqBlock, { key: ids[i], annotationRows: annotationRows[i], blockHeight: blockHeights[i], bpColors: this.props.bpColors, bpsPerBlock: bpsPerBlock, charWidth: this.props.charWidth, compSeq: compSeqs[i], cutSiteRows: cutSiteRows[i], elementHeight: elementHeight, firstBase: firstBase, fullSeq: seq, symbolSeq: "", handleMouseEvent: this.props.handleMouseEvent, highlights: highlightRows[i], id: ids[i], inputRef: this.props.inputRef, colorized: this.props.colorized, lineHeight: lineHeight, searchRows: searchRows[i], seq: seqs[i], seqFontSize: this.props.seqFontSize, seqType: seqType, showComplement: showComplement, showIndex: showIndex, size: size, translations: translationRows[i], y: yDiff, zoom: zoom, zoomed: zoomed, onUnmount: onUnmount }));
+            seqBlocks.push(React.createElement(SeqBlock_1.SeqBlock, { key: ids[i], annotationRows: annotationRows[i], blockHeight: blockHeights[i], bpColors: this.props.bpColors, bpsPerBlock: bpsPerBlock, charWidth: this.props.charWidth, compSeq: compSeqs[i], cutSiteRows: cutSiteRows[i], elementHeight: elementHeight, firstBase: firstBase, fullSeq: seq, symbolSeq: "", handleMouseEvent: this.props.handleMouseEvent, highlights: highlightRows[i], id: ids[i], inputRef: this.props.inputRef, colorized: this.props.colorized, lineHeight: lineHeight, searchRows: searchRows[i], seq: seqs[i], viewer: viewer, seqFontSize: this.props.seqFontSize, seqType: seqType, showComplement: showComplement, showIndex: showIndex, size: size, translations: translationRows[i], y: yDiff, zoom: zoom, zoomed: zoomed, onUnmount: onUnmount }));
             yDiff += blockHeights[i];
         }
         return (seqBlocks.length && (React.createElement(InfiniteScroll_1.InfiniteScroll, { blockHeights: blockHeights, bpsPerBlock: bpsPerBlock, seqBlocks: seqBlocks, seqBlocksCompare: seqBlocks, seqBlocksSymbols: seqBlocks, alignment: false, size: size, totalHeight: blockHeights.reduce(function (acc, h) { return acc + h; }, 0) })));
@@ -3902,7 +3902,6 @@ var Highlights_1 = __webpack_require__(34);
 var Index_1 = __webpack_require__(35);
 var Selection_1 = __webpack_require__(36);
 var Translations_1 = __webpack_require__(37);
-var colors_1 = __webpack_require__(13);
 /**
  * SeqBlock
  *
@@ -4045,7 +4044,7 @@ var SeqBlock = /** @class */ (function (_super) {
                     React.createElement("tspan", { key: i + bp + id, fill: color || undefined, x: charWidth * i + charWidth * 0.2 }, bp))));
         };
         _this.alignmentSeqTextSpan = function (bp, i, textProps, indexYDiff, lineHeight) {
-            var _a = _this.props, bpColors = _a.bpColors, charWidth = _a.charWidth, firstBase = _a.firstBase, id = _a.id, colorized = _a.colorized, symbolSeq = _a.symbolSeq;
+            var _a = _this.props, bpColors = _a.bpColors, charWidth = _a.charWidth, firstBase = _a.firstBase, id = _a.id;
             var color;
             if (bpColors) {
                 color =
@@ -4059,8 +4058,6 @@ var SeqBlock = /** @class */ (function (_super) {
             // the +0.2 here and above is to offset the characters they're not right on the left edge. When they are,
             // other elements look like they're shifted too far to the right.
             React.createElement(React.Fragment, null,
-                colorized && React.createElement("rect", { x: charWidth * i + charWidth * 0.2, width: "10", height: "10", style: { fill: ['|', ' ', '.', ''].includes(bp) ? '#0000' : (0, colors_1.colorByGroup)(bp) } }),
-                !colorized && React.createElement("rect", { key: "rect_".concat(i), x: charWidth * i + charWidth * 0.2, width: "10", height: "20", style: { fill: symbolSeq && symbolSeq[i + firstBase] && [' ', '.'].includes(symbolSeq[i + firstBase]) ? "#E9C4C4" : '#0000' } }),
                 React.createElement("text", __assign({}, textProps, { className: "la-vz-seq", "data-testid": "la-vz-seq", id: id, transform: "translate(0, ".concat(indexYDiff + lineHeight / 2, ")") }),
                     React.createElement("tspan", { 
                         // fill={['|',' ','.'].includes(bp) ?  '#0000' : colorByGroup(bp)}
@@ -5870,7 +5867,7 @@ var Alignment = /** @class */ (function (_super) {
      */
     Alignment.prototype.render = function () {
         var _this = this;
-        var _a = this.props, annotations = _a.annotations, bpsPerBlock = _a.bpsPerBlock, compSeq = _a.compSeq, cutSites = _a.cutSites, elementHeight = _a.elementHeight, highlights = _a.highlights, lineHeight = _a.lineHeight, seqToCompare = _a.seqToCompare, onUnmount = _a.onUnmount, search = _a.search, seq = _a.seq, seqType = _a.seqType, 
+        var _a = this.props, annotations = _a.annotations, bpsPerBlock = _a.bpsPerBlock, compSeq = _a.compSeq, cutSites = _a.cutSites, elementHeight = _a.elementHeight, viewer = _a.viewer, highlights = _a.highlights, lineHeight = _a.lineHeight, seqToCompare = _a.seqToCompare, onUnmount = _a.onUnmount, search = _a.search, seq = _a.seq, seqType = _a.seqType, 
         // showComplement,
         showIndex = _a.showIndex, size = _a.size, translations = _a.translations, zoom = _a.zoom;
         // un-official definition for being zoomed in. Being over 10 seems like a decent cut-off
@@ -5982,7 +5979,7 @@ var Alignment = /** @class */ (function (_super) {
                 { identifier: 'seq2', translationRow: translationRowsComparison, array: seqBlocksCompare, fullSequence: seqToCompare, sequence: seqsToCompare, id: idsCp, multiplyFactor: 1, showIndex: true },
             ].forEach(function (_a) {
                 var identifier = _a.identifier, translationRow = _a.translationRow, array = _a.array, fullSequence = _a.fullSequence, sequence = _a.sequence, id = _a.id, multiplyFactor = _a.multiplyFactor, showIndex = _a.showIndex;
-                array.push(React.createElement(SeqBlock_1.SeqBlock, { key: "".concat(id[i], "_").concat(identifier), annotationRows: annotationRows[i], blockHeight: blockHeights[i] * multiplyFactor, bpColors: _this.props.bpColors, bpsPerBlock: bpsPerBlock, charWidth: _this.props.charWidth, compSeq: seqToCompare, symbolSeq: seqSymbols, cutSiteRows: cutSiteRows[i], elementHeight: elementHeight, aagrouping: _this.props.aagrouping, firstBase: firstBase, fullSeq: fullSequence, handleMouseEvent: _this.props.handleMouseEvent, highlights: highlightRows[i], id: id[i], inputRef: _this.props.inputRef, lineHeight: lineHeight, searchRows: searchRows[i], colorized: _this.props.colorized, seq: sequence[i], seqFontSize: _this.props.seqFontSize, seqType: seqType, showComplement: false, showIndex: showIndex, size: size, translations: translationRow[i], y: yDiff, zoom: zoom, zoomed: zoomed, onUnmount: onUnmount }));
+                array.push(React.createElement(SeqBlock_1.SeqBlock, { key: "".concat(id[i], "_").concat(identifier), annotationRows: annotationRows[i], blockHeight: blockHeights[i] * multiplyFactor, bpColors: _this.props.bpColors, bpsPerBlock: bpsPerBlock, charWidth: _this.props.charWidth, compSeq: seqToCompare, symbolSeq: seqSymbols, cutSiteRows: cutSiteRows[i], elementHeight: elementHeight, aagrouping: _this.props.aagrouping, firstBase: firstBase, fullSeq: fullSequence, handleMouseEvent: _this.props.handleMouseEvent, highlights: highlightRows[i], id: id[i], viewer: viewer, inputRef: _this.props.inputRef, lineHeight: lineHeight, searchRows: searchRows[i], colorized: _this.props.colorized, seq: sequence[i], seqFontSize: _this.props.seqFontSize, seqType: seqType, showComplement: false, showIndex: showIndex, size: size, translations: translationRow[i], y: yDiff, zoom: zoom, zoomed: zoomed, onUnmount: onUnmount }));
             });
             yDiff += blockHeights[i];
         };

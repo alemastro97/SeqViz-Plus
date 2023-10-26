@@ -10,6 +10,7 @@ export interface LinearProps {
     charWidth: number;
     compSeq: string;
     cutSites: CutSite[];
+    viewer: string;
     elementHeight: number;
     handleMouseEvent: React.MouseEventHandler;
     highlights: Highlight[];

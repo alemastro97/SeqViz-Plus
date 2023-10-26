@@ -17,6 +17,7 @@ export interface LinearProps {
     lineHeight: number;
     onUnmount: (id: string) => void;
     search: NameRange[];
+    viewer: string;
     seq: string;
     seqFontSize: number;
     seqType: SeqType;

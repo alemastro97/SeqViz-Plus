@@ -28,6 +28,7 @@ interface SeqBlockProps {
     handleMouseEvent: React.MouseEventHandler<SVGSVGElement>;
     highlights: Highlight[];
     id: string;
+    viewer: string;
     inputRef: InputRefFunc;
     key: string;
     lineHeight: number;

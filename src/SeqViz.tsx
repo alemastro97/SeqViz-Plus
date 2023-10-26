@@ -186,7 +186,7 @@ export default class SeqViz extends React.Component<SeqVizProps, SeqVizState> {
     search: { mismatch: 0, query: "" },
     seq: "",
     seqToCompare: "",
-    colorized: false,
+    colorized: true,
     aagrouping: true,
     showComplement: true,
     showTranslations: false,

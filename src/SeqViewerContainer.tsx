@@ -177,12 +177,13 @@ class SeqViewerContainer extends React.Component<SeqViewerContainerProps, SeqVie
       elementHeight,
       lineHeight,
       seqFontSize,
+      viewer,
       size,
       zoom: { linear: zoom },
     };
   };
   alignmentProps = () => {
-    const { seq, seqType, colorized, aagrouping } = this.props;
+    const { seq, seqType, colorized, aagrouping, viewer } = this.props;
     const size = this.props.testSize || { height: this.props.height, width: this.props.width };
     const zoom = this.props.zoom.linear;
 
@@ -219,6 +220,7 @@ class SeqViewerContainer extends React.Component<SeqViewerContainerProps, SeqVie
       ...this.props,
       bpsPerBlock,
       charWidth,
+      viewer,
       elementHeight,
       lineHeight,
       seqFontSize,

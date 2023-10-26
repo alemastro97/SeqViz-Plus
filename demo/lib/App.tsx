@@ -295,7 +295,11 @@ export default class App extends React.Component<any, AppState> {
                     // showIndex={this.state.showIndex}
                     // translations={[{start:0,end:23,direction:1}]}
                     // viewer={"linear"}
-                    {...{"name": "D-GSDMD", "seq": "ATATATATATATATATTATATATATATATATATATATATTATATATATATATATATATATATTATATATATATATATATATATATTATATATATATATATATATATATTATATATATATATATATATATATTATATATATATATATATATATATTATATAT", "viewer": "linear", "annotations": [], "showAnnotations": true, "showTranslations": false, "showPrimers": true, "showComplement": false, "showIndex": true, "onSelection": console.log, "copyEvent": event => event.key === "c" && (event.metaKey || event.ctrlKey), "style": {height: "calc(800px)", width: "100%" }, "zoom": {linear: 50, circular: 10 }, "rotateOnScroll": false}}
+                    {...{
+                      "name": "D-GSDMD",
+                      "seqToCompare":'MGSAFERVVRRVVQELDHGGEFIPVTSLQSSTGFQPYCLVVRKPSSSWFW----KCVNLSIKDILEPDAAEPDVQRGRSFHFYDAMDGQIQGSVELAAPGQAKIAGGAAVSDSSSTSMNVYSLSVDPNTWQTLLHERHLRQPEHKVLQQLRSRGDNVYVVTEVLQTQKEVEVTRTHKREGSGRFSLPGATCLQGEGQGHLSQKKTVTIPSGSTLAFRVAQLVIDSDLDVLLFPDKKQRTFQPPATGHKRSTSEGAWPQLPSGLSMMRCLHNFLTDGVPAEGAFTEDFQGLRAEVETISKELELLDRELCQLLLEGLEGVLRDQLALRALEEALEQGQSLGPVEPLDGPAGAVLECLVLSSGMLVPELAIPVVYLLGALTMLSETQHKLLAEALESQTLLGPLELVGSLLEQSAPWQERSTMSLPPGLLGNSWGEGAPAWVLLDECGLELGEDTPHVCWEPQAQGRMCALYASLALLSGLSQEPH',
+                      "seq": "ATATATATATATATATTATATATATATATATATATATATTATATATATATATATATATATATTATATATATATATATATATATATTATATATATATATATATATATATTATATATATATATATATATATATTATATATATATATATATATATATTATATAT",
+                      "viewer": "linear", "annotations": [], "showAnnotations": true, "showTranslations": true, "showPrimers": true, "showComplement": false, "showIndex": true, "onSelection": console.log, "copyEvent": event => event.key === "c" && (event.metaKey || event.ctrlKey), "style": {height: "calc(800px)", width: "100%" }, "zoom": {linear: 50, circular: 10 }, "rotateOnScroll": false}}
                     // zoom={{ linear: this.state.zoom }}
                     // selection={this.state.selection}
                   />
