@@ -212,7 +212,7 @@ export default class SeqViz extends React.Component<SeqVizProps, SeqVizState> {
    * If an accession was provided, query it here.
    */
   componentDidMount(): void {
-    const { accession, colorized, translations, seq } = this.props;
+    const { accession } = this.props;
     if (!accession || !accession.length) {
       return;
     }
@@ -384,7 +384,7 @@ export default class SeqViz extends React.Component<SeqVizProps, SeqVizState> {
     }));
 
   render() {
-    const { highlightedRegions, highlights,showTranslations, showComplement, showIndex, style, zoom, viewer, colorized } = this.props;
+    const { highlightedRegions, highlights,showTranslations, showComplement, showIndex, style, zoom, viewer } = this.props;
     let { translations } = this.props;
     const { compSeq, seq, seqType } = this.state;
     // This is an unfortunate bit of seq checking. We could get a seq directly or from a file parsed to a part.

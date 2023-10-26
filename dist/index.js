@@ -1,5 +1,5 @@
 /*!
- * seqviz-plus - 2.0.20
+ * seqviz-plus - 2.0.22
  * provided and maintained by Lattice Automation (https://latticeautomation.com/)
  * LICENSE MIT
  */
@@ -303,19 +303,20 @@ var SeqViz = /** @class */ (function (_super) {
     };
     SeqViz.prototype.render = function () {
         var _this = this;
-        var _a = this.props, highlightedRegions = _a.highlightedRegions, highlights = _a.highlights, showComplement = _a.showComplement, showIndex = _a.showIndex, style = _a.style, zoom = _a.zoom, viewer = _a.viewer;
+        var _a = this.props, highlightedRegions = _a.highlightedRegions, highlights = _a.highlights, showTranslations = _a.showTranslations, showComplement = _a.showComplement, showIndex = _a.showIndex, style = _a.style, zoom = _a.zoom, viewer = _a.viewer;
         var translations = this.props.translations;
         var _b = this.state, compSeq = _b.compSeq, seq = _b.seq, seqType = _b.seqType;
         // This is an unfortunate bit of seq checking. We could get a seq directly or from a file parsed to a part.
         if (!seq)
             return React.createElement("div", { className: "la-vz-seqviz" });
         // If the seqType is aa, make the entire sequence the "translation"
-        if (seqType === "aa") {
+        if (seqType === "aa" || (showTranslations && (translations === null || translations === void 0 ? void 0 : translations.length) === 0)) {
             // TODO: during some grand future refactor, make this cleaner and more transparent to the user
             translations = [{ direction: 1, end: seq.length, start: 0 }];
         }
         // Since all the props are optional, we need to parse them to defaults.
         var props = {
+            // translations: (colorized && translations?.length === 0) ? [{start:0, end: seq?.length, direction: 1}] : translations,
             bpColors: this.props.bpColors || {},
             copyEvent: this.props.copyEvent || (function () { return false; }),
             cutSites: this.state.cutSites,
@@ -362,6 +363,7 @@ var SeqViz = /** @class */ (function (_super) {
         colorized: true,
         aagrouping: true,
         showComplement: true,
+        showTranslations: false,
         showIndex: true,
         style: {},
         translations: [],
@@ -4043,7 +4045,7 @@ var SeqBlock = /** @class */ (function (_super) {
                     React.createElement("tspan", { key: i + bp + id, fill: color || undefined, x: charWidth * i + charWidth * 0.2 }, bp))));
         };
         _this.alignmentSeqTextSpan = function (bp, i, textProps, indexYDiff, lineHeight) {
-            var _a = _this.props, bpColors = _a.bpColors, charWidth = _a.charWidth, firstBase = _a.firstBase, id = _a.id;
+            var _a = _this.props, bpColors = _a.bpColors, charWidth = _a.charWidth, firstBase = _a.firstBase, id = _a.id, colorized = _a.colorized, symbolSeq = _a.symbolSeq;
             var color;
             if (bpColors) {
                 color =
@@ -4057,7 +4059,8 @@ var SeqBlock = /** @class */ (function (_super) {
             // the +0.2 here and above is to offset the characters they're not right on the left edge. When they are,
             // other elements look like they're shifted too far to the right.
             React.createElement(React.Fragment, null,
-                React.createElement("rect", { x: charWidth * i + charWidth * 0.2, width: "10", height: "10", style: { fill: ['|', ' ', '.', ''].includes(bp) ? '#0000' : (0, colors_1.colorByGroup)(bp) } }),
+                colorized && React.createElement("rect", { x: charWidth * i + charWidth * 0.2, width: "10", height: "10", style: { fill: ['|', ' ', '.', ''].includes(bp) ? '#0000' : (0, colors_1.colorByGroup)(bp) } }),
+                !colorized && React.createElement("rect", { key: "rect_".concat(i), x: charWidth * i + charWidth * 0.2, width: "10", height: "20", style: { fill: symbolSeq && symbolSeq[i + firstBase] && [' ', '.'].includes(symbolSeq[i + firstBase]) ? "#E9C4C4" : '#0000' } }),
                 React.createElement("text", __assign({}, textProps, { className: "la-vz-seq", "data-testid": "la-vz-seq", id: id, transform: "translate(0, ".concat(indexYDiff + lineHeight / 2, ")") }),
                     React.createElement("tspan", { 
                         // fill={['|',' ','.'].includes(bp) ?  '#0000' : colorByGroup(bp)}
@@ -4974,6 +4977,7 @@ var TranslationRow = /** @class */ (function (_super) {
         // if rendering an amino-acid sequence directly, each amino acid block is 1:1 with a "base pair".
         // otherwise, each amino-acid covers three bases.
         var bpPerBlockCount = seqType === 'aa' ? 1 : 3;
+        console.log(AAseq);
         // substring and split only the amino acids that are relevant to this
         // particular sequence block
         var AAs = AAseq.split('');
