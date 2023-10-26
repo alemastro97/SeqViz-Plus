@@ -229,7 +229,7 @@ export class SeqBlock extends React.PureComponent<SeqBlockProps> {
     );
   };
   alignmentSeqTextSpan = (bp: string, i: number, textProps, indexYDiff, lineHeight) => {
-    const { bpColors, charWidth, firstBase, id } = this.props;
+    const { bpColors, charWidth, firstBase, id, colorized,symbolSeq } = this.props;
 
     let color: string | undefined;
     if (bpColors) {
@@ -245,7 +245,9 @@ export class SeqBlock extends React.PureComponent<SeqBlockProps> {
       // the +0.2 here and above is to offset the characters they're not right on the left edge. When they are,
       // other elements look like they're shifted too far to the right.
       <>
-        <rect x={charWidth * i + charWidth * 0.2} width="10" height="10" style={{ fill: ['|', ' ', '.', ''].includes(bp) ? '#0000' : colorByGroup(bp) }} />
+        {colorized && <rect x={charWidth * i + charWidth * 0.2} width="10" height="10" style={{ fill: ['|', ' ', '.', ''].includes(bp) ? '#0000' : colorByGroup(bp) }} />}
+        {!colorized && <rect key={`rect_${i}`} x={charWidth * i + charWidth * 0.2} width="10" height="20" style={{ fill: symbolSeq  && symbolSeq[i+firstBase] && [' ', '.'].includes(symbolSeq[i+firstBase]) ? "#E9C4C4" : '#0000' }} />
+}
         <text
           {...textProps}
           className="la-vz-seq"

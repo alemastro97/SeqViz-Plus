@@ -187,7 +187,7 @@ export default class App extends React.Component<any, AppState> {
         rotateOnScroll: false
       }
     return (
-      <div style={{ height: "2000vh" }}>
+      <div style={{ height: "100vh" }}>
         <Sidebar.Pushable className="sidebar-container">
           <Sidebar
             animation="overlay"
@@ -235,7 +235,7 @@ export default class App extends React.Component<any, AppState> {
                 toggleShowSelectionMeta={this.toggleShowSelectionMeta}
                 toggleSidebar={this.toggleSidebar}
               />
-              <div id="seqviewer">
+              {/* <div id="seqviewer">
                 {this.state.seq && (
                   <SeqViz
                   viewer="both"
@@ -278,51 +278,33 @@ export default class App extends React.Component<any, AppState> {
                     // selection={this.state.selection}
                   />
                 )}
-              </div> 
-              <div style={{background:"", justifyContent:"center", width: "50%", height:"200px", alignItems:"end"}} id="seqviewer">
+              </div>  */}
+              <div style={{background:"", justifyContent:"center", width: "100%", height:"200px"}} id="seqviewer">
                 {this.state.seq && (
                   <SeqViz
-                    // name={this.state.name}
-                    // seq={this.state.seq}
-                    // viewer={this.state.viewer}
-                    // annotations={this.state.annotations}
-                    // translations={this.state.translations}
-                    // showAnnotations={this.state.showAnnotations}
-                    // showTranslations={this.state.showTranslations}
-                    // showPrimers={this.state.showPrimers}
-                    // showComplement={this.state.showComplement}
-                    // showIndex={this.state.showIndex}
-                    // onSelection={this.state.onSelection}
-                    // copyEvent={this.state.copyEvent}
-                    // style={this.state.style}
-                    // zoom={this.state.zoom}
-                    // rotateOnScroll={this.state.rotateOnScroll}
-                  
-                  
-                  
-                    
-                    
-                    
-                    
                     annotations={this.state.annotations}
                     enzymes={this.state.enzymes}
                     name={this.state.name}
                     nameToCompare={this.state.nameToCompare}
                     search={this.state.search}
-                    seq='TATATATATATATATATTATATATTTTATATATA-TATATATATATATATATATTATATATTTTATATATA-TATATATATATATATATATTATATATTTTATATATA-TATATATATATATATATATTATATATTTTATATATA-TATATATATATATATATATTATATATTTTATATATA-TA'
-                    seqToCompare='TATATATATATATATATTATATATTTTATATATTATATATATATATATATATATTATATATTTTATATATTATATATATATATATATATATTATATATTTTATATATTATATATATATATATATATATTATATATTTTATATATTATATATATATATATATATATTATATATTTTATATATTATA'
+                    // colorized={true}
+                    showTranslations={true}
+                    seq='ATATATATATATATATTATATATATATATATATATATATTATATATATATATATATATATATTATATATATATATATATATATATTATATATATATATATATATATATTATATATATATATATATATATATTATATATATATATATATATATATTATATAT'
+                    seqToCompare='MGSAFERVVRRVVQELDHGGEFIPVTSLQSSTGFQPYCLVVRKPSSSWFW----KCVNLSIKDILEPDAAEPDVQRGRSFHFYDAMDGQIQGSVELAAPGQAKIAGGAAVSDSSSTSMNVYSLSVDPNTWQTLLHERHLRQPEHKVLQQLRSRGDNVYVVTEVLQTQKEVEVTRTHKREGSGRFSLPGATCLQGEGQGHLSQKKTVTIPSGSTLAFRVAQLVIDSDLDVLLFPDKKQRTFQPPATGHKRSTSEGAWPQLPSGLSMMRCLHNFLTDGVPAEGAFTEDFQGLRAEVETISKELELLDRELCQLLLEGLEGVLRDQLALRALEEALEQGQSLGPVEPLDGPAGAVLECLVLSSGMLVPELAIPVVYLLGALTMLSETQHKLLAEALESQTLLGPLELVGSLLEQSAPWQERSTMSLPPGLLGNSWGEGAPAWVLLDECGLELGEDTPHVCWEPQAQGRMCALYASLALLSGLSQEPH'
                     showComplement={this.state.showComplement}
                     showIndex={this.state.showIndex}
-                    translations={this.state.translations}
-                    viewer={"alignment"}
+                    // translations={[{start:0,end:23,direction:1}]}
+                    viewer={"both"}
                     zoom={{ linear: this.state.zoom }}
                     selection={this.state.selection}
                   />
                 )}
-              <div style={{display:"flex", justifyContent:"center", width: "50%", height:"100vh", alignItems:"end"}} id="seqviewer"></div>  
-              </div>  <div style={{display:"flex", justifyContent:"center", width: "50%", height:"100vh", alignItems:"end"}} id="seqviewer">
+              {/* <div style={{display:"flex", justifyContent:"center", width: "50%", height:"100vh", alignItems:"end"}} id="seqviewer"></div>   */}
+              </div>
+                {/* <div style={{display:"flex", justifyContent:"center", width: "50%", height:"100vh", alignItems:"end"}} id="seqviewer">
                 {this.state.seq && (
                   <SeqViz
+                  
                     // name={this.state.name}
                     // seq={this.state.seq}
                     // viewer={this.state.viewer}
@@ -360,7 +342,7 @@ export default class App extends React.Component<any, AppState> {
                     selection={this.state.selection}
                   />
                 )}
-              </div>
+              </div> */}
             </div>
           </Sidebar.Pusher>
         </Sidebar.Pushable>

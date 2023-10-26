@@ -122,6 +122,7 @@ export interface SeqVizProps {
    * @deprecated to avoid rendering annotations, don't pass any
    */
   showAnnotations?: boolean;
+  showTranslations?: boolean;
   aagrouping?: boolean;
 
   /** whether to render the complement sequence */
@@ -188,6 +189,7 @@ export default class SeqViz extends React.Component<SeqVizProps, SeqVizState> {
     colorized: true,
     aagrouping: true,
     showComplement: true,
+    showTranslations: false,
     showIndex: true,
     style: {},
     translations: [],
@@ -210,7 +212,7 @@ export default class SeqViz extends React.Component<SeqVizProps, SeqVizState> {
    * If an accession was provided, query it here.
    */
   componentDidMount(): void {
-    const { accession } = this.props;
+    const { accession, colorized, translations, seq } = this.props;
     if (!accession || !accession.length) {
       return;
     }
@@ -382,20 +384,22 @@ export default class SeqViz extends React.Component<SeqVizProps, SeqVizState> {
     }));
 
   render() {
-    const { highlightedRegions, highlights, showComplement, showIndex, style, zoom, viewer } = this.props;
+    const { highlightedRegions, highlights,showTranslations, showComplement, showIndex, style, zoom, viewer, colorized } = this.props;
     let { translations } = this.props;
     const { compSeq, seq, seqType } = this.state;
     // This is an unfortunate bit of seq checking. We could get a seq directly or from a file parsed to a part.
     if (!seq) return <div className="la-vz-seqviz" />;
 
     // If the seqType is aa, make the entire sequence the "translation"
-    if (seqType === "aa") {
+    if (seqType === "aa" || (showTranslations && translations?.length ===0)) {
       // TODO: during some grand future refactor, make this cleaner and more transparent to the user
       translations = [{ direction: 1, end: seq.length, start: 0 }];
     }
 
     // Since all the props are optional, we need to parse them to defaults.
     const props = {
+      // translations: (colorized && translations?.length === 0) ? [{start:0, end: seq?.length, direction: 1}] : translations,
+
       bpColors: this.props.bpColors || {},
       copyEvent: this.props.copyEvent || (() => false),
       cutSites: this.state.cutSites,
