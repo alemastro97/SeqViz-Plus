@@ -5,6 +5,7 @@ export interface EventsHandlerProps {
     bpsPerBlock: number;
     children: any;
     aagrouping?: boolean;
+    showDetails?: boolean;
     copyEvent: (e: React.KeyboardEvent<HTMLElement>) => boolean;
     handleMouseEvent: (e: any) => void;
     selection: Selection;

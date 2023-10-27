@@ -21,6 +21,7 @@ interface SeqViewerContainerProps {
     name: string;
     nameToCompare?: string;
     aagrouping?: boolean;
+    showDetails?: boolean;
     onSelection: (selection: Selection) => void;
     rotateOnScroll: boolean;
     search: NameRange[];

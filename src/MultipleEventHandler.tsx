@@ -11,6 +11,7 @@ export interface EventsHandlerProps {
   bpsPerBlock: number;
   children: any;
   aagrouping?: boolean;
+  showDetails?: boolean;
   copyEvent: (e: React.KeyboardEvent<HTMLElement>) => boolean;
   handleMouseEvent: (e: any) => void;
   selection: Selection;
@@ -276,8 +277,9 @@ export class MultipleEventHandler extends React.PureComponent<EventsHandlerProps
     onMouseMove={this.props.handleMouseEvent}
     onMouseUp={this.handleMouseEvent}
     >
-    <AlignmentStatistics   name = {this.props.name}
-      nameToCompare = {this.props.nameToCompare} seq={this.props.seq[0]} seqToCompare={this.props.seq[1]} seqType={guessType(this.props.seq[0])}/>
+
+    {this.props.showDetails && <AlignmentStatistics   name = {this.props.name}
+      nameToCompare = {this.props.nameToCompare} seq={this.props.seq[0]} seqToCompare={this.props.seq[1]} seqType={guessType(this.props.seq[0])}/>}
       {this.state.rightClickMenu && <FloatingMenu close={this.closeMenu}
       seq = {this.props.seq[0]}
     

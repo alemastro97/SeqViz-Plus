@@ -88,6 +88,7 @@ export interface SeqVizProps {
      */
     showAnnotations?: boolean;
     showTranslations?: boolean;
+    showDetails?: boolean;
     aagrouping?: boolean;
     /** whether to render the complement sequence */
     showComplement?: boolean;

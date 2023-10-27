@@ -123,6 +123,7 @@ export interface SeqVizProps {
    */
   showAnnotations?: boolean;
   showTranslations?: boolean;
+  showDetails?: boolean;
   aagrouping?: boolean;
 
   /** whether to render the complement sequence */
@@ -190,6 +191,7 @@ export default class SeqViz extends React.Component<SeqVizProps, SeqVizState> {
     aagrouping: true,
     showComplement: true,
     showTranslations: false,
+    showDetails: true,
     showIndex: true,
     style: {},
     translations: [],

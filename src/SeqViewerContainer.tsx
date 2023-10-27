@@ -32,6 +32,7 @@ interface SeqViewerContainerProps {
   name: string;
   nameToCompare?: string;
   aagrouping?: boolean;
+  showDetails?: boolean;
   onSelection: (selection: Selection) => void;
   rotateOnScroll: boolean;
   search: NameRange[];
@@ -277,7 +278,7 @@ class SeqViewerContainer extends React.Component<SeqViewerContainerProps, SeqVie
   };
 
   render() {
-    const { selection: selectionProp, seq, viewer, seqToCompare } = this.props;
+    const { selection: selectionProp, seq, viewer, seqToCompare, showDetails } = this.props;
     const { centralIndex, selection } = this.state;
 
     const linearProps = this.linearProps();
@@ -383,6 +384,7 @@ class SeqViewerContainer extends React.Component<SeqViewerContainerProps, SeqVie
                   handleMouseEvent={handleMouseEvent}
                   selection={selection}
                   seq={[seq, seqToCompare]}
+                  showDetails={showDetails}
                   setSelection={this.setSelection}
                 >
                 

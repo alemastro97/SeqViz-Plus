@@ -1,5 +1,5 @@
 /*!
- * seqviz-plus - 2.0.24
+ * seqviz-plus - 2.0.25
  * provided and maintained by Lattice Automation (https://latticeautomation.com/)
  * LICENSE MIT
  */
@@ -364,6 +364,7 @@ var SeqViz = /** @class */ (function (_super) {
         aagrouping: true,
         showComplement: true,
         showTranslations: false,
+        showDetails: true,
         showIndex: true,
         style: {},
         translations: [],
@@ -599,7 +600,7 @@ var SeqViewerContainer = /** @class */ (function (_super) {
     }
     SeqViewerContainer.prototype.render = function () {
         var _this = this;
-        var _a = this.props, selectionProp = _a.selection, seq = _a.seq, viewer = _a.viewer, seqToCompare = _a.seqToCompare;
+        var _a = this.props, selectionProp = _a.selection, seq = _a.seq, viewer = _a.viewer, seqToCompare = _a.seqToCompare, showDetails = _a.showDetails;
         var _b = this.state, centralIndex = _b.centralIndex, selection = _b.selection;
         var linearProps = this.linearProps();
         var circularProps = this.circularProps();
@@ -618,7 +619,7 @@ var SeqViewerContainer = /** @class */ (function (_super) {
                             React.createElement(Circular_1.default, __assign({}, circularProps, { handleMouseEvent: handleMouseEvent, inputRef: inputRef, onUnmount: onUnmount })))))); }),
                     viewer === 'alignment' &&
                         React.createElement(React.Fragment, null,
-                            React.createElement(MultipleSequenceSelectionHandler_1.default, { bpsPerBlock: linearProps.bpsPerBlock, center: circularProps.center, centralIndex: centralIndex.circular, seq: [seq, seqToCompare], setCentralIndex: this.setCentralIndex, setSelection: this.setSelection, yDiff: circularProps.yDiff }, function (inputRef, handleMouseEvent, onUnmount) { return (React.createElement(MultipleEventHandler_1.MultipleEventHandler, { bpsPerBlock: linearProps.bpsPerBlock, copyEvent: _this.props.copyEvent, aagrouping: _this.props.aagrouping, name: _this.props.name, nameToCompare: _this.props.nameToCompare, handleMouseEvent: handleMouseEvent, selection: selection, seq: [seq, seqToCompare], setSelection: _this.setSelection },
+                            React.createElement(MultipleSequenceSelectionHandler_1.default, { bpsPerBlock: linearProps.bpsPerBlock, center: circularProps.center, centralIndex: centralIndex.circular, seq: [seq, seqToCompare], setCentralIndex: this.setCentralIndex, setSelection: this.setSelection, yDiff: circularProps.yDiff }, function (inputRef, handleMouseEvent, onUnmount) { return (React.createElement(MultipleEventHandler_1.MultipleEventHandler, { bpsPerBlock: linearProps.bpsPerBlock, copyEvent: _this.props.copyEvent, aagrouping: _this.props.aagrouping, name: _this.props.name, nameToCompare: _this.props.nameToCompare, handleMouseEvent: handleMouseEvent, selection: selection, seq: [seq, seqToCompare], showDetails: showDetails, setSelection: _this.setSelection },
                                 React.createElement(Alignment_1.default, __assign({}, alignmentProps, { handleMouseEvent: handleMouseEvent, inputRef: inputRef, onUnmount: onUnmount })))); }))))));
     };
     return SeqViewerContainer;
@@ -3400,7 +3401,7 @@ var MultipleEventHandler = /** @class */ (function (_super) {
             _this.setState({ rightClickMenu: false });
         };
         _this.render = function () { return (React.createElement("div", { className: "la-vz-viewer-event-router", id: "la-vz-event-router", role: "presentation", tabIndex: -1, style: { display: "flex", flexDirection: "column" }, onContextMenu: _this.handleMouseEvent, onKeyDown: _this.handleKeyPress, onMouseDown: _this.handleMouseEvent, onMouseMove: _this.props.handleMouseEvent, onMouseUp: _this.handleMouseEvent },
-            React.createElement(AlignmentStatistics_1.default, { name: _this.props.name, nameToCompare: _this.props.nameToCompare, seq: _this.props.seq[0], seqToCompare: _this.props.seq[1], seqType: (0, sequence_1.guessType)(_this.props.seq[0]) }),
+            _this.props.showDetails && React.createElement(AlignmentStatistics_1.default, { name: _this.props.name, nameToCompare: _this.props.nameToCompare, seq: _this.props.seq[0], seqToCompare: _this.props.seq[1], seqType: (0, sequence_1.guessType)(_this.props.seq[0]) }),
             _this.state.rightClickMenu && React.createElement(FloatingMenu_1.default, { close: _this.closeMenu, seq: _this.props.seq[0], start: _this.props.children.props.selection.start, end: _this.props.children.props.selection.end, seqComp: _this.props.seq[1], top: _this.state.yFloatingMenu, left: _this.state.xFloatingMenu }),
             _this.props.children)); };
         return _this;
@@ -3902,6 +3903,7 @@ var Highlights_1 = __webpack_require__(34);
 var Index_1 = __webpack_require__(35);
 var Selection_1 = __webpack_require__(36);
 var Translations_1 = __webpack_require__(37);
+var colors_1 = __webpack_require__(13);
 /**
  * SeqBlock
  *
@@ -4044,7 +4046,7 @@ var SeqBlock = /** @class */ (function (_super) {
                     React.createElement("tspan", { key: i + bp + id, fill: color || undefined, x: charWidth * i + charWidth * 0.2 }, bp))));
         };
         _this.alignmentSeqTextSpan = function (bp, i, textProps, indexYDiff, lineHeight) {
-            var _a = _this.props, bpColors = _a.bpColors, charWidth = _a.charWidth, firstBase = _a.firstBase, id = _a.id;
+            var _a = _this.props, bpColors = _a.bpColors, charWidth = _a.charWidth, firstBase = _a.firstBase, id = _a.id, colorized = _a.colorized, viewer = _a.viewer, symbolSeq = _a.symbolSeq;
             var color;
             if (bpColors) {
                 color =
@@ -4054,10 +4056,17 @@ var SeqBlock = /** @class */ (function (_super) {
                         bpColors[i + firstBase] ||
                         undefined;
             }
+            if (symbolSeq && symbolSeq[i + firstBase] !== '|') {
+                color = "#FF0000";
+            }
             return (
             // the +0.2 here and above is to offset the characters they're not right on the left edge. When they are,
             // other elements look like they're shifted too far to the right.
             React.createElement(React.Fragment, null,
+                colorized && !(viewer === 'alignment') ?
+                    React.createElement("rect", { x: charWidth * i + charWidth * 0.2, width: "10", height: "10", style: { fill: ['|', ' ', '.', ''].includes(bp) ? '#0000' : (0, colors_1.colorByGroup)(bp) } })
+                    :
+                        React.createElement("rect", { key: "rect_".concat(i), x: charWidth * i + charWidth * 0.2, width: "10", height: "20", style: { fill: symbolSeq && symbolSeq[i + firstBase] && [' ', '.'].includes(symbolSeq[i + firstBase]) ? "#E9C4C4" : '#0000' } }),
                 React.createElement("text", __assign({}, textProps, { className: "la-vz-seq", "data-testid": "la-vz-seq", id: id, transform: "translate(0, ".concat(indexYDiff + lineHeight / 2, ")") }),
                     React.createElement("tspan", { 
                         // fill={['|',' ','.'].includes(bp) ?  '#0000' : colorByGroup(bp)}
