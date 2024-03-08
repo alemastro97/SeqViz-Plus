@@ -278,7 +278,10 @@ const rnaCodonToAminoAcid = Object.keys(dnaCodonToAminoAcid).reduce(
  * Given a sequence, translate it into an Amino Acid sequence
  */
 export const translate = (seqInput: string, seqType: SeqType): string => {
+
+  
   if (seqType === "aa") {
+
     return seqInput;
   }
 

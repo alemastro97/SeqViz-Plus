@@ -224,11 +224,11 @@ export class EventHandler extends React.PureComponent<EventsHandlerProps> {
     if (e.button === 2 && e.type==="contextmenu" ) {
       e.preventDefault();
       this.setState({ rightClickMenu: true });
-      console.log(window.pageXOffset)
+
       // Box position (under the mouse)
       this.setState({ xFloatingMenu: e.clientX - window.pageXOffset});
       this.setState({ yFloatingMenu: e.clientY - window.pageYOffset});
-      console.log(this.props)
+
       return;
     }
     // Close the context menu if a left click is performed on the screen and the target is not a button 

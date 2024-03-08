@@ -22,7 +22,10 @@ interface TranslationRowsProps {
 }
 
 /** Rows of translations */
-export const TranslationRows = ({ aagrouping=false, bpsPerBlock, charWidth, elementHeight, findXAndWidth, firstBase, fullSeq, inputRef, lastBase, onUnmount, seqType, translations, yDiff }: TranslationRowsProps) => (
+export const TranslationRows = ({ aagrouping=false, bpsPerBlock, charWidth, elementHeight, findXAndWidth, firstBase, fullSeq, inputRef, lastBase, onUnmount, seqType, translations, yDiff }: TranslationRowsProps) => {
+
+  return(
+
   <g
     className="la-vz-linear-translation"
     data-testid="la-vz-linear-translation"
@@ -49,7 +52,7 @@ export const TranslationRows = ({ aagrouping=false, bpsPerBlock, charWidth, elem
       />
     ))}
   </g>
-);
+)};
 
 interface TranslationRowProps {
   bpsPerBlock: number;
@@ -106,7 +109,7 @@ class TranslationRow extends React.PureComponent<TranslationRowProps> {
     // if rendering an amino-acid sequence directly, each amino acid block is 1:1 with a "base pair".
     // otherwise, each amino-acid covers three bases.
     const bpPerBlockCount = seqType === 'aa' ? 1 : 3;
-    console.log(AAseq)
+
     // substring and split only the amino acids that are relevant to this
     // particular sequence block
     const AAs = AAseq.split('');

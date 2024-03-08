@@ -420,21 +420,22 @@ export class SeqBlock extends React.PureComponent<SeqBlockProps> {
             zoomed={zoomed}
           />
           {(colorized && !aagrouping) && translations.length && (
-            <TranslationRows
-              bpsPerBlock={bpsPerBlock}
-              charWidth={charWidth}
-              elementHeight={elementHeight}
-              findXAndWidth={this.findXAndWidth}
-              firstBase={firstBase}
-              fullSeq={fullSeq}
-              aagrouping={aagrouping}
-              inputRef={inputRef}
-              lastBase={lastBase}
-              seqType={seqType}
-              translations={translations}
-              yDiff={translationYDiff}
-              onUnmount={onUnmount}
-            />
+         <TranslationRows
+                bpsPerBlock={bpsPerBlock}
+                charWidth={charWidth}
+                elementHeight={elementHeight}
+                findXAndWidth={this.findXAndWidth}
+                firstBase={firstBase}
+                fullSeq={fullSeq}
+                aagrouping={aagrouping}
+                inputRef={inputRef}
+                lastBase={lastBase}
+                seqType={seqType}
+                translations={translations}
+                yDiff={translationYDiff}
+                onUnmount={onUnmount}
+              />
+
           )}
           {annotationRows.length && (
             <AnnotationRows
