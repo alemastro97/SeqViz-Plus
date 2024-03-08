@@ -1,5 +1,5 @@
 /*!
- * seqviz-plus - 2.0.25
+ * seqviz-plus - 2.0.26
  * provided and maintained by Lattice Automation (https://latticeautomation.com/)
  * LICENSE MIT
  */
@@ -303,7 +303,7 @@ var SeqViz = /** @class */ (function (_super) {
     };
     SeqViz.prototype.render = function () {
         var _this = this;
-        var _a = this.props, highlightedRegions = _a.highlightedRegions, highlights = _a.highlights, showTranslations = _a.showTranslations, showComplement = _a.showComplement, showIndex = _a.showIndex, style = _a.style, zoom = _a.zoom, viewer = _a.viewer;
+        var _a = this.props, highlightedRegions = _a.highlightedRegions, highlights = _a.highlights, showTranslations = _a.showTranslations, showComplement = _a.showComplement, showIndex = _a.showIndex, style = _a.style, zoom = _a.zoom;
         var translations = this.props.translations;
         var _b = this.state, compSeq = _b.compSeq, seq = _b.seq, seqType = _b.seqType;
         // This is an unfortunate bit of seq checking. We could get a seq directly or from a file parsed to a part.
@@ -330,7 +330,8 @@ var SeqViz = /** @class */ (function (_super) {
             showIndex: !!showIndex,
             translations: (translations || []).map(function (t) { return ({
                 direction: t.direction ? (t.direction < 0 ? -1 : 1) : 1,
-                end: viewer !== 'alignment' ? t.start + Math.floor((t.end - t.start) / 3) * 3 : t.end,
+                // end: viewer !== 'alignment' ? t.start + Math.floor((t.end - t.start) / 3) * 3 : t.end,
+                end: t.end,
                 start: t.start % seq.length,
             }); }),
             viewer: this.props.viewer || "both",
@@ -2578,11 +2579,9 @@ var EventHandler = /** @class */ (function (_super) {
             if (e.button === 2 && e.type === "contextmenu") {
                 e.preventDefault();
                 _this.setState({ rightClickMenu: true });
-                console.log(window.pageXOffset);
                 // Box position (under the mouse)
                 _this.setState({ xFloatingMenu: e.clientX - window.pageXOffset });
                 _this.setState({ yFloatingMenu: e.clientY - window.pageYOffset });
-                console.log(_this.props);
                 return;
             }
             // Close the context menu if a left click is performed on the screen and the target is not a button 
@@ -4983,7 +4982,6 @@ var TranslationRow = /** @class */ (function (_super) {
         // if rendering an amino-acid sequence directly, each amino acid block is 1:1 with a "base pair".
         // otherwise, each amino-acid covers three bases.
         var bpPerBlockCount = seqType === 'aa' ? 1 : 3;
-        console.log(AAseq);
         // substring and split only the amino acids that are relevant to this
         // particular sequence block
         var AAs = AAseq.split('');

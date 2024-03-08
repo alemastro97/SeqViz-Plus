@@ -386,7 +386,7 @@ export default class SeqViz extends React.Component<SeqVizProps, SeqVizState> {
     }));
 
   render() {
-    const { highlightedRegions, highlights,showTranslations, showComplement, showIndex, style, zoom, viewer } = this.props;
+    const { highlightedRegions, highlights,showTranslations, showComplement, showIndex, style, zoom } = this.props;
     let { translations } = this.props;
     const { compSeq, seq, seqType } = this.state;
     // This is an unfortunate bit of seq checking. We could get a seq directly or from a file parsed to a part.
